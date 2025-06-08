@@ -82,6 +82,8 @@ namespace Engine {
         auto timestamp = std::chrono::steady_clock::now();
         while (!done) {
             al_wait_for_event(event_queue, &event);
+            if (nextScene == "close") break;
+            //std::cout<<"here"<<std::endl;
             switch (event.type) {
                 case ALLEGRO_EVENT_DISPLAY_CLOSE:
                     // Event for clicking the window close button.
@@ -260,6 +262,10 @@ namespace Engine {
         al_get_keyboard_state(&state);
         return al_key_down(&state, keyCode);
     }
+    void GameEngine::Close() {
+        nextScene = "close";
+    }
+
     GameEngine &GameEngine::GetInstance() {
         // The classic way to lazy initialize a Singleton.
         static GameEngine instance;

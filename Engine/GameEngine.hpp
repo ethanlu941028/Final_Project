@@ -38,7 +38,8 @@ namespace Engine {
         // The window's icon.
         const char *icon{};
         // The scene to change to at next update.
-        std::string nextScene{};
+        std::string nextScene {};
+        bool running = true;
 
         /// <summary>
         /// Initialize allegro5 library. Creates game window & event queue,
@@ -155,6 +156,7 @@ namespace Engine {
         /// </summary>
         /// <returns>The Singleton instance of GameEngine.</returns>
         static GameEngine &GetInstance();
+        void  Close();
     };
 }
 #endif   // GAMEENGINE_HPP

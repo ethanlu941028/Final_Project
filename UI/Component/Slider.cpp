@@ -15,12 +15,22 @@ Slider::Slider(float x, float y, float w, float h)
 }
 void Slider::Draw() const {
     // TODO HACKATHON-5 (3/4): The slider's component should be drawn here.
+    Bar.Draw();
+    End1.Draw();
+    End2.Draw();
+    ImageButton::Draw();
 }
 void Slider::SetOnValueChangedCallback(std::function<void(float value)> onValueChangedCallback) {
     OnValueChangedCallback = onValueChangedCallback;
 }
 void Slider::SetValue(float value) {
     // TODO HACKATHON-5 (4/4): Set the value of the slider and call the callback.
+    Position.x = Bar.Position.x + value * Bar.Size.x;
+    Position.y = Bar.Position.y + value * Bar.Size.y / 2;
+
+    if (OnValueChangedCallback) {
+        OnValueChangedCallback(value);
+    }
 }
 void Slider::OnMouseDown(int button, int mx, int my) {
     if ((button & 1) && mouseIn)
