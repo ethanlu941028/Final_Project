@@ -2,12 +2,14 @@
 
 #include <iostream>
 #include <ostream>
+#include <iomanip>
+#include <sstream>
 
 #include "Engine/GameEngine.hpp"
 #include "UI/Component/Image.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
-#include "Entities/Player.hpp"  // 假設你有這個
+#include "Entities/Player.hpp"
 
 void Gameplay::Initialize() {
     score = 0;
@@ -20,7 +22,7 @@ void Gameplay::Initialize() {
     scoreLabel = new Engine::Label("Score: 0", "pirulen.ttf", 24, 10, 10, 0, 0, 255, 255);
     AddNewObject(scoreLabel);
 
-    pauseButton = new Engine::ImageButton("play/target-invalid.png","stage-select/floor.png", w - 70, 10, 64, 64);
+    pauseButton = new Engine::ImageButton("play/target-invalid.png","play/dirt.png", w - 70, 10, 64, 64);
     pauseButton->SetOnClickCallback(std::bind(&Gameplay::PauseOnClick, this));
     AddNewControlObject(pauseButton);
 
@@ -39,10 +41,13 @@ void Gameplay::Terminate() {
 }
 
 void Gameplay::Update(float deltaTime) {
-    score += static_cast<int>(deltaTime * 60);
-    scoreLabel->Text = "Score: " + std::to_string(score);
+    score += deltaTime * 60;
 
-    // 檢查血量
+    std::ostringstream stream;
+    stream << std::fixed << std::setprecision(2) << "Score: " << ((score*4) / 100.0f);
+    scoreLabel->Text = stream.str();
+
+    player->Update(deltaTime);
     CheckPlayerHealth();
 }
 
@@ -61,7 +66,6 @@ void Gameplay::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
 
     if (keyCode == ALLEGRO_KEY_SPACE) {
-        std::cout<<"jump"<<std::endl;
         player->Jump();
     }
 }

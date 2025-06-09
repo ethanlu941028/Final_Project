@@ -23,12 +23,14 @@ void Player::Update(float deltaTime) {
     velocityY += gravity * deltaTime;
     Position.y += velocityY * deltaTime;
 
-    // 假設地面為 y = 500
-    if (Position.y >= 500) {
-        Position.y = 500;
+    // 假設地面為 y = 600
+    if (Position.y >= 600) {
+        Position.y = 600;
         velocityY = 0;
         isOnGround = true;
-    } else {
+    }
+    else if (Position.y <= 0) Position.y = 0;
+    else {
         isOnGround = false;
     }
 
