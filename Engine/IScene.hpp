@@ -10,8 +10,8 @@ namespace Engine {
         IScene() = default;
 
     public:
-        IScene(const IScene&) = delete;
-        IScene& operator=(const IScene&) = delete;
+        IScene(IScene const &) = delete;
+        IScene& operator=(IScene const &) = delete;
         virtual ~IScene() = default;
 
         // 初始化與清理

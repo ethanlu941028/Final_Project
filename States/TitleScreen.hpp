@@ -16,6 +16,7 @@ public:
     void Terminate() override;
     void OnMouseDown(int button, int mx, int my) override;
     void OnEvent(ALLEGRO_EVENT& event) override;
+    void PlayOnClick(int stage);
 };
 
 #endif // TITLESCREEN_HPP

@@ -8,6 +8,8 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
+
+#include "Engine/GameEngine.hpp"
 #include "Engine/IScene.hpp"
 #include "States/TitleScreen.hpp"
 
@@ -63,7 +65,8 @@ void Game::ProcessEvents() {
     while (al_get_next_event(eventQueue, &ev)) {
         if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             running = false;
-        } else if (ev.type == ALLEGRO_EVENT_TIMER) {
+        }
+        else if (ev.type == ALLEGRO_EVENT_TIMER) {
             redraw = true;
         }
         currentScene->OnEvent(ev); // 轉交事件給目前的場景

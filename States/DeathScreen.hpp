@@ -1,8 +1,23 @@
-//
-// Created by 盧昱辰 on 2025/6/8.
-//
+#ifndef DEATH_SCREEN_HPP
+#define DEATH_SCREEN_HPP
 
-#ifndef DEATHSCREEN_HPP
-#define DEATHSCREEN_HPP
+#include "Engine/IScene.hpp"
 
-#endif //DEATHSCREEN_HPP
+namespace Engine {
+    class Label;
+    class ImageButton;
+}
+
+class DeathScreen : public Engine::IScene {
+private:
+    Engine::Label* gameOverLabel;
+    Engine::ImageButton* backToMenuButton;
+
+    void BackToMenuOnClick();
+public:
+    explicit DeathScreen() = default;
+    void Initialize() override;
+    void Terminate() override;
+};
+
+#endif // DEATH_SCREEN_HPP

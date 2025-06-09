@@ -15,16 +15,16 @@ void TitleScreen::Initialize() {
 
     // Start 按鈕
     startButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 200, 400, 100);
-    //startButton->SetOnClickCallback(std::bind(&StartScene::PlayOnClick, this, 1));
+    startButton->SetOnClickCallback(std::bind(&TitleScreen::PlayOnClick, this, 1));
     AddNewControlObject(startButton);
     AddNewObject(new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH / 2 + 250, 0, 0, 0, 255, 0.5, 0.5));
-
     // Exit 按鈕
-    /*
-    exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH * 3 / 2, 400, 100);
+
+    exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 400, 400, 100);
     exitButton->SetOnClickCallback([]() {Engine::GameEngine::GetInstance().Close();});
     AddNewControlObject(exitButton);
-    */
+    AddNewObject(new Engine::Label("Exit", "pirulen.ttf", 48, halfW, halfH / 2 + 450, 0, 0, 0, 255, 0.5, 0.5));
+
 
 }
 
@@ -46,4 +46,10 @@ void TitleScreen::OnEvent(ALLEGRO_EVENT& event) {
         }
     }
     IScene::OnEvent(event);  // 確保基底類也收到事件
+}
+
+void TitleScreen::PlayOnClick(int stage) {
+    // 這裡你可以根據選擇的關卡（stage）傳值
+    // 若沒用到可以忽略參數
+    Engine::GameEngine::GetInstance().ChangeScene("play");
 }
