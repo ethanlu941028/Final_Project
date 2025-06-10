@@ -21,12 +21,12 @@ private:
     int score;
     Player* player;
 
-    bool initialized = false;
 
     void PauseOnClick();
     void CheckPlayerHealth();
 
 public:
+    bool initialized = false;
     explicit Gameplay() = default;
     void Initialize() override;
     void Terminate() override;

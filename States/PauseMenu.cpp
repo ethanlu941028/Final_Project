@@ -38,8 +38,7 @@ void PauseMenu::ResumeOnClick() {
 }
 
 void PauseMenu::ExitOnClick() {
-    Engine::GameEngine::GetInstance().ClearAndChangeScene("title");
-
+    Engine::GameEngine::GetInstance().ChangeScene("title");
 }
 
 void PauseMenu::OnKeyDown(int keyCode) {

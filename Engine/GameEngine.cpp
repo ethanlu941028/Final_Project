@@ -270,7 +270,8 @@ namespace Engine {
             delete sceneStack.top();
             sceneStack.pop();
         }
-        ChangeScene(name);
+        changeScene(name);
+        nextScene = "";
     }
 
 

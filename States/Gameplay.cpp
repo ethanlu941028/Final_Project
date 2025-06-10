@@ -12,6 +12,7 @@
 #include "Entities/Player.hpp"
 #include "Engine/Group.hpp"
 
+
 void Gameplay::Initialize() {
     if (initialized) return;
     initialized = true;

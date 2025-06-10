@@ -4,9 +4,12 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include <iostream>
+#include "States/Gameplay.hpp"
+#include "Gameplay.hpp"
 
 void TitleScreen::Initialize() {
     ClearObjects();
+    //Gameplay::initialized = false;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
@@ -33,6 +36,15 @@ void TitleScreen::Terminate() {
     exitButton = nullptr;
     IScene::Terminate();  // 呼叫基底釋放控制元件
 }
+
+void TitleScreen::Draw() const {
+    // 清空畫面背景，這邊用黑色，你可以改成你喜歡的顏色
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+
+    // 再呼叫基底的Draw，繼續畫控制元件等
+    IScene::Draw();
+}
+
 
 void TitleScreen::OnMouseDown(int button, int mx, int my) {
     IScene::OnMouseDown(button, mx, my);  // 呼叫基底讓控制元件正常運作

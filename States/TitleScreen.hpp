@@ -17,6 +17,7 @@ public:
     void OnMouseDown(int button, int mx, int my) override;
     void OnEvent(ALLEGRO_EVENT& event) override;
     void PlayOnClick(int stage);
+    void Draw() const;
 };
 
 #endif // TITLESCREEN_HPP
