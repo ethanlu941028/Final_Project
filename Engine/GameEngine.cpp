@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
+#include "Group.hpp"
 
 #include "Allegro5Exception.hpp"
 #include "GameEngine.hpp"
@@ -17,6 +18,9 @@
 #include "LOG.hpp"
 #include "Point.hpp"
 #include "Resources.hpp"
+#include <stack>
+
+std::stack<Engine::IScene*> Engine::GameEngine::sceneStack;
 
 namespace Engine {
     void GameEngine::initAllegro5() {
@@ -235,6 +239,41 @@ namespace Engine {
     void GameEngine::ChangeScene(const std::string &name) {
         nextScene = name;
     }
+    void GameEngine::PushScene(const std::string& name) {
+        if (scenes.count(name) == 0)
+            throw std::invalid_argument("Cannot push to an unknown scene.");
+
+        // Pause current active scene (optional: add Pause function to IScene if needed)
+        sceneStack.push(activeScene); // Save current scene
+        activeScene = scenes[name];
+        activeScene->Initialize();
+
+        LOG(INFO) << "Pushed and switched to scene: " << name;
+    }
+    void GameEngine::PopScene() {
+        if (sceneStack.empty())
+            throw std::runtime_error("Scene stack is empty. Cannot pop.");
+
+        // Terminate current scene
+        activeScene->Terminate();
+
+        // Restore previous scene
+        activeScene = sceneStack.top();
+        sceneStack.pop();
+
+        LOG(INFO) << "Popped to previous scene.";
+    }
+
+    void GameEngine::ClearAndChangeScene(const std::string& name) {
+        while (!sceneStack.empty()) {
+            sceneStack.top()->Terminate();
+            delete sceneStack.top();
+            sceneStack.pop();
+        }
+        ChangeScene(name);
+    }
+
+
     IScene *GameEngine::GetActiveScene() const {
         return activeScene;
     }

@@ -31,6 +31,13 @@ namespace Engine {
         }
         controls.clear();
     }
+    void Group::ClearObjects() {
+        // delete only the objects list (not controls)
+        for (auto &it : objects) {
+            if (it.first) delete it.second;
+        }
+        objects.clear();
+    }
     void Group::Update(float deltaTime) {
         for (auto it = objects.begin(); it != objects.end();) {
             auto preIt = it++;

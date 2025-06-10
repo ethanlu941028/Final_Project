@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 	// 新增場景
 	engine.AddNewScene("title", new TitleScreen());
 	engine.AddNewScene("play", new Gameplay());
-	//engine.AddNewScene("pause", new PauseMenu());
+	engine.AddNewScene("pause", new PauseMenu());
 	engine.AddNewScene("death", new DeathScreen());
 	// 啟動遊戲，從 title scene 開始
 	engine.Start("title", 60, 1600, 832);

@@ -3,7 +3,7 @@
 #include <allegro5/allegro.h>
 #include <string>
 #include <unordered_map>
-
+#include <stack>
 #include "Point.hpp"
 
 /// <summary>
@@ -24,7 +24,6 @@ namespace Engine {
         float deltaTimeThreshold{};
         // All scenes are stored in hash table for easy access.
         // Reference: Data Structure - Hash table
-        std::unordered_map<std::string, IScene *> scenes;
         // The active scene that occupies the game's update, draw and various events.
         IScene *activeScene{};
         // Allegro5 display for window creation.
@@ -78,6 +77,8 @@ namespace Engine {
         void changeScene(const std::string &name);
 
     public:
+        static std::stack<IScene*> sceneStack;
+        std::unordered_map<std::string, IScene *> scenes;
         // Note: We'll ignore C++11's move constructor, move assignment operator in this project for simplicity.
         /// <summary>
         /// Copy constructor is deleted, no copying allowed.
@@ -115,7 +116,9 @@ namespace Engine {
         /// </summary>
         /// <param name="name">The name of the scene you want to change to.</param>
         void ChangeScene(const std::string &name);
-        /// <summary>
+        void PushScene(const std::string& name);         /// <summary>
+        void PopScene();
+        void ClearAndChangeScene(const std::string& name);
         /// Get the pointer of the active scene.
         /// </summary>
         /// <returns>Pointer to active scene.</returns>

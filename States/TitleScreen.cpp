@@ -6,7 +6,7 @@
 #include <iostream>
 
 void TitleScreen::Initialize() {
-
+    ClearObjects();
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
