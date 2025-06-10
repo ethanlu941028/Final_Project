@@ -8,6 +8,7 @@
 int main(int argc, char **argv) {
 	// 加入你自己想要的場景
 	Engine::GameEngine& engine = Engine::GameEngine::GetInstance();
+	printf("Welcome to the game!\n");
 
 	// 新增場景
 	engine.AddNewScene("title", new TitleScreen());
