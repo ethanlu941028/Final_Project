@@ -133,3 +133,7 @@ void Gameplay::OnKeyDown(int keyCode) {
         Engine::GameEngine::GetInstance().ChangeScene("death");
     }
 }
+
+long long Gameplay::GetScore() {
+    return (score * 4) / 100.0f;
+}

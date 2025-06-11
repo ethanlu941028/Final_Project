@@ -24,6 +24,7 @@ namespace Engine {
 
         // 處理事件（鍵盤、滑鼠、關閉等等）
         virtual void OnEvent(ALLEGRO_EVENT& event) {};
+        virtual void HandleEvent(const ALLEGRO_EVENT&){}
     };
 }
 
