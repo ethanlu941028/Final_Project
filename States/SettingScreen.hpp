@@ -1,31 +1,22 @@
-#ifndef PAUSEMENU_HPP
-#define PAUSEMENU_HPP
+#ifndef SettingsScene_HPP
+#define SettingsScene_HPP
 #include <memory>
 
 #include "Engine/IScene.hpp"
 #include <allegro5/allegro_audio.h>
 
-
-namespace Engine {
-    class Label;
-    class ImageButton;
-}
-
-class PauseMenu : public Engine::IScene {
+class SettingScreen final : public Engine::IScene {
 private:
-    Engine::ImageButton* resumeButton;
-    Engine::ImageButton* exitButton;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
+
 public:
+    explicit SettingScreen() = default;
     void Initialize() override;
     void Terminate() override;
-    void ResumeOnClick();
-    void ExitOnClick();
-    void OnKeyDown(int keyCode) override;
+    void BackOnClick(int stage);
     void BGMSlideOnValueChanged(float value);
     void SFXSlideOnValueChanged(float value);
     void Draw() const;
-
 };
 
-#endif // PAUSEMENU_HPP
+#endif   // SettingsScene_HPP

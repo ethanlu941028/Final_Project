@@ -9,6 +9,7 @@ class TitleScreen final : public Engine::IScene {
 private:
     Engine::ImageButton* startButton;
     Engine::ImageButton* exitButton;
+    Engine::ImageButton* settingButton;
 
 public:
     explicit TitleScreen() = default;
@@ -17,6 +18,7 @@ public:
     void OnMouseDown(int button, int mx, int my) override;
     void OnEvent(ALLEGRO_EVENT& event) override;
     void PlayOnClick(int stage);
+    void SettingOnClick(int stage);
     void Draw() const;
 };
 

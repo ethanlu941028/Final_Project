@@ -17,12 +17,18 @@ void TitleScreen::Initialize() {
 
 
     // Start 按鈕
-    startButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 200, 400, 100);
+    startButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2, 400, 100);
     startButton->SetOnClickCallback(std::bind(&TitleScreen::PlayOnClick, this, 1));
     AddNewControlObject(startButton);
-    AddNewObject(new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH / 2 + 250, 0, 0, 0, 255, 0.5, 0.5));
-    // Exit 按鈕
+    AddNewObject(new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH / 2 + 50, 0, 0, 0, 255, 0.5, 0.5));
 
+    //Setting按鈕
+    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 +200, 400, 100);
+    settingButton->SetOnClickCallback(std::bind(&TitleScreen::SettingOnClick, this, 2));
+    AddNewControlObject(settingButton);
+    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH / 2 + 250, 0, 0, 0, 255, 0.5, 0.5));
+
+    // Exit 按鈕
     exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 400, 400, 100);
     exitButton->SetOnClickCallback([]() {Engine::GameEngine::GetInstance().Close();});
     AddNewControlObject(exitButton);
@@ -32,8 +38,10 @@ void TitleScreen::Initialize() {
 }
 
 void TitleScreen::Terminate() {
+    Clear();
     startButton = nullptr;
     exitButton = nullptr;
+    std::cout<<"TitleScreen Terminate"<<std::endl;
     IScene::Terminate();  // 呼叫基底釋放控制元件
 }
 
@@ -63,5 +71,11 @@ void TitleScreen::OnEvent(ALLEGRO_EVENT& event) {
 void TitleScreen::PlayOnClick(int stage) {
     // 這裡你可以根據選擇的關卡（stage）傳值
     // 若沒用到可以忽略參數
-    Engine::GameEngine::GetInstance().ChangeScene("play");
+    Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+}
+
+void TitleScreen::SettingOnClick(int stage) {
+    // 這裡你可以根據選擇的關卡（stage）傳值
+    // 若沒用到可以忽略參數
+    Engine::GameEngine::GetInstance().ChangeScene("setting");
 }
