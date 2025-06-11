@@ -16,6 +16,7 @@ public:
     void Terminate() override;
     void PlayOnClick(int stage);
     void BackOnClick(int stage);
+    void OnKeyDown(int keyCode) override;
     void Draw() const;
     /*
     void ScoreboardOnClick();

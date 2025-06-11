@@ -27,3 +27,10 @@ void DeathScreen::Terminate() {
 void DeathScreen::BackToMenuOnClick() {
     Engine::GameEngine::GetInstance().ChangeScene("title");
 }
+
+void DeathScreen::OnKeyDown(int keyCode) {
+    IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
+    if (keyCode == ALLEGRO_KEY_ESCAPE) {
+        Engine::GameEngine::GetInstance().ChangeScene("title");
+    }
+}

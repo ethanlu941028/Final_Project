@@ -17,6 +17,7 @@ public:
     void BGMSlideOnValueChanged(float value);
     void SFXSlideOnValueChanged(float value);
     void Draw() const;
+    void OnKeyDown(int key) override;
 };
 
 #endif   // SettingsScene_HPP

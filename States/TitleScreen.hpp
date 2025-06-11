@@ -11,15 +11,18 @@ private:
     Engine::ImageButton* startButton;
     Engine::ImageButton* exitButton;
     Engine::ImageButton* settingButton;
+    Engine::ImageButton* scoreboardButton;
 
 public:
     explicit TitleScreen() = default;
     void Initialize() override;
     void Terminate() override;
     void OnMouseDown(int button, int mx, int my) override;
+    void OnKeyDown(int keyCode) override;
     void OnEvent(ALLEGRO_EVENT& event) override;
     void PlayOnClick(int stage);
     void SettingOnClick(int stage);
+    void ScoreboardOnClick(int stage);
     void Draw() const;
 };
 

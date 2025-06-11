@@ -24,15 +24,15 @@ void PauseMenu::Initialize() {
     int halfW = w / 2;
     int halfH = h / 2;
 
-    resumeButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 - 200, 400, 100);
-    resumeButton->SetOnClickCallback(std::bind(&PauseMenu::ResumeOnClick, this));
-    AddNewControlObject(resumeButton);
-    AddNewObject(new Engine::Label("Resume", "pirulen.ttf", 48, halfW, h / 2 - 150, 0, 0, 0, 255, 0.5, 0.5));
+    escButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 - 200, 400, 100);
+    escButton->SetOnClickCallback(std::bind(&PauseMenu::ResumeOnClick, this));
+    AddNewControlObject(escButton);
+    AddNewObject(new Engine::Label("ESC", "pirulen.ttf", 48, halfW, h / 2 - 150, 0, 0, 0, 255, 0.5, 0.5));
 
-    exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 + 100, 400, 100);
-    exitButton->SetOnClickCallback(std::bind(&PauseMenu::ExitOnClick, this));
-    AddNewControlObject(exitButton);
-    AddNewObject(new Engine::Label("Exit", "pirulen.ttf", 48, halfW, h / 2 + 150, 0, 0, 0, 255, 0.5, 0.5));
+    quitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 + 100, 400, 100);
+    quitButton->SetOnClickCallback(std::bind(&PauseMenu::ExitOnClick, this));
+    AddNewControlObject(quitButton);
+    AddNewObject(new Engine::Label("Quit", "pirulen.ttf", 48, halfW, h / 2 + 150, 0, 0, 0, 255, 0.5, 0.5));
 
     Slider *sliderBGM, *sliderSFX;
     sliderBGM = new Slider(40 + halfW - 95, halfH - 50 - 2, 190, 4);
@@ -51,8 +51,8 @@ void PauseMenu::Initialize() {
 
 void PauseMenu::Terminate() {
     std::cout << "PauseMenu::Terminate called." << std::endl;
-    resumeButton = nullptr;
-    exitButton = nullptr;
+    escButton = nullptr;
+    quitButton = nullptr;
     ClearObjects();
     IScene::Terminate();
 }
@@ -87,6 +87,9 @@ void PauseMenu::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
     if (keyCode == ALLEGRO_KEY_ESCAPE) {
         Engine::GameEngine::GetInstance().ChangeScene("play");
+    }
+    else if (keyCode == ALLEGRO_KEY_Q) {
+        PauseMenu::ExitOnClick();
     }
 }
 

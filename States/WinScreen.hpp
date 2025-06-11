@@ -20,6 +20,7 @@ public:
     explicit WinScreen() = default;
     void Initialize() override;
     void Terminate() override;
+    void OnKeyDown(int keyCode) override;
 };
 
 #endif // WIN_SCREEN_HPP

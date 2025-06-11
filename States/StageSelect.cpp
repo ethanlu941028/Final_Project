@@ -86,3 +86,10 @@ void StageSelect::SFXSlideOnValueChanged(float value) {
     AudioHelper::SFXVolume = value;
 }
 */
+
+void StageSelect::OnKeyDown(int keyCode) {
+    IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
+    if (keyCode == ALLEGRO_KEY_ESCAPE) {
+        Engine::GameEngine::GetInstance().ChangeScene("title");
+    }
+}

@@ -20,6 +20,7 @@ public:
     explicit DeathScreen() = default;
     void Initialize() override;
     void Terminate() override;
+    void OnKeyDown(int key) override;
 };
 
 #endif // DEATH_SCREEN_HPP

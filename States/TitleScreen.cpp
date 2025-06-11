@@ -24,17 +24,23 @@ void TitleScreen::Initialize() {
     AddNewControlObject(startButton);
     AddNewObject(new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH / 2 + 50, 0, 0, 0, 255, 0.5, 0.5));
 
+    scoreboardButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 250, halfH / 2 + 140, 500, 100);
+    scoreboardButton->SetOnClickCallback(std::bind(&TitleScreen::ScoreboardOnClick, this, 1));
+    AddNewControlObject(scoreboardButton);
+    AddNewObject(new Engine::Label("ScoreBoard", "pirulen.ttf", 48, halfW, halfH / 2 + 190, 0, 0, 0, 255, 0.5, 0.5));
+
+
     //Setting按鈕
-    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 +200, 400, 100);
+    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 280, 400, 100);
     settingButton->SetOnClickCallback(std::bind(&TitleScreen::SettingOnClick, this, 2));
     AddNewControlObject(settingButton);
-    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH / 2 + 250, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH / 2 + 330, 0, 0, 0, 255, 0.5, 0.5));
 
     // Exit 按鈕
-    exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 400, 400, 100);
+    exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 420, 400, 100);
     exitButton->SetOnClickCallback([]() {Engine::GameEngine::GetInstance().Close();});
     AddNewControlObject(exitButton);
-    AddNewObject(new Engine::Label("Exit", "pirulen.ttf", 48, halfW, halfH / 2 + 450, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Exit", "pirulen.ttf", 48, halfW, halfH / 2 + 470, 0, 0, 0, 255, 0.5, 0.5));
 
 
 }
@@ -80,4 +86,15 @@ void TitleScreen::SettingOnClick(int stage) {
     // 這裡你可以根據選擇的關卡（stage）傳值
     // 若沒用到可以忽略參數
     Engine::GameEngine::GetInstance().ChangeScene("setting");
+}
+
+void TitleScreen::ScoreboardOnClick(int stage) {
+    Engine::GameEngine::GetInstance().ChangeScene("scoreboard");
+}
+
+void TitleScreen::OnKeyDown(int keyCode) {
+    IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
+    if (keyCode == ALLEGRO_KEY_ESCAPE) {
+        Engine::GameEngine::GetInstance().Close(); // 按 ESC 退出遊戲
+    }
 }

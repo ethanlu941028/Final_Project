@@ -65,3 +65,10 @@ void SettingScreen::BGMSlideOnValueChanged(float value) {
 void SettingScreen::SFXSlideOnValueChanged(float value) {
     AudioHelper::SFXVolume = value;
 }
+
+void SettingScreen::OnKeyDown(int keyCode) {
+    IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
+    if (keyCode == ALLEGRO_KEY_ESCAPE) {
+        Engine::GameEngine::GetInstance().ChangeScene("title");
+    }
+}
