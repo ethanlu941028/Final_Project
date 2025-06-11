@@ -6,6 +6,7 @@
 #include "States/PauseMenu.hpp"
 #include "States/StageSelect.hpp"
 #include "States/SettingScreen.hpp"
+#include "States/WinScreen.hpp"
 #include <iostream>
 
 
@@ -21,6 +22,7 @@ int main(int argc, char **argv) {
 	engine.AddNewScene("death", new DeathScreen());
 	engine.AddNewScene("stage-select", new StageSelect());
 	engine.AddNewScene("setting", new SettingScreen());
+	engine.AddNewScene("win", new WinScreen());
 	// 啟動遊戲，從 title scene 開始
 	engine.Start("title", 60, 1600, 832);
 

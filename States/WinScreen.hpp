@@ -1,5 +1,5 @@
-#ifndef DEATH_SCREEN_HPP
-#define DEATH_SCREEN_HPP
+#ifndef WIN_SCREEN_HPP
+#define WIN_SCREEN_HPP
 
 #include "Engine/IScene.hpp"
 
@@ -9,7 +9,7 @@ namespace Engine {
     class Image;
 }
 
-class DeathScreen : public Engine::IScene {
+class WinScreen : public Engine::IScene {
 private:
     Engine::Label* gameOverLabel;
     Engine::ImageButton* backToMenuButton;
@@ -17,9 +17,9 @@ private:
 
     void BackToMenuOnClick();
 public:
-    explicit DeathScreen() = default;
+    explicit WinScreen() = default;
     void Initialize() override;
     void Terminate() override;
 };
 
-#endif // DEATH_SCREEN_HPP
+#endif // WIN_SCREEN_HPP

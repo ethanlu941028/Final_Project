@@ -103,6 +103,10 @@ void Gameplay::Update(float deltaTime) {
 
     player->Update(deltaTime);
     CheckPlayerHealth();
+
+    if ((score * 4) / 100.0f > 10) {
+        Engine::GameEngine::GetInstance().ChangeScene("win");
+    }
 }
 
 void Gameplay::CheckPlayerHealth() {
@@ -124,5 +128,8 @@ void Gameplay::OnKeyDown(int keyCode) {
     }
     else if (keyCode == ALLEGRO_KEY_ESCAPE) {
         Engine::GameEngine::GetInstance().PushScene("pause");
+    }
+    else if (keyCode == ALLEGRO_KEY_0) {
+        Engine::GameEngine::GetInstance().ChangeScene("death");
     }
 }
