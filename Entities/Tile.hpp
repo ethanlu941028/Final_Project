@@ -5,9 +5,8 @@
 #include <string>
 
 enum class TileType {
-    Ground,
-    Obstacle,
-    Background
+    Air = 0,
+    Ground = 1
 };
 
 class Tile : public Engine::Sprite {

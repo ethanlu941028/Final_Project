@@ -7,6 +7,7 @@
 #include "UI/Component/Label.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "Engine/Group.hpp"
+#include "States/Gameplay.hpp"
 
 
 void PauseMenu::Initialize() {
@@ -38,8 +39,14 @@ void PauseMenu::ResumeOnClick() {
 }
 
 void PauseMenu::ExitOnClick() {
+    Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
+    Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
+    if (gameplay) {
+        gameplay->initialized = false; // 或 gameplay->Terminate();
+    }
     Engine::GameEngine::GetInstance().ChangeScene("title");
 }
+
 
 void PauseMenu::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理

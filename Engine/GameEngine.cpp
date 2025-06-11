@@ -191,6 +191,7 @@ namespace Engine {
         // Terminate the old scene.
         activeScene->Terminate();
         activeScene = scenes[name];
+        std::cout << "Change scene to " << name << std::endl;
         // Release unused resources.
         if (freeMemoryOnSceneChanged)
             Resources::GetInstance().ReleaseUnused();
@@ -250,18 +251,18 @@ namespace Engine {
 
         LOG(INFO) << "Pushed and switched to scene: " << name;
     }
-    void GameEngine::PopScene() {
-        if (sceneStack.empty())
-            throw std::runtime_error("Scene stack is empty. Cannot pop.");
-
-        // Terminate current scene
+    void GameEngine::PopScene(const std::string& name) {
+        if (scenes.count(name) == 0)
+            throw std::invalid_argument("Cannot change to a unknown scene.");
+        // Terminate the old scene.
         activeScene->Terminate();
-
-        // Restore previous scene
-        activeScene = sceneStack.top();
-        sceneStack.pop();
-
-        LOG(INFO) << "Popped to previous scene.";
+        activeScene = scenes[name];
+        // Release unused resources.
+        if (freeMemoryOnSceneChanged)
+            Resources::GetInstance().ReleaseUnused();
+        // Initialize the new scene.
+        activeScene->Initialize();
+        LOG(INFO) << "Changed to " << name << " scene";
     }
 
     void GameEngine::ClearAndChangeScene(const std::string& name) {
