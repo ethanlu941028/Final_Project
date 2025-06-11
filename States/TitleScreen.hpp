@@ -4,6 +4,7 @@
 #include <allegro5/allegro.h>
 #include "Engine/IScene.hpp"
 #include "UI/Component/ImageButton.hpp"
+#include <iostream>
 
 class TitleScreen final : public Engine::IScene {
 private:

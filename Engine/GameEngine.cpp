@@ -11,6 +11,7 @@
 #include <string>
 #include <utility>
 #include "Group.hpp"
+#include <iostream>
 
 #include "Allegro5Exception.hpp"
 #include "GameEngine.hpp"

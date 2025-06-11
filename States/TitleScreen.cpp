@@ -6,6 +6,8 @@
 #include <iostream>
 #include "States/Gameplay.hpp"
 #include "Gameplay.hpp"
+#include <iostream>
+
 
 void TitleScreen::Initialize() {
     ClearObjects();

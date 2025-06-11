@@ -12,6 +12,8 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/Slider.hpp"
+#include <iostream>
+
 
 void StageSelect::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;

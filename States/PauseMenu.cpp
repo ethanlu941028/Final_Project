@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <allegro5/allegro_primitives.h>
+#include <map>
 
 #include "Engine/AudioHelper.hpp"
 #include "Engine/Point.hpp"

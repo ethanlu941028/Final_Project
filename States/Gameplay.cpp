@@ -12,6 +12,8 @@
 #include "UI/Component/Label.hpp"
 #include "Entities/Player.hpp"
 #include "Engine/Group.hpp"
+#include <iostream>
+
 const int Gameplay::MapWidth = 20, Gameplay::MapHeight = 13;
 const int Gameplay::BlockSize = 64;
 

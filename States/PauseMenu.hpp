@@ -1,7 +1,7 @@
 #ifndef PAUSEMENU_HPP
 #define PAUSEMENU_HPP
 #include <memory>
-
+#include <iostream>
 #include "Engine/IScene.hpp"
 #include <allegro5/allegro_audio.h>
 

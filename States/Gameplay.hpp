@@ -3,6 +3,8 @@
 
 #include <allegro5/allegro.h>
 #include "Engine/IScene.hpp"
+#include <iostream>
+
 
 namespace Engine {
     class Image;

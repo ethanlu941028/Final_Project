@@ -6,6 +6,8 @@
 #include "States/PauseMenu.hpp"
 #include "States/StageSelect.hpp"
 #include "States/SettingScreen.hpp"
+#include <iostream>
+
 
 int main(int argc, char **argv) {
 	// 加入你自己想要的場景

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Engine/IScene.hpp"
+#include <iostream>
 
 class StageSelect final : public Engine::IScene {
 private:

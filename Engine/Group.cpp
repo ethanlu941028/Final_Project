@@ -4,6 +4,7 @@
 #include "Group.hpp"
 #include "IControl.hpp"
 #include "IObject.hpp"
+#include <iostream>
 
 namespace Engine {
     void Group::addObject(bool shouldDelete, IObject *obj) {

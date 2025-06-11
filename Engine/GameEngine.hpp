@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <stack>
 #include "Point.hpp"
+#include <iostream>
 
 /// <summary>
 /// All general classes are under this namespace for clarity.
