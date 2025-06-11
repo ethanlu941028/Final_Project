@@ -117,7 +117,7 @@ namespace Engine {
         /// <param name="name">The name of the scene you want to change to.</param>
         void ChangeScene(const std::string &name);
         void PushScene(const std::string& name);         /// <summary>
-        void PopScene();
+        void PopScene(const std::string& name);
         void ClearAndChangeScene(const std::string& name);
         /// Get the pointer of the active scene.
         /// </summary>

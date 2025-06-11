@@ -32,7 +32,7 @@ void Gameplay::Initialize() {
     AddNewControlObject(pauseButton);
 
     // 初始化玩家
-    player = new Player(400,500);
+    player = new Player(400,670);
     AddNewObject(player);
 }
 
@@ -41,6 +41,7 @@ void Gameplay::Terminate() {
     background = nullptr;
     scoreLabel = nullptr;
     pauseButton = nullptr;
+    initialized = false;
     //delete player;
     //player = nullptr;
     ClearObjects();
