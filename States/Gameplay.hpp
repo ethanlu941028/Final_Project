@@ -4,15 +4,18 @@
 #include <allegro5/allegro.h>
 #include "Engine/IScene.hpp"
 #include <iostream>
+#include <vector>
 
 
 namespace Engine {
     class Image;
     class Label;
     class ImageButton;
+    class Group;
 }
 
 class Player;  // 前向宣告
+class Level;  // forward declaration for map handling
 
 class Gameplay : public Engine::IScene {
 private:
@@ -27,7 +30,7 @@ private:
 
     int score;
     Player* player;
-
+    Level* level = nullptr;
 
     void PauseOnClick();
     void CheckPlayerHealth();
@@ -39,7 +42,7 @@ public:
     static const int BlockSize;
     std::vector<std::vector<TileType>> mapState;
     std::vector<std::vector<int>> mapDistance;
-    Group *TileMapGroup;
+    Engine::Group* TileMapGroup;
     bool initialized = false;
     explicit Gameplay() = default;
     void Initialize() override;

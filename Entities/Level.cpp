@@ -1,67 +1,57 @@
-//
-// Created by 盧昱辰 on 2025/6/8.
-//
 #include "Level.hpp"
-
+#include "AirTile.hpp"
+#include "GroundTile.hpp"
+#include "Engine/GameEngine.hpp"
+#include "Engine/Group.hpp"
 #include <fstream>
-#include <stdexcept>
 
-static std::unique_ptr<Tile> CreateTile(char c, int x, int y, int tileSize) {
-    if (c == '1')
-        return std::make_unique<GroundTile>(x, y, tileSize);
-    return std::make_unique<AirTile>(x, y, tileSize);
-}
+Level::Level(int w, int h, int tSize, Engine::Group* group)
+    : width(w), height(h), tileSize(tSize), offsetX(0), finished(false), container(group) {}
 
-void Level::LoadFromFile(const std::string& path) {
-    rows.clear();
+bool Level::LoadMap(const std::string& path) {
     std::ifstream fin(path);
-    if (!fin.is_open())
-        throw std::runtime_error("Failed to open level file: " + path);
+    if (!fin.is_open()) return false;
+    tiles.assign(height, std::vector<Tile*>(width, nullptr));
     std::string line;
-    while (std::getline(fin, line)) {
-        if (!line.empty() && line.back() == '\r')
-            line.pop_back();
-        rows.push_back(line);
+    for (int y = 0; y < height; ++y) {
+        if (!std::getline(fin, line)) return false;
+        for (int x = 0; x < width && x < static_cast<int>(line.size()); ++x) {
+            char c = line[x];
+            if (c == '1')
+                tiles[y][x] = new GroundTile(x, y, tileSize);
+            else
+                tiles[y][x] = new AirTile(x, y, tileSize);
+        }
     }
-    fin.close();
+    return true;
 }
 
-void Level::InitializeView(int vColumns, int vRows) {
-    visibleColumns = vColumns;
-    visibleRows = vRows;
-    startColumn = 0;
-    scrollOffset = 0.0f;
-    activeTiles.clear();
-    for (int y = 0; y < visibleRows && y < static_cast<int>(rows.size()); ++y) {
-        for (int x = 0; x < visibleColumns && x < static_cast<int>(rows[y].size()); ++x) {
-            activeTiles.emplace_back(CreateTile(rows[y][x], x, y, tileSize));
+void Level::InitializeView() {
+    if (!container) return;
+    for (auto& row : tiles) {
+        for (auto* tile : row) {
+            if (tile) container->AddNewObject(tile);
         }
     }
 }
 
 void Level::Scroll(float deltaTime, float speed) {
-    if (IsFinished())
-        return;
-
-    scrollOffset += speed * deltaTime;
-    int shift = static_cast<int>(scrollOffset / tileSize);
-    if (shift > 0) {
-        scrollOffset -= shift * tileSize;
-        startColumn += shift;
-        activeTiles.clear();
-        for (int y = 0; y < visibleRows && y < static_cast<int>(rows.size()); ++y) {
-            for (int x = 0; x < visibleColumns && startColumn + x < static_cast<int>(rows[y].size()); ++x) {
-                activeTiles.emplace_back(CreateTile(rows[y][startColumn + x], x, y, tileSize));
-            }
-        }
+    if (finished) return;
+    offsetX += speed * deltaTime;
+    int screenW = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    float maxOffset = width * tileSize - screenW;
+    if (offsetX >= maxOffset) {
+        offsetX = maxOffset;
+        finished = true;
     }
-    for (size_t i = 0; i < activeTiles.size(); ++i) {
-        int col = i % visibleColumns;
-        activeTiles[i]->Position.x = col * tileSize - scrollOffset;
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            Tile* tile = tiles[y][x];
+            if (tile) tile->Position.x = x * tileSize - offsetX;
+        }
     }
 }
 
 bool Level::IsFinished() const {
-    int width = rows.empty() ? 0 : static_cast<int>(rows[0].size());
-    return startColumn + visibleColumns >= width;
+    return finished;
 }

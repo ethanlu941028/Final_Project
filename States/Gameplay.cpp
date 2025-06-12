@@ -11,6 +11,7 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "Entities/Player.hpp"
+#include "Entities/Level.hpp"
 #include "Engine/Group.hpp"
 #include <iostream>
 
@@ -20,7 +21,11 @@ const int Gameplay::BlockSize = 64;
 
 void Gameplay::Initialize() {
     AddNewObject(TileMapGroup = new Group());
-    //ReadMap();
+    // Load level map
+    std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
+    level = new Level(MapWidth, MapHeight, BlockSize, TileMapGroup);
+    level->LoadMap(filename);
+    level->InitializeView();
 
     if (initialized) return;
     initialized = true;
@@ -49,6 +54,8 @@ void Gameplay::Terminate() {
     background = nullptr;
     scoreLabel = nullptr;
     pauseButton = nullptr;
+    delete level;
+    level = nullptr;
     initialized = false;
     //delete player;
     //player = nullptr;
@@ -95,7 +102,14 @@ void Gameplay::ReadMap() {
 }
 
 void Gameplay::Update(float deltaTime) {
-    score += deltaTime * 60;
+    const float scrollSpeed = 200.0f;
+    if (level) {
+        level->Scroll(deltaTime, scrollSpeed);
+        if (!level->IsFinished())
+            score += deltaTime * 60;
+    } else {
+        score += deltaTime * 60;
+    }
 
     std::ostringstream stream;
     stream << std::fixed << std::setprecision(2) << "Score: " << ((score*4) / 100.0f);
