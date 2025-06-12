@@ -12,7 +12,7 @@
 #include <iostream>
 
 Player::Player(float x, float y)
-    : Engine::Sprite("play/enemy-2.png", x, y), // 角色圖片請根據你資源路徑修改
+    : Engine::Sprite("play/square.png", x, y), // 角色圖片請根據你資源路徑修改
       hp(3),
       velocityY(0.0f),
       gravity(800.0f),    // 重力加速度（單位：像素/秒²）
