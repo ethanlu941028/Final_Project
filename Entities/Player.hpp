@@ -29,6 +29,7 @@ public:
     void Draw() const override;
     bool upsideDown;
     void Flip();
+    float rotationAngle = 0.0f;
 };
 
 #endif // PLAYER_HPP
