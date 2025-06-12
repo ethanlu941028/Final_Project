@@ -125,8 +125,6 @@ void ScoreboardScene::PrevPageOnClick(int) {
 
 void ScoreboardScene::NextPageOnClick(int) {
     unsigned int maxPage = (entries.size() - 1) / entriesPerPage;
-    std::cout << "maxPage : " << maxPage << std::endl;
-    std::cout << "current page : " << currentPage << std::endl;
     if (currentPage < maxPage) ShowPage(currentPage + 1);
     else if (currentPage == maxPage) ShowPage(0);
 };
@@ -157,5 +155,15 @@ void ScoreboardScene::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
     if (keyCode == ALLEGRO_KEY_ESCAPE) {
         Engine::GameEngine::GetInstance().ChangeScene("title");
+    }
+    else if (keyCode == ALLEGRO_KEY_LEFT) {
+        unsigned int maxPage = (entries.size() - 1) / entriesPerPage;
+        if (currentPage > 0) ShowPage(currentPage - 1);
+        else if (currentPage == 0) ShowPage(maxPage);
+    }
+    else if (keyCode == ALLEGRO_KEY_RIGHT) {
+        unsigned int maxPage = (entries.size() - 1) / entriesPerPage;
+        if (currentPage < maxPage) ShowPage(currentPage + 1);
+        else if (currentPage == maxPage) ShowPage(0);
     }
 }

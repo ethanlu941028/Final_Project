@@ -20,6 +20,8 @@ const int Gameplay::MapWidth = 100, Gameplay::MapHeight = 15;
 
 
 void Gameplay::Initialize() {
+    if (initialized) return;
+    initialized = true;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
 
@@ -32,8 +34,6 @@ void Gameplay::Initialize() {
     level->LoadFromFile(filename);
     level->InitializeView();
 
-    if (initialized) return;
-    initialized = true;
 
     score = 0;
 
