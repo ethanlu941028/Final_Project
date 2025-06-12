@@ -6,6 +6,7 @@ static std::string GetTileImage(TileType type) {
         case TileType::Ground:
             return "play/floor.png";
         case TileType::Air:
+            return "";
         default:
             return "";
     }
