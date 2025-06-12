@@ -24,7 +24,6 @@ private:
     Engine::Image* background;
     Engine::Label* scoreLabel;
     Engine::ImageButton* pauseButton;
-    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
 
 
     enum TileType {
@@ -41,6 +40,8 @@ private:
 
 public:
     int MapId;
+    unsigned int bgmPausedPos = 0;
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;
     static constexpr int BlockSize = TILE_SIZE;
@@ -55,6 +56,7 @@ public:
     void Update(float deltaTime) override;
     void OnKeyDown(int keyCode) override;
     long long GetScore();
+    //static Gameplay &GetInstance();
     //void Draw() const override;
     //void OnMouseDown(int button, int mx, int my) override;
     //void OnEvent(ALLEGRO_EVENT& event) override;

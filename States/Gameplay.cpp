@@ -154,3 +154,11 @@ void Gameplay::OnKeyDown(int keyCode) {
 long long Gameplay::GetScore() {
     return (score * 4) / 100.0f;
 }
+
+/*
+Gameplay &Gameplay::GetInstance() {
+    // The classic way to lazy initialize a Singleton.
+    static Gameplay instance;
+    return instance;
+}
+*/
