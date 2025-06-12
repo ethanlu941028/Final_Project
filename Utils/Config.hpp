@@ -8,6 +8,6 @@
 #include <cstdint>
 
 // Global tile size used throughout the game.
-constexpr std::int32_t TILE_SIZE = 32;
+constexpr std::int32_t TILE_SIZE = 64;
 
 #endif //CONFIG_HPP

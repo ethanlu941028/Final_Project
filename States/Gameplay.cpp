@@ -20,6 +20,11 @@ const int Gameplay::MapWidth = 100, Gameplay::MapHeight = 15;
 
 
 void Gameplay::Initialize() {
+    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+
+    background = new Engine::Image("play/Background.png", 0, 0, w, h);
+    AddNewObject(background);
     AddNewObject(TileMapGroup = new Group());
     // Load level map
     std::string filename = std::string("Resource/level") + std::to_string(MapId) + ".txt";
@@ -31,11 +36,6 @@ void Gameplay::Initialize() {
     initialized = true;
 
     score = 0;
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-
-    background = new Engine::Image("play/Background.png", 0, 0, w, h);
-    AddNewObject(background);
 
     scoreLabel = new Engine::Label("Score: 0", "pirulen.ttf", 24, 10, 10, 0, 0, 255, 255);
     AddNewObject(scoreLabel);
@@ -47,6 +47,7 @@ void Gameplay::Initialize() {
     // Initialize player starting position based on visible tile rows
     int visibleRows = Engine::GameEngine::GetInstance().GetScreenHeight() / TILE_SIZE;
     player = new Player(400, (visibleRows - 7) * TILE_SIZE);
+    AddNewObject(player);
 }
 
 void Gameplay::Terminate() {
