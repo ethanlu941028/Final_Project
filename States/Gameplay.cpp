@@ -10,6 +10,7 @@
 #include <vector>
 #include "UI/Component/Image.hpp"
 #include "UI/Component/ImageButton.hpp"
+#include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "Entities/Player.hpp"
 #include "Entities/Level.hpp"
@@ -29,6 +30,7 @@ void Gameplay::Initialize() {
     if (initialized) return;
     initialized = true;
     showHitbox = false;
+    isPaused = false;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
 
@@ -49,10 +51,6 @@ void Gameplay::Initialize() {
     scoreLabel = new Engine::Label("Score: 0", "pirulen.ttf", 24, 10, 10, 0, 0, 255, 255);
     AddNewObject(scoreLabel);
 
-    pauseButton = new Engine::ImageButton("play/target-invalid.png","stage-select/floor.png", w - 70, 10, 64, 64);
-    pauseButton->SetOnClickCallback(std::bind(&Gameplay::PauseOnClick, this));
-    AddNewControlObject(pauseButton);
-
     // Initialize player starting position based on visible tile rows
     int visibleRows = Engine::GameEngine::GetInstance().GetScreenHeight() / TILE_SIZE;
     player = new Player(400, (visibleRows - 7) * TILE_SIZE);
@@ -64,7 +62,6 @@ void Gameplay::Terminate() {
     std::cout << "Gameplay::Terminate called." << std::endl;
     background = nullptr;
     scoreLabel = nullptr;
-    pauseButton = nullptr;
     delete level;
     level = nullptr;
     initialized = false;
@@ -189,18 +186,11 @@ void Gameplay::CheckPlayerHealth() {
     }
 }
 
-
-void Gameplay::PauseOnClick() {
-    Engine::GameEngine::GetInstance().PushScene("pause");
-}
-
 void Gameplay::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
-
-    if (keyCode == ALLEGRO_KEY_SPACE) {
-        player->Jump();
-    }
-    else if (keyCode == ALLEGRO_KEY_ESCAPE) {
+    
+    if (keyCode == ALLEGRO_KEY_ESCAPE) {
+        isPaused = true;
         Engine::GameEngine::GetInstance().PushScene("pause");
     }
     else if (keyCode == ALLEGRO_KEY_0) {
@@ -211,6 +201,13 @@ void Gameplay::OnKeyDown(int keyCode) {
     }
     else if (keyCode == ALLEGRO_KEY_B) {
         showHitbox = !showHitbox;
+    }
+}
+
+void Gameplay::OnMouseDown(int button, int mx, int my) {
+    IScene::OnMouseDown(button, mx, my);  // Propagate to UI controls
+    if (button == 1 && player && !isPaused) {
+        player->Jump();
     }
 }
 
