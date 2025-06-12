@@ -16,6 +16,8 @@
 #include "Utils/Config.hpp"
 #include <iostream>
 
+#include "Engine/AudioHelper.hpp"
+
 const int Gameplay::MapWidth = 100, Gameplay::MapHeight = 15;
 
 
@@ -37,6 +39,8 @@ void Gameplay::Initialize() {
 
     score = 0;
 
+    bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
+
     scoreLabel = new Engine::Label("Score: 0", "pirulen.ttf", 24, 10, 10, 0, 0, 255, 255);
     AddNewObject(scoreLabel);
 
@@ -51,6 +55,7 @@ void Gameplay::Initialize() {
 }
 
 void Gameplay::Terminate() {
+    AudioHelper::StopSample(bgmInstance);
     std::cout << "Gameplay::Terminate called." << std::endl;
     background = nullptr;
     scoreLabel = nullptr;

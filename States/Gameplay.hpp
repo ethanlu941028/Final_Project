@@ -6,6 +6,7 @@
 #include "Utils/Config.hpp"
 #include <iostream>
 #include <vector>
+#include <allegro5/allegro_audio.h>
 
 
 namespace Engine {
@@ -23,6 +24,8 @@ private:
     Engine::Image* background;
     Engine::Label* scoreLabel;
     Engine::ImageButton* pauseButton;
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
+
 
     enum TileType {
         TILE_WALL,
