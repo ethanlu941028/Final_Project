@@ -48,8 +48,10 @@ void Player::LandOnCeiling(float ceilingY) {
 }
 
 void Player::Jump() {
-    velocityY = jumpSpeed;
-    isOnGround = false;
+    if (isOnGround) {
+        velocityY = jumpSpeed;
+        isOnGround = false;
+    }
 }
 
 void Player::Flip() {
