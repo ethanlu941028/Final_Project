@@ -30,6 +30,14 @@ void Player::Update(float deltaTime) {
         Position.y += velocityY * deltaTime;
     }
 
+    if (!isOnGround) {
+        rotationAngle += 360 * deltaTime; // 每秒轉一圈，可調整轉速
+        rotationAngle = fmod(rotationAngle, 360.0f); // 保持在 0~360°
+    } else {
+        // 若在地面，角度對齊（0 或 180，看你上下顛倒狀態）
+        rotationAngle = upsideDown ? 180.0f : 0.0f;
+    }
+
     isOnGround = false;
 
     Engine::Sprite::Update(deltaTime);
@@ -74,7 +82,17 @@ void Player::SetHP(int value) {
 }
 
 void Player::Draw() const {
-    Sprite::Draw();
+    //Sprite::Draw();
+    if (!bmp) return;
+
+    float bmpW = al_get_bitmap_width(bmp.get());
+    float bmpH = al_get_bitmap_height(bmp.get());
+
+    float cx = bmpW * Anchor.x;
+    float cy = bmpH * Anchor.y;
+
+    al_draw_tinted_scaled_rotated_bitmap(bmp.get(),Tint,cx, cy,Position.x, Position.y,Size.x / bmpW, Size.y / bmpH,rotationAngle * ALLEGRO_PI / 180.0f, 0);
+
     Engine::Point tl = GetHitboxTopLeft();
     Engine::Point br = GetHitboxBottomRight();
     al_draw_rectangle(tl.x, tl.y, br.x, br.y, al_map_rgb(255, 0, 0), 2);
