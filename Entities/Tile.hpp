@@ -17,6 +17,9 @@ public:
     Tile(TileType type, int tileX, int tileY, int tileSize = TILE_SIZE);
     TileType GetType() const { return type; }
     void Update(float deltaTime) override;
+    Engine::Point GetHitboxTopLeft() const;
+    Engine::Point GetHitboxBottomRight() const;
+    void Draw() const override;
 };
 
 #endif // TILE_HPP

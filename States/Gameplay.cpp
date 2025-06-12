@@ -12,6 +12,8 @@
 #include "UI/Component/Label.hpp"
 #include "Entities/Player.hpp"
 #include "Entities/Level.hpp"
+#include "Entities/GroundTile.hpp"
+#include "Engine/Collider.hpp"
 #include "Engine/Group.hpp"
 #include "Utils/Config.hpp"
 #include <iostream>
@@ -114,8 +116,34 @@ void Gameplay::Update(float deltaTime) {
     stream << std::fixed << std::setprecision(2) << "Score: " << ((score*4) / 100.0f);
     scoreLabel->Text = stream.str();
 
-    if (!levelFinished)
-        player->Update(deltaTime);
+    Engine::Point prevPos = player->Position;
+    float prevVel = player->GetVelocityY();
+
+    if (!levelFinished) player->Update(deltaTime);
+
+    if (!levelFinished) {
+        auto objects = TileMapGroup->GetObjects();
+        for (auto* obj : objects) {
+            auto* g = dynamic_cast<GroundTile*>(obj);
+            if (!g) continue;
+            auto pTL = player->GetHitboxTopLeft();
+            auto pBR = player->GetHitboxBottomRight();
+            auto gTL = g->GetHitboxTopLeft();
+            auto gBR = g->GetHitboxBottomRight();
+            if (!Engine::Collider::IsRectOverlap(pTL, pBR, gTL, gBR))
+                continue;
+
+            float prevBottom = prevPos.y + Player::HitboxSize / 2.0f;
+            float groundTop = gTL.y;
+            if (prevBottom <= groundTop && pBR.y >= groundTop && prevVel >= 0) {
+                player->Land(groundTop);
+            } else {
+                player->SetHP(0);
+            }
+            break;
+        }
+    }
+    
     CheckPlayerHealth();
 
     if (levelFinished) {
