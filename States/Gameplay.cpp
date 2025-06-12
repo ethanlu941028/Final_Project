@@ -22,7 +22,7 @@ const int Gameplay::MapWidth = 20, Gameplay::MapHeight = 15;
 void Gameplay::Initialize() {
     AddNewObject(TileMapGroup = new Group());
     // Load level map
-    std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
+    std::string filename = std::string("Resource/level") + std::to_string(MapId) + ".txt";
     level = new Level(MapWidth, MapHeight, TileMapGroup);
     level->LoadFromFile(filename);
     level->InitializeView();

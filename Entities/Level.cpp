@@ -25,8 +25,9 @@ bool Level::LoadFromFile(const std::string& path) {
             if (c == '1') tiles[y][x] = new GroundTile(x, y);
             else tiles[y][x] = new AirTile(x, y);
         }
+        ++y;
     }
-    return y == height;;
+    return y == height;
 }
 
 void Level::InitializeView() {
