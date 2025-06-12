@@ -5,7 +5,7 @@
 
 class AirTile : public Tile {
 public:
-    AirTile(int tileX, int tileY, int tileSize = 64);
+    AirTile(int tileX, int tileY);
 };
 
 #endif // AIR_TILE_HPP

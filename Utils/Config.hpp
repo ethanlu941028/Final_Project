@@ -5,4 +5,9 @@
 #ifndef CONFIG_HPP
 #define CONFIG_HPP
 
+#include <cstdint>
+
+// Global tile size used throughout the game.
+constexpr std::int32_t TILE_SIZE = 32;
+
 #endif //CONFIG_HPP

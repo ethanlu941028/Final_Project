@@ -2,6 +2,7 @@
 #define LEVEL_HPP
 #include <string>
 #include <vector>
+#include "Utils/Config.hpp"
 
 namespace Engine {
     class Group;
@@ -11,7 +12,7 @@ class Tile;
 
 class Level {
 public:
-    Level(int width, int height, int tileSize, Engine::Group* group);
+    Level(int width, int height, Engine::Group* group);
     bool LoadMap(const std::string& path);
     void InitializeView();
     void Scroll(float deltaTime, float speed);
@@ -20,7 +21,6 @@ public:
 private:
     int width;
     int height;
-    int tileSize;
     float offsetX;
     bool finished;
     Engine::Group* container;

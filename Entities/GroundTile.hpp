@@ -5,7 +5,6 @@
 
 class GroundTile : public Tile {
 public:
-    GroundTile(int tileX, int tileY, int tileSize = 64);
-};
+    GroundTile(int tileX, int tileY);};
 
 #endif // GROUND_TILE_HPP

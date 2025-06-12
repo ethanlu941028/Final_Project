@@ -13,17 +13,17 @@
 #include "Entities/Player.hpp"
 #include "Entities/Level.hpp"
 #include "Engine/Group.hpp"
+#include "Utils/Config.hpp"
 #include <iostream>
 
 const int Gameplay::MapWidth = 20, Gameplay::MapHeight = 13;
-const int Gameplay::BlockSize = 64;
 
 
 void Gameplay::Initialize() {
     AddNewObject(TileMapGroup = new Group());
     // Load level map
     std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
-    level = new Level(MapWidth, MapHeight, BlockSize, TileMapGroup);
+    level = new Level(MapWidth, MapHeight, TileMapGroup);
     level->LoadMap(filename);
     level->InitializeView();
 
@@ -44,9 +44,9 @@ void Gameplay::Initialize() {
     pauseButton->SetOnClickCallback(std::bind(&Gameplay::PauseOnClick, this));
     AddNewControlObject(pauseButton);
 
-    // 初始化玩家
-    player = new Player(400,670);
-    AddNewObject(player);
+    // Initialize player starting position based on visible tile rows
+    int visibleRows = Engine::GameEngine::GetInstance().GetScreenHeight() / TILE_SIZE;
+    player = new Player(400, (visibleRows - 7) * TILE_SIZE);
 }
 
 void Gameplay::Terminate() {

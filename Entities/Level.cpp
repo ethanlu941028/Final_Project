@@ -5,8 +5,8 @@
 #include "Engine/Group.hpp"
 #include <fstream>
 
-Level::Level(int w, int h, int tSize, Engine::Group* group)
-    : width(w), height(h), tileSize(tSize), offsetX(0), finished(false), container(group) {}
+Level::Level(int w, int h, Engine::Group* group)
+    : width(w), height(h), offsetX(0), finished(false), container(group) {}
 
 bool Level::LoadMap(const std::string& path) {
     std::ifstream fin(path);
@@ -18,9 +18,9 @@ bool Level::LoadMap(const std::string& path) {
         for (int x = 0; x < width && x < static_cast<int>(line.size()); ++x) {
             char c = line[x];
             if (c == '1')
-                tiles[y][x] = new GroundTile(x, y, tileSize);
+                tiles[y][x] = new GroundTile(x, y);
             else
-                tiles[y][x] = new AirTile(x, y, tileSize);
+            tiles[y][x] = new AirTile(x, y);
         }
     }
     return true;
@@ -39,7 +39,7 @@ void Level::Scroll(float deltaTime, float speed) {
     if (finished) return;
     offsetX += speed * deltaTime;
     int screenW = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    float maxOffset = width * tileSize - screenW;
+    float maxOffset = width * TILE_SIZE - screenW;
     if (offsetX >= maxOffset) {
         offsetX = maxOffset;
         finished = true;
@@ -47,7 +47,7 @@ void Level::Scroll(float deltaTime, float speed) {
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             Tile* tile = tiles[y][x];
-            if (tile) tile->Position.x = x * tileSize - offsetX;
+            if (tile) tile->Position.x = x * TILE_SIZE - offsetX;
         }
     }
 }

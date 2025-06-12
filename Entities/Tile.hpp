@@ -2,6 +2,7 @@
 #define TILE_HPP
 
 #include "Engine/Sprite.hpp"
+#include "Utils/Config.hpp"
 #include <string>
 
 enum class TileType {
@@ -13,7 +14,7 @@ class Tile : public Engine::Sprite {
 private:
     TileType type;
 public:
-    Tile(TileType type, int tileX, int tileY, int tileSize = 64);
+    Tile(TileType type, int tileX, int tileY, int tileSize = TILE_SIZE);
     TileType GetType() const { return type; }
     void Update(float deltaTime) override;
 };

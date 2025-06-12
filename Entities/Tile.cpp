@@ -12,7 +12,7 @@ static std::string GetTileImage(TileType type) {
 }
 
 Tile::Tile(TileType t, int tileX, int tileY, int tileSize)
-    : Engine::Sprite(GetTileImage(t), tileX * tileSize, tileY * tileSize, tileSize, tileSize),
+    : Engine::Sprite(GetTileImage(t), tileX * TILE_SIZE, tileY * TILE_SIZE, TILE_SIZE, TILE_SIZE),
       type(t) {
 }
 

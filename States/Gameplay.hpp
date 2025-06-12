@@ -3,6 +3,7 @@
 
 #include <allegro5/allegro.h>
 #include "Engine/IScene.hpp"
+#include "Utils/Config.hpp"
 #include <iostream>
 #include <vector>
 
@@ -39,7 +40,7 @@ public:
     int MapId;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;
-    static const int BlockSize;
+    static constexpr int BlockSize = TILE_SIZE;
     std::vector<std::vector<TileType>> mapState;
     std::vector<std::vector<int>> mapDistance;
     Engine::Group* TileMapGroup;
