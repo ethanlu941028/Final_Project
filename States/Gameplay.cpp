@@ -7,12 +7,14 @@
 #include <sstream>
 
 #include "Engine/GameEngine.hpp"
+#include <vector>
 #include "UI/Component/Image.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "Entities/Player.hpp"
 #include "Entities/Level.hpp"
 #include "Entities/GroundTile.hpp"
+#include "Entities/SpikeTile.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/Group.hpp"
 #include "Utils/Config.hpp"
@@ -20,12 +22,13 @@
 
 #include "Engine/AudioHelper.hpp"
 
-const int Gameplay::MapWidth = 100, Gameplay::MapHeight = 15;
+const int Gameplay::MapWidth = 300, Gameplay::MapHeight = 15;
 
 
 void Gameplay::Initialize() {
     if (initialized) return;
     initialized = true;
+    showHitbox = false;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
 
@@ -103,7 +106,7 @@ void Gameplay::ReadMap() {
 }
 
 void Gameplay::Update(float deltaTime) {
-    const float scrollSpeed = 200.0f;
+    const float scrollSpeed = 500.0f;
     bool levelFinished = level && level->IsFinished();
     if (level && !levelFinished) {
         level->Scroll(deltaTime, scrollSpeed);
@@ -118,35 +121,54 @@ void Gameplay::Update(float deltaTime) {
 
     Engine::Point prevPos = player->Position;
     float prevVel = player->GetVelocityY();
-
+    float prevRot = player->rotationAngle;
     if (!levelFinished) player->Update(deltaTime);
 
     if (!levelFinished) {
         auto objects = TileMapGroup->GetObjects();
         for (auto* obj : objects) {
+            if (auto* spike = dynamic_cast<SpikeTile*>(obj)) {
+                auto pPolyArr = player->GetHitboxPoints();
+                std::vector<Engine::Point> pPoly(pPolyArr.begin(), pPolyArr.end());
+                auto bTL = spike->GetBaseHitboxTopLeft();
+                auto bBR = spike->GetBaseHitboxBottomRight();
+                auto tTL = spike->GetTopHitboxTopLeft();
+                auto tBR = spike->GetTopHitboxBottomRight();
+                if (Engine::Collider::IsPolygonOverlapRect(pPoly, bTL, bBR) ||
+                    Engine::Collider::IsPolygonOverlapRect(pPoly, tTL, tBR)) {
+                    player->SetHP(0);
+                    break;
+                }
+                continue;
+            }
             auto* g = dynamic_cast<GroundTile*>(obj);
             if (!g) continue;
+            auto pPolyArr = player->GetHitboxPoints();
+            std::vector<Engine::Point> pPoly(pPolyArr.begin(), pPolyArr.end());
             auto pTL = player->GetHitboxTopLeft();
             auto pBR = player->GetHitboxBottomRight();
             auto gTL = g->GetHitboxTopLeft();
             auto gBR = g->GetHitboxBottomRight();
-            if (!Engine::Collider::IsRectOverlap(pTL, pBR, gTL, gBR))
+            if (!Engine::Collider::IsPolygonOverlapRect(pPoly, gTL, gBR))
                 continue;
+            bool circleOverlap = Engine::Collider::IsCircleOverlapRect(player->Position, player->GetGroundRadius(), gTL, gBR);
 
             if (!player->upsideDown) {
                 float prevBottom = prevPos.y + Player::HitboxSize / 2.0f;
                 float groundTop = gTL.y;
-                if (prevBottom <= groundTop && pBR.y >= groundTop && prevVel >= 0) {
+                float curBottom = player->Position.y + Player::HitboxSize / 2.0f;
+                if (prevBottom <= groundTop && curBottom >= groundTop && prevVel >= 0) {
                     player->Land(groundTop);
-                } else {
+                } else if (circleOverlap) {
                     player->SetHP(0);
                 }
             } else {
                 float prevTop = prevPos.y - Player::HitboxSize / 2.0f;
                 float groundBottom = gBR.y;
-                if (prevTop >= groundBottom && pTL.y <= groundBottom && prevVel <= 0) {
+                float curTop = player->Position.y - Player::HitboxSize / 2.0f;
+                if (prevTop >= groundBottom && curTop <= groundBottom && prevVel <= 0) {
                     player->LandOnCeiling(groundBottom);
-                } else {
+                } else if (circleOverlap) {
                     player->SetHP(0);
                 }
             }
@@ -186,6 +208,9 @@ void Gameplay::OnKeyDown(int keyCode) {
     }
     else if (keyCode == ALLEGRO_KEY_U) {
         player->Flip();
+    }
+    else if (keyCode == ALLEGRO_KEY_B) {
+        showHitbox = !showHitbox;
     }
 }
 

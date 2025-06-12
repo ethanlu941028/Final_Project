@@ -2,6 +2,7 @@
 #define COLLIDER_HPP
 #include <allegro5/bitmap.h>
 #include <memory>
+#include <vector>
 
 namespace Engine {
     struct Point;
@@ -44,6 +45,8 @@ namespace Engine {
         /// <param name="r2">The radius of the second circle.</param>
         /// <returns>Determines whether the two circles overlaps.</returns>
         static bool IsCircleOverlap(Point c1, float r1, Point c2, float r2);
+        static bool IsCircleOverlapRect(Point center, float radius, Point rectMin, Point rectMax);
+        static bool IsPolygonOverlapRect(const std::vector<Point>& poly, Point rectMin, Point rectMax);
     };
 }
 #endif   // COLLIDER_HPP
