@@ -20,14 +20,20 @@ bool Level::LoadFromFile(const std::string& path) {
     int y = 0;
     while (y < height && std::getline(fin, line)) {
         if (line.empty() || line[0] == '#') continue;
-        for (int x = 0; x < width && x < static_cast<int>(line.size()); ++x) {
-            char c = line[x];
+        for (int x = 0; x < width; ++x) {
+            char c = (x < static_cast<int>(line.size())) ? line[x] : '0';
             if (c == '1') tiles[y][x] = new GroundTile(x, y);
             else tiles[y][x] = new AirTile(x, y);
         }
         ++y;
     }
-    return y == height;
+    // Fill remaining rows with empty tiles if file has fewer lines
+    for (; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            tiles[y][x] = new AirTile(x, y);
+        }
+    }
+    return true;
 }
 
 void Level::InitializeView() {

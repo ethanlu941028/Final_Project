@@ -9,4 +9,4 @@ Digit mapping:
 - `0` : Air tile (non-solid background)
 - `1` : Ground tile (solid surface)
 
-Every level file currently uses 15 rows and 20 columns.
+Every level file currently uses 15 rows and 100 columns.

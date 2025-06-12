@@ -16,7 +16,7 @@
 #include "Utils/Config.hpp"
 #include <iostream>
 
-const int Gameplay::MapWidth = 20, Gameplay::MapHeight = 15;
+const int Gameplay::MapWidth = 100, Gameplay::MapHeight = 15;
 
 
 void Gameplay::Initialize() {
@@ -67,36 +67,29 @@ void Gameplay::Terminate() {
 
 void Gameplay::ReadMap() {
     std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
-    // Read map file.
-    char c;
-    std::vector<bool> mapData;
+    // Read map file line by line and pad missing data with empty tiles.
     std::ifstream fin(filename);
-    while (fin >> c) {
-        switch (c) {
-            case '0': mapData.push_back(false); break;
-            case '1': mapData.push_back(true); break;
-            case '\n':
-            case '\r':
-                if (static_cast<int>(mapData.size()) / MapWidth != 0)
-                    throw std::ios_base::failure("Map data is corrupted.");
-                break;
-            default: throw std::ios_base::failure("Map data is corrupted.");
-        }
-    }
-    fin.close();
-    // Validate map data.
-    if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
-        throw std::ios_base::failure("Map data is corrupted.");
-    // Store map in 2d array.
-    mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth));
-    for (int i = 0; i < MapHeight; i++) {
-        for (int j = 0; j < MapWidth; j++) {
-            const int num = mapData[i * MapWidth + j];
-            mapState[i][j] = num ? TILE_WALL : TILE_EMPTY;
+    if (!fin.is_open()) return;
+    mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth, TILE_EMPTY));
+    std::string line;
+    int row = 0;
+    while (row < MapHeight && std::getline(fin, line)) {
+        if (line.empty() || line[0] == '#') continue;
+        for (int col = 0; col < MapWidth; ++col) {
+            char c = (col < static_cast<int>(line.size())) ? line[col] : '0';
+            bool num = (c == '1');
+            mapState[row][col] = num ? TILE_WALL : TILE_EMPTY;
             if (num)
-                TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", col * BlockSize, row * BlockSize, BlockSize, BlockSize));
             else
-                TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", col * BlockSize, row * BlockSize, BlockSize, BlockSize));
+        }
+        ++row;
+    }
+    // Fill any remaining rows with empty tiles.
+    for (; row < MapHeight; ++row) {
+        for (int col = 0; col < MapWidth; ++col) {
+            TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", col * BlockSize, row * BlockSize, BlockSize, BlockSize));
         }
     }
 }
