@@ -23,6 +23,7 @@ public:
     float GetVelocityY() const { return velocityY; }
     void SetVelocityY(float v) { velocityY = v; }
     void Land(float groundY);
+    void LandOnCeiling(float ceilingY);
     Engine::Point GetHitboxTopLeft() const;
     Engine::Point GetHitboxBottomRight() const;
     void Draw() const override;
