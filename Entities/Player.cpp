@@ -41,6 +41,12 @@ void Player::Land(float groundY) {
     isOnGround = true;
 }
 
+void Player::LandOnCeiling(float ceilingY) {
+    Position.y = ceilingY + HitboxSize / 2.0f;
+    velocityY = 0;
+    isOnGround = true;
+}
+
 void Player::Jump() {
     velocityY = jumpSpeed;
     isOnGround = false;

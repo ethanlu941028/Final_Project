@@ -133,17 +133,27 @@ void Gameplay::Update(float deltaTime) {
             if (!Engine::Collider::IsRectOverlap(pTL, pBR, gTL, gBR))
                 continue;
 
-            float prevBottom = prevPos.y + Player::HitboxSize / 2.0f;
-            float groundTop = gTL.y;
-            if (prevBottom <= groundTop && pBR.y >= groundTop && prevVel >= 0) {
-                player->Land(groundTop);
+            if (!player->upsideDown) {
+                float prevBottom = prevPos.y + Player::HitboxSize / 2.0f;
+                float groundTop = gTL.y;
+                if (prevBottom <= groundTop && pBR.y >= groundTop && prevVel >= 0) {
+                    player->Land(groundTop);
+                } else {
+                    player->SetHP(0);
+                }
             } else {
-                player->SetHP(0);
+                float prevTop = prevPos.y - Player::HitboxSize / 2.0f;
+                float groundBottom = gBR.y;
+                if (prevTop >= groundBottom && pTL.y <= groundBottom && prevVel <= 0) {
+                    player->LandOnCeiling(groundBottom);
+                } else {
+                    player->SetHP(0);
+                }
             }
             break;
         }
     }
-    
+
     CheckPlayerHealth();
 
     if (levelFinished) {
