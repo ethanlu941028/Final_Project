@@ -15,7 +15,6 @@ class PauseMenu : public Engine::IScene {
 private:
     Engine::ImageButton* escButton;
     Engine::ImageButton* quitButton;
-    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
 public:
     void Initialize() override;
     void Terminate() override;
