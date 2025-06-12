@@ -14,6 +14,7 @@ class Level {
 public:
     Level(int width, int height, Engine::Group* group);
     bool LoadMap(const std::string& path);
+    bool LoadFromFile(const std::string& path);
     void InitializeView();
     void Scroll(float deltaTime, float speed);
     bool IsFinished() const;
@@ -23,6 +24,7 @@ private:
     int height;
     float offsetX;
     bool finished;
+    int spawnedColumns;
     Engine::Group* container;
     std::vector<std::vector<Tile*>> tiles;
 };

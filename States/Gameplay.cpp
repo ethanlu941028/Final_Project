@@ -16,7 +16,7 @@
 #include "Utils/Config.hpp"
 #include <iostream>
 
-const int Gameplay::MapWidth = 20, Gameplay::MapHeight = 13;
+const int Gameplay::MapWidth = 20, Gameplay::MapHeight = 15;
 
 
 void Gameplay::Initialize() {
@@ -24,7 +24,7 @@ void Gameplay::Initialize() {
     // Load level map
     std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
     level = new Level(MapWidth, MapHeight, TileMapGroup);
-    level->LoadMap(filename);
+    level->LoadFromFile(filename);
     level->InitializeView();
 
     if (initialized) return;
@@ -103,11 +103,11 @@ void Gameplay::ReadMap() {
 
 void Gameplay::Update(float deltaTime) {
     const float scrollSpeed = 200.0f;
-    if (level) {
+    bool levelFinished = level && level->IsFinished();
+    if (level && !levelFinished) {
         level->Scroll(deltaTime, scrollSpeed);
-        if (!level->IsFinished())
-            score += deltaTime * 60;
-    } else {
+        score += deltaTime * 60;
+    } else if (!level) {
         score += deltaTime * 60;
     }
 
@@ -115,10 +115,13 @@ void Gameplay::Update(float deltaTime) {
     stream << std::fixed << std::setprecision(2) << "Score: " << ((score*4) / 100.0f);
     scoreLabel->Text = stream.str();
 
-    player->Update(deltaTime);
+    if (!levelFinished)
+        player->Update(deltaTime);
     CheckPlayerHealth();
 
-    if ((score * 4) / 100.0f > 10) {
+    if (levelFinished) {
+        Engine::GameEngine::GetInstance().ChangeScene("win");
+    } else if ((score * 4) / 100.0f > 10) {
         Engine::GameEngine::GetInstance().ChangeScene("win");
     }
 }
