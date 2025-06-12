@@ -79,7 +79,7 @@ void PauseMenu::Draw() const{
 void PauseMenu::ResumeOnClick() {
     Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
     Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
-    if (gameplay || gameplay->bgmInstance) {
+    if (gameplay && gameplay->bgmInstance) {
         al_set_sample_instance_position(gameplay->bgmInstance.get(), gameplay->bgmPausedPos); // 恢復位置
         al_set_sample_instance_playing(gameplay->bgmInstance.get(), true); // 恢復 BGM
     }
@@ -102,15 +102,8 @@ void PauseMenu::ExitOnClick() {
 void PauseMenu::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
     if (keyCode == ALLEGRO_KEY_ESCAPE) {
-        Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
-        Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
-        if (gameplay && gameplay->bgmInstance) {
-            al_set_sample_instance_position(gameplay->bgmInstance.get(), gameplay->bgmPausedPos); // 恢復位置
-            al_set_sample_instance_playing(gameplay->bgmInstance.get(), true); // 恢復 BGM
-        }
-        Engine::GameEngine::GetInstance().ChangeScene("play");
-    }
-    else if (keyCode == ALLEGRO_KEY_Q) {
+        ResumeOnClick();
+    } else if (keyCode == ALLEGRO_KEY_Q) {
         PauseMenu::ExitOnClick();
     }
 }
