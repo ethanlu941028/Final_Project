@@ -9,6 +9,8 @@
 #include "Engine/Group.hpp"
 #include "Engine/GameEngine.hpp"
 #include "States/Gameplay.hpp"
+#include "Utils/Config.hpp"
+#include <cmath>
 #include <iostream>
 
 Player::Player(float x, float y)
@@ -93,9 +95,11 @@ void Player::Draw() const {
 
     al_draw_tinted_scaled_rotated_bitmap(bmp.get(),Tint,cx, cy,Position.x, Position.y,Size.x / bmpW, Size.y / bmpH,rotationAngle * ALLEGRO_PI / 180.0f, 0);
 
-    Engine::Point tl = GetHitboxTopLeft();
-    Engine::Point br = GetHitboxBottomRight();
-    al_draw_rectangle(tl.x, tl.y, br.x, br.y, al_map_rgb(255, 0, 0), 2);
+    if (showHitbox) {
+        Engine::Point tl = GetHitboxTopLeft();
+        Engine::Point br = GetHitboxBottomRight();
+        al_draw_rectangle(tl.x, tl.y, br.x, br.y, al_map_rgb(255, 0, 0), 2);
+    }
 }
 
 Engine::Point Player::GetHitboxTopLeft() const {

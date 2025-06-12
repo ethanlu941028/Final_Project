@@ -1,7 +1,21 @@
 #include "SpikeTile.hpp"
+#include <allegro5/allegro_primitives.h>
+#include "Utils/Config.hpp"
 
 SpikeTile::SpikeTile(int tileX, int tileY)
     : Tile(TileType::Spike, tileX, tileY) {}
+
+void SpikeTile::Draw() const {
+    Tile::Draw();
+    if (showHitbox) {
+        Engine::Point tl = GetBaseHitboxTopLeft();
+        Engine::Point br = GetBaseHitboxBottomRight();
+        al_draw_rectangle(tl.x, tl.y, br.x, br.y, al_map_rgb(0, 0, 255), 1);
+        tl = GetTopHitboxTopLeft();
+        br = GetTopHitboxBottomRight();
+        al_draw_rectangle(tl.x, tl.y, br.x, br.y, al_map_rgb(0, 0, 255), 1);
+    }
+}
 
 Engine::Point SpikeTile::GetBaseHitboxTopLeft() const {
     float left = Position.x - Size.x / 2.0f + 3;

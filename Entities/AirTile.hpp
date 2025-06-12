@@ -6,6 +6,7 @@
 class AirTile : public Tile {
 public:
     AirTile(int tileX, int tileY);
+    void Draw() const override;
 };
 
 #endif // AIR_TILE_HPP

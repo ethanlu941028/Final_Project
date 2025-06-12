@@ -10,6 +10,7 @@ public:
     Engine::Point GetBaseHitboxBottomRight() const;
     Engine::Point GetTopHitboxTopLeft() const;
     Engine::Point GetTopHitboxBottomRight() const;
+    void Draw() const override;
 };
 
 #endif // SPIKE_TILE_HPP

@@ -1,6 +1,7 @@
 #include "Tile.hpp"
 #include "Engine/Resources.hpp"
 #include <allegro5/allegro_primitives.h>
+#include "Utils/Config.hpp"
 
 static std::string GetTileImage(TileType type) {
     switch (type) {
@@ -35,7 +36,9 @@ Engine::Point Tile::GetHitboxBottomRight() const {
 
 void Tile::Draw() const {
     Sprite::Draw();
-    Engine::Point tl = GetHitboxTopLeft();
-    Engine::Point br = GetHitboxBottomRight();
-    al_draw_rectangle(tl.x, tl.y, br.x, br.y, al_map_rgb(0, 255, 0), 1);
+    if (showHitbox) {
+        Engine::Point tl = GetHitboxTopLeft();
+        Engine::Point br = GetHitboxBottomRight();
+        al_draw_rectangle(tl.x, tl.y, br.x, br.y, al_map_rgb(0, 255, 0), 1);
+    }
 }

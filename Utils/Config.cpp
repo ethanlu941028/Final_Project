@@ -1,3 +1,4 @@
-//
-// Created by 盧昱辰 on 2025/6/8.
-//
+#include "Config.hpp"
+
+// Global flag controlling whether hitboxes are drawn.
+bool showHitbox = false;
