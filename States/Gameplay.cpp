@@ -115,8 +115,6 @@ void Gameplay::Update(float deltaTime) {
 
     if (levelFinished) {
         Engine::GameEngine::GetInstance().ChangeScene("win");
-    } else if ((score * 4) / 100.0f > 10) {
-        Engine::GameEngine::GetInstance().ChangeScene("win");
     }
 }
 
