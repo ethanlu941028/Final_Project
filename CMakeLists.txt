@@ -63,6 +63,12 @@ add_executable(2025_I2P2_TowerDefense
     States/TitleScreen.hpp
     States/PauseMenu.cpp
     States/PauseMenu.hpp
+    States/StageSelect.cpp
+    States/StageSelect.hpp
+    States/SettingScreen.cpp
+    States/SettingScreen.hpp
+    States/WinScreen.cpp
+    States/WinScreen.hpp
 
     UI/Component/Image.cpp
     UI/Component/Image.hpp
@@ -110,6 +116,14 @@ add_executable(2025_I2P2_TowerDefense
         Utils/Resources.hpp
         Game.cpp
         Game.hpp
+        States/StageSelect.cpp
+        States/StageSelect.hpp
+        States/SettingScreen.cpp
+        States/SettingScreen.hpp
+        States/WinScreen.cpp
+        States/WinScreen.hpp
+        States/ScoreboardScene.cpp
+        States/ScoreboardScene.hpp
 )
 
 IF (WIN32)

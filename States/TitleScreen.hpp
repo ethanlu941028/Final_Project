@@ -4,19 +4,25 @@
 #include <allegro5/allegro.h>
 #include "Engine/IScene.hpp"
 #include "UI/Component/ImageButton.hpp"
+#include <iostream>
 
 class TitleScreen final : public Engine::IScene {
 private:
     Engine::ImageButton* startButton;
     Engine::ImageButton* exitButton;
+    Engine::ImageButton* settingButton;
+    Engine::ImageButton* scoreboardButton;
 
 public:
     explicit TitleScreen() = default;
     void Initialize() override;
     void Terminate() override;
     void OnMouseDown(int button, int mx, int my) override;
+    void OnKeyDown(int keyCode) override;
     void OnEvent(ALLEGRO_EVENT& event) override;
     void PlayOnClick(int stage);
+    void SettingOnClick(int stage);
+    void ScoreboardOnClick(int stage);
     void Draw() const;
 };
 

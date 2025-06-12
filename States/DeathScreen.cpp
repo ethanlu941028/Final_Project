@@ -6,13 +6,16 @@
 void DeathScreen::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    int halfW = w / 2;
+    int halfH = h / 2;
 
-    gameOverLabel = new Engine::Label("Game Over", "pirulen.ttf", 72, w / 2, h / 3, 255, 0, 0, 255, 0.5, 0.5);
-    AddNewObject(gameOverLabel);
+    background = new Engine::Image("lose/losescreen.png", 0, 0, w, h);
+    AddNewObject(background);
 
-    backToMenuButton = new Engine::ImageButton("resources/start.png", "resources/start-hover.png", w / 2 - 100, h / 2, 200, 60);
+    backToMenuButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 450, 400, 100);
     backToMenuButton->SetOnClickCallback(std::bind(&DeathScreen::BackToMenuOnClick, this));
     AddNewControlObject(backToMenuButton);
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH / 2 + 500, 0, 0, 0, 255, 0.5, 0.5));
 }
 
 void DeathScreen::Terminate() {
@@ -23,4 +26,11 @@ void DeathScreen::Terminate() {
 
 void DeathScreen::BackToMenuOnClick() {
     Engine::GameEngine::GetInstance().ChangeScene("title");
+}
+
+void DeathScreen::OnKeyDown(int keyCode) {
+    IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
+    if (keyCode == ALLEGRO_KEY_ESCAPE) {
+        Engine::GameEngine::GetInstance().ChangeScene("title");
+    }
 }

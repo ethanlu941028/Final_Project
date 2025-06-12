@@ -6,18 +6,21 @@
 namespace Engine {
     class Label;
     class ImageButton;
+    class Image;
 }
 
 class DeathScreen : public Engine::IScene {
 private:
     Engine::Label* gameOverLabel;
     Engine::ImageButton* backToMenuButton;
+    Engine::Image* background;
 
     void BackToMenuOnClick();
 public:
     explicit DeathScreen() = default;
     void Initialize() override;
     void Terminate() override;
+    void OnKeyDown(int key) override;
 };
 
 #endif // DEATH_SCREEN_HPP

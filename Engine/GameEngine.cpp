@@ -11,6 +11,7 @@
 #include <string>
 #include <utility>
 #include "Group.hpp"
+#include <iostream>
 
 #include "Allegro5Exception.hpp"
 #include "GameEngine.hpp"
@@ -109,6 +110,12 @@ namespace Engine {
                     // Event for keyboard key up.
                     LOG(VERBOSE) << "Key with keycode " << event.keyboard.keycode << " up";
                     activeScene->OnKeyUp(event.keyboard.keycode);
+                    break;
+                case ALLEGRO_EVENT_KEY_CHAR:
+                    // Event for actual character input (typing, Enter, Backspace, etc.)
+                    if (activeScene) {
+                        activeScene->HandleEvent(event);
+                    }
                     break;
                 case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                     // Event for mouse key down.

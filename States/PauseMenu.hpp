@@ -1,7 +1,10 @@
 #ifndef PAUSEMENU_HPP
 #define PAUSEMENU_HPP
-
+#include <memory>
+#include <iostream>
 #include "Engine/IScene.hpp"
+#include <allegro5/allegro_audio.h>
+
 
 namespace Engine {
     class Label;
@@ -10,14 +13,19 @@ namespace Engine {
 
 class PauseMenu : public Engine::IScene {
 private:
-    Engine::ImageButton* resumeButton;
-    Engine::ImageButton* exitButton;
+    Engine::ImageButton* escButton;
+    Engine::ImageButton* quitButton;
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
 public:
     void Initialize() override;
     void Terminate() override;
     void ResumeOnClick();
     void ExitOnClick();
     void OnKeyDown(int keyCode) override;
+    void BGMSlideOnValueChanged(float value);
+    void SFXSlideOnValueChanged(float value);
+    void Draw() const;
+
 };
 
 #endif // PAUSEMENU_HPP

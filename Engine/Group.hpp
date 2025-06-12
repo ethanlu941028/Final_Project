@@ -5,6 +5,7 @@
 
 #include "IControl.hpp"
 #include "IObject.hpp"
+#include <iostream>
 
 namespace Engine {
     /// <summary>

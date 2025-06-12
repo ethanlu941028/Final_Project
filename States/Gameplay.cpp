@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <ostream>
+#include <fstream>
 #include <iomanip>
 #include <sstream>
 
@@ -11,9 +12,16 @@
 #include "UI/Component/Label.hpp"
 #include "Entities/Player.hpp"
 #include "Engine/Group.hpp"
+#include <iostream>
+
+const int Gameplay::MapWidth = 20, Gameplay::MapHeight = 13;
+const int Gameplay::BlockSize = 64;
 
 
 void Gameplay::Initialize() {
+    AddNewObject(TileMapGroup = new Group());
+    //ReadMap();
+
     if (initialized) return;
     initialized = true;
 
@@ -49,6 +57,43 @@ void Gameplay::Terminate() {
     IScene::Terminate();
 }
 
+
+void Gameplay::ReadMap() {
+    std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
+    // Read map file.
+    char c;
+    std::vector<bool> mapData;
+    std::ifstream fin(filename);
+    while (fin >> c) {
+        switch (c) {
+            case '0': mapData.push_back(false); break;
+            case '1': mapData.push_back(true); break;
+            case '\n':
+            case '\r':
+                if (static_cast<int>(mapData.size()) / MapWidth != 0)
+                    throw std::ios_base::failure("Map data is corrupted.");
+                break;
+            default: throw std::ios_base::failure("Map data is corrupted.");
+        }
+    }
+    fin.close();
+    // Validate map data.
+    if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
+        throw std::ios_base::failure("Map data is corrupted.");
+    // Store map in 2d array.
+    mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth));
+    for (int i = 0; i < MapHeight; i++) {
+        for (int j = 0; j < MapWidth; j++) {
+            const int num = mapData[i * MapWidth + j];
+            mapState[i][j] = num ? TILE_WALL : TILE_EMPTY;
+            if (num)
+                TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            else
+                TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+        }
+    }
+}
+
 void Gameplay::Update(float deltaTime) {
     score += deltaTime * 60;
 
@@ -58,6 +103,10 @@ void Gameplay::Update(float deltaTime) {
 
     player->Update(deltaTime);
     CheckPlayerHealth();
+
+    if ((score * 4) / 100.0f > 10) {
+        Engine::GameEngine::GetInstance().ChangeScene("win");
+    }
 }
 
 void Gameplay::CheckPlayerHealth() {
@@ -80,4 +129,11 @@ void Gameplay::OnKeyDown(int keyCode) {
     else if (keyCode == ALLEGRO_KEY_ESCAPE) {
         Engine::GameEngine::GetInstance().PushScene("pause");
     }
+    else if (keyCode == ALLEGRO_KEY_0) {
+        Engine::GameEngine::GetInstance().ChangeScene("death");
+    }
+}
+
+long long Gameplay::GetScore() {
+    return (score * 4) / 100.0f;
 }

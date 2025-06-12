@@ -12,6 +12,8 @@
 #include "Engine/GameEngine.hpp"
 #include "Engine/IScene.hpp"
 #include "States/TitleScreen.hpp"
+#include <iostream>
+
 
 Game::Game() {
     InitAllegro();

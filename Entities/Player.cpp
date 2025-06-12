@@ -8,6 +8,7 @@
 #include "Game.hpp"
 #include "Engine/Group.hpp"
 #include "Engine/GameEngine.hpp"
+#include <iostream>
 
 Player::Player(float x, float y)
     : Engine::Sprite("play/enemy-2.png", x, y), // 角色圖片請根據你資源路徑修改
