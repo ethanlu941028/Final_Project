@@ -1,6 +1,7 @@
 #include "Level.hpp"
 #include "AirTile.hpp"
 #include "GroundTile.hpp"
+#include "SpikeTile.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
 #include <fstream>
@@ -23,6 +24,7 @@ bool Level::LoadFromFile(const std::string& path) {
         for (int x = 0; x < width; ++x) {
             char c = (x < static_cast<int>(line.size())) ? line[x] : '0';
             if (c == '1') tiles[y][x] = new GroundTile(x, y);
+            else if (c == '2') tiles[y][x] = new SpikeTile(x, y);
             else tiles[y][x] = new AirTile(x, y);
         }
         ++y;

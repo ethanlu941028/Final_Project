@@ -13,6 +13,7 @@
 #include "Entities/Player.hpp"
 #include "Entities/Level.hpp"
 #include "Entities/GroundTile.hpp"
+#include "Entities/SpikeTile.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/Group.hpp"
 #include "Utils/Config.hpp"
@@ -124,6 +125,20 @@ void Gameplay::Update(float deltaTime) {
     if (!levelFinished) {
         auto objects = TileMapGroup->GetObjects();
         for (auto* obj : objects) {
+            if (auto* spike = dynamic_cast<SpikeTile*>(obj)) {
+                auto pTL = player->GetHitboxTopLeft();
+                auto pBR = player->GetHitboxBottomRight();
+                auto bTL = spike->GetBaseHitboxTopLeft();
+                auto bBR = spike->GetBaseHitboxBottomRight();
+                auto tTL = spike->GetTopHitboxTopLeft();
+                auto tBR = spike->GetTopHitboxBottomRight();
+                if (Engine::Collider::IsRectOverlap(pTL, pBR, bTL, bBR) ||
+                    Engine::Collider::IsRectOverlap(pTL, pBR, tTL, tBR)) {
+                    player->SetHP(0);
+                    break;
+                }
+                continue;
+            }
             auto* g = dynamic_cast<GroundTile*>(obj);
             if (!g) continue;
             auto pTL = player->GetHitboxTopLeft();

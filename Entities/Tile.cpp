@@ -8,6 +8,8 @@ static std::string GetTileImage(TileType type) {
             return "play/groundTile.png";
         case TileType::Air:
             return "";
+        case TileType::Spike:
+            return "play/spike.png";
         default:
             return "";
     }
