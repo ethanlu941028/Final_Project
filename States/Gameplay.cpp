@@ -20,7 +20,7 @@
 
 #include "Engine/AudioHelper.hpp"
 
-const int Gameplay::MapWidth = 100, Gameplay::MapHeight = 15;
+const int Gameplay::MapWidth = 300, Gameplay::MapHeight = 15;
 
 
 void Gameplay::Initialize() {
@@ -103,7 +103,7 @@ void Gameplay::ReadMap() {
 }
 
 void Gameplay::Update(float deltaTime) {
-    const float scrollSpeed = 200.0f;
+    const float scrollSpeed = 500.0f;
     bool levelFinished = level && level->IsFinished();
     if (level && !levelFinished) {
         level->Scroll(deltaTime, scrollSpeed);
