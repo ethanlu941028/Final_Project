@@ -13,7 +13,6 @@
 namespace Engine {
     class Image;
     class Label;
-    class ImageButton;
     class Group;
 }
 
@@ -24,7 +23,6 @@ class Gameplay : public Engine::IScene {
 private:
     Engine::Image* background;
     Engine::Label* scoreLabel;
-    Engine::ImageButton* pauseButton;
 
 
     enum TileType {
@@ -36,7 +34,6 @@ private:
     Player* player;
     Level* level = nullptr;
 
-    void PauseOnClick();
     void CheckPlayerHealth();
 
 public:
@@ -50,8 +47,7 @@ public:
     std::vector<std::vector<int>> mapDistance;
     Engine::Group* TileMapGroup;
     bool initialized = false;
-    // Used to ignore the first mouse click when resuming from pause
-    bool suppressNextJump = false;
+    bool isPaused = false;
     explicit Gameplay() = default;
     void Initialize() override;
     void ReadMap();

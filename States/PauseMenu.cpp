@@ -16,7 +16,6 @@
 #include "Engine/Group.hpp"
 #include "UI/Component/Slider.hpp"
 #include "States/Gameplay.hpp"
-#include "States/Gameplay.hpp"
 
 
 void PauseMenu::Initialize() {
@@ -35,7 +34,7 @@ void PauseMenu::Initialize() {
     escButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 - 200, 400, 100);
     escButton->SetOnClickCallback(std::bind(&PauseMenu::ResumeOnClick, this));
     AddNewControlObject(escButton);
-    AddNewObject(new Engine::Label("ESC", "pirulen.ttf", 48, halfW, h / 2 - 150, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 48, halfW, h / 2 - 150, 0, 0, 0, 255, 0.5, 0.5));
 
     quitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 + 100, 400, 100);
     quitButton->SetOnClickCallback(std::bind(&PauseMenu::ExitOnClick, this));
@@ -80,11 +79,9 @@ void PauseMenu::ResumeOnClick() {
     Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
     Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
     if (gameplay && gameplay->bgmInstance) {
+        gameplay->isPaused = false; // 恢復遊戲狀態
         al_set_sample_instance_position(gameplay->bgmInstance.get(), gameplay->bgmPausedPos); // 恢復位置
         al_set_sample_instance_playing(gameplay->bgmInstance.get(), true); // 恢復 BGM
-    }
-    if (gameplay) {
-        gameplay->suppressNextJump = true;
     }
     Engine::GameEngine::GetInstance().ChangeScene("play"); // 返回 Gameplay
 }
