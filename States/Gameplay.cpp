@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include "Engine/GameEngine.hpp"
+#include <vector>
 #include "UI/Component/Image.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
@@ -120,21 +121,21 @@ void Gameplay::Update(float deltaTime) {
 
     Engine::Point prevPos = player->Position;
     float prevVel = player->GetVelocityY();
-
+    float prevRot = player->rotationAngle;
     if (!levelFinished) player->Update(deltaTime);
 
     if (!levelFinished) {
         auto objects = TileMapGroup->GetObjects();
         for (auto* obj : objects) {
             if (auto* spike = dynamic_cast<SpikeTile*>(obj)) {
-                auto pTL = player->GetHitboxTopLeft();
-                auto pBR = player->GetHitboxBottomRight();
+                auto pPolyArr = player->GetHitboxPoints();
+                std::vector<Engine::Point> pPoly(pPolyArr.begin(), pPolyArr.end());
                 auto bTL = spike->GetBaseHitboxTopLeft();
                 auto bBR = spike->GetBaseHitboxBottomRight();
                 auto tTL = spike->GetTopHitboxTopLeft();
                 auto tBR = spike->GetTopHitboxBottomRight();
-                if (Engine::Collider::IsRectOverlap(pTL, pBR, bTL, bBR) ||
-                    Engine::Collider::IsRectOverlap(pTL, pBR, tTL, tBR)) {
+                if (Engine::Collider::IsPolygonOverlapRect(pPoly, bTL, bBR) ||
+                    Engine::Collider::IsPolygonOverlapRect(pPoly, tTL, tBR)) {
                     player->SetHP(0);
                     break;
                 }
@@ -142,25 +143,29 @@ void Gameplay::Update(float deltaTime) {
             }
             auto* g = dynamic_cast<GroundTile*>(obj);
             if (!g) continue;
+            auto pPolyArr = player->GetHitboxPoints();
+            std::vector<Engine::Point> pPoly(pPolyArr.begin(), pPolyArr.end());
             auto pTL = player->GetHitboxTopLeft();
             auto pBR = player->GetHitboxBottomRight();
             auto gTL = g->GetHitboxTopLeft();
             auto gBR = g->GetHitboxBottomRight();
-            if (!Engine::Collider::IsRectOverlap(pTL, pBR, gTL, gBR))
+            if (!Engine::Collider::IsPolygonOverlapRect(pPoly, gTL, gBR))
                 continue;
 
             if (!player->upsideDown) {
-                float prevBottom = prevPos.y + Player::HitboxSize / 2.0f;
+                float prevBottom = Player::CalculateBottomY(prevPos, prevRot);
                 float groundTop = gTL.y;
-                if (prevBottom <= groundTop && pBR.y >= groundTop && prevVel >= 0) {
+                float curBottom = player->GetBottomY();
+                if (prevBottom <= groundTop && curBottom >= groundTop && prevVel >= 0) {
                     player->Land(groundTop);
                 } else {
                     player->SetHP(0);
                 }
             } else {
-                float prevTop = prevPos.y - Player::HitboxSize / 2.0f;
+                float prevTop = Player::CalculateTopY(prevPos, prevRot);
                 float groundBottom = gBR.y;
-                if (prevTop >= groundBottom && pTL.y <= groundBottom && prevVel <= 0) {
+                float curTop = player->GetTopY();
+                if (prevTop >= groundBottom && curTop <= groundBottom && prevVel <= 0) {
                     player->LandOnCeiling(groundBottom);
                 } else {
                     player->SetHP(0);
