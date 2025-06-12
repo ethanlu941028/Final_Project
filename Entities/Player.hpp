@@ -20,7 +20,6 @@ public:
     void ReduceHP(int value);
     void SetHP(int value);
     void Draw() const override;
-    void OnKeyDown(int keyCode);
 };
 
 #endif // PLAYER_HPP

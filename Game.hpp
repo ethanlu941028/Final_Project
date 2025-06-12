@@ -1,4 +1,5 @@
-// Game.hpp
+#ifndef GAME_HPP
+#define GAME_HPP
 
 #pragma once
 #include <memory>
@@ -30,9 +31,5 @@ private:
     void Draw();
     void ChangeScene(Engine::IScene* newScene); // 接收 new 出來的場景
 };
-
-
-#ifndef GAME_HPP
-#define GAME_HPP
 
 #endif //GAME_HPP
