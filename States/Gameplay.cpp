@@ -151,23 +151,24 @@ void Gameplay::Update(float deltaTime) {
             auto gBR = g->GetHitboxBottomRight();
             if (!Engine::Collider::IsPolygonOverlapRect(pPoly, gTL, gBR))
                 continue;
+            bool circleOverlap = Engine::Collider::IsCircleOverlapRect(player->Position, player->GetGroundRadius(), gTL, gBR);
 
             if (!player->upsideDown) {
-                float prevBottom = Player::CalculateBottomY(prevPos, prevRot);
+                float prevBottom = prevPos.y + Player::HitboxSize / 2.0f;
                 float groundTop = gTL.y;
-                float curBottom = player->GetBottomY();
+                float curBottom = player->Position.y + Player::HitboxSize / 2.0f;
                 if (prevBottom <= groundTop && curBottom >= groundTop && prevVel >= 0) {
                     player->Land(groundTop);
-                } else {
+                } else if (circleOverlap) {
                     player->SetHP(0);
                 }
             } else {
-                float prevTop = Player::CalculateTopY(prevPos, prevRot);
+                float prevTop = prevPos.y - Player::HitboxSize / 2.0f;
                 float groundBottom = gBR.y;
-                float curTop = player->GetTopY();
+                float curTop = player->Position.y - Player::HitboxSize / 2.0f;
                 if (prevTop >= groundBottom && curTop <= groundBottom && prevVel <= 0) {
                     player->LandOnCeiling(groundBottom);
-                } else {
+                } else if (circleOverlap) {
                     player->SetHP(0);
                 }
             }

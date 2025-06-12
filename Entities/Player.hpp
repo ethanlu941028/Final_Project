@@ -15,6 +15,7 @@ private:
 
 public:
     static constexpr int HitboxSize = 64;
+    static constexpr float GroundHitboxRadius = HitboxSize * 0.4f;
     explicit Player(float x = 100, float y = 400); // 預設位置
     void Update(float deltaTime) override;
     void Jump();
@@ -32,6 +33,7 @@ public:
     static float CalculateTopY(const Engine::Point& pos, float angle);
     float GetBottomY() const { return CalculateBottomY(Position, rotationAngle); }
     float GetTopY() const { return CalculateTopY(Position, rotationAngle); }
+    float GetGroundRadius() const { return GroundHitboxRadius; }
     void Draw() const override;
     bool upsideDown;
     void Flip();

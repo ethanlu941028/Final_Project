@@ -19,7 +19,7 @@ Player::Player(float x, float y)
     : Engine::Sprite("play/square.png", x, y), // 角色圖片請根據你資源路徑修改
       hp(3),
       velocityY(0.0f),
-      gravity(1800.0f),    // 重力加速度（單位：像素/秒²）
+      gravity(1400.0f),    // 重力加速度（單位：像素/秒²）
       jumpSpeed(-700.0f), // 跳躍速度（負值代表向上）
       isOnGround(false) {
     upsideDown = false;
@@ -104,6 +104,7 @@ void Player::Draw() const {
             auto p2 = pts[(i + 1) % pts.size()];
             al_draw_line(p1.x, p1.y, p2.x, p2.y, al_map_rgb(255, 0, 0), 2);
         }
+        al_draw_circle(Position.x, Position.y, GroundHitboxRadius, al_map_rgb(0, 255, 0), 2);
     }
 }
 

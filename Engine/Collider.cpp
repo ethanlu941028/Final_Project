@@ -1,6 +1,7 @@
 #include <allegro5/color.h>
 #include <memory>
 #include <vector>
+#include <algorithm>
 
 #include "Collider.hpp"
 #include "Engine/Point.hpp"
@@ -17,6 +18,13 @@ namespace Engine {
     }
     bool Collider::IsCircleOverlap(Point c1, float r1, Point c2, float r2) {
         return (c1 - c2).Magnitude() < r1 + r2;
+    }
+    bool Collider::IsCircleOverlapRect(Point c, float r, Point rectMin, Point rectMax) {
+        float clampedX = std::clamp(c.x, rectMin.x, rectMax.x);
+        float clampedY = std::clamp(c.y, rectMin.y, rectMax.y);
+        float dx = c.x - clampedX;
+        float dy = c.y - clampedY;
+        return dx * dx + dy * dy < r * r;
     }
     static std::vector<Point> GetAxes(const std::vector<Point>& poly) {
         std::vector<Point> axes;
