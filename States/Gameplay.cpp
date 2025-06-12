@@ -141,6 +141,9 @@ void Gameplay::OnKeyDown(int keyCode) {
     else if (keyCode == ALLEGRO_KEY_0) {
         Engine::GameEngine::GetInstance().ChangeScene("death");
     }
+    else if (keyCode == ALLEGRO_KEY_U) {
+        player->Flip();
+    }
 }
 
 long long Gameplay::GetScore() {

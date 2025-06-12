@@ -20,6 +20,8 @@ public:
     void ReduceHP(int value);
     void SetHP(int value);
     void Draw() const override;
+    bool upsideDown;
+    void Flip();
 };
 
 #endif // PLAYER_HPP

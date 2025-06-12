@@ -8,6 +8,7 @@
 #include "Game.hpp"
 #include "Engine/Group.hpp"
 #include "Engine/GameEngine.hpp"
+#include "States/Gameplay.hpp"
 #include <iostream>
 
 Player::Player(float x, float y)
@@ -17,16 +18,29 @@ Player::Player(float x, float y)
       gravity(800.0f),    // 重力加速度（單位：像素/秒²）
       jumpSpeed(-350.0f), // 跳躍速度（負值代表向上）
       isOnGround(false) {
+    upsideDown = false;
 }
 
 void Player::Update(float deltaTime) {
 
-    velocityY += gravity * deltaTime;
-    Position.y += velocityY * deltaTime;
+    if (!upsideDown) {
+        velocityY += gravity * deltaTime;
+        Position.y += velocityY * deltaTime;
+    }
+    else {
+        velocityY -= gravity * deltaTime;
+        Position.y += velocityY * deltaTime;
+    }
+
 
     // 假設地面為 y = 600
     if (Position.y >= 518) {
         Position.y = 518;
+        velocityY = 0;
+        isOnGround = true;
+    }
+    if (Position.y <= 100) {
+        Position.y = 100;
         velocityY = 0;
         isOnGround = true;
     }
@@ -41,6 +55,12 @@ void Player::Jump() {
     velocityY = jumpSpeed;
     isOnGround = false;
 }
+
+void Player::Flip() {
+    upsideDown = !upsideDown;
+    jumpSpeed = -jumpSpeed;
+}
+
 
 int Player::GetHP() const {
     return hp;
