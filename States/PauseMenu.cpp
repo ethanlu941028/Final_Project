@@ -114,6 +114,12 @@ void PauseMenu::OnKeyDown(int keyCode) {
 
 void PauseMenu::BGMSlideOnValueChanged(float value) {
     AudioHelper::BGMVolume = value;
+    Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
+    Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
+    if (gameplay && gameplay->bgmInstance) {
+        al_set_sample_instance_gain(gameplay->bgmInstance.get(), value);
+    }
+
 }
 void PauseMenu::SFXSlideOnValueChanged(float value) {
     AudioHelper::SFXVolume = value;
