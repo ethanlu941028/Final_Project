@@ -15,42 +15,32 @@ Player::Player(float x, float y)
     : Engine::Sprite("play/square.png", x, y), // 角色圖片請根據你資源路徑修改
       hp(3),
       velocityY(0.0f),
-      gravity(800.0f),    // 重力加速度（單位：像素/秒²）
-      jumpSpeed(-350.0f), // 跳躍速度（負值代表向上）
+      gravity(900.0f),    // 重力加速度（單位：像素/秒²）
+      jumpSpeed(-480.0f), // 跳躍速度（負值代表向上）
       isOnGround(false) {
     upsideDown = false;
 }
 
 void Player::Update(float deltaTime) {
-
     if (!upsideDown) {
         velocityY += gravity * deltaTime;
         Position.y += velocityY * deltaTime;
-    }
-    else {
+    } else {
         velocityY -= gravity * deltaTime;
         Position.y += velocityY * deltaTime;
     }
 
-
-    // 假設地面為 y = 600
-    if (Position.y >= 518) {
-        Position.y = 518;
-        velocityY = 0;
-        isOnGround = true;
-    }
-    if (Position.y <= 100) {
-        Position.y = 100;
-        velocityY = 0;
-        isOnGround = true;
-    }
-    else if (Position.y <= 0) Position.y = 0;
-    else {
-        isOnGround = false;
-    }
+    isOnGround = false;
 
     Engine::Sprite::Update(deltaTime);
 }
+
+void Player::Land(float groundY) {
+    Position.y = groundY - HitboxSize / 2.0f;
+    velocityY = 0;
+    isOnGround = true;
+}
+
 void Player::Jump() {
     velocityY = jumpSpeed;
     isOnGround = false;
@@ -77,5 +67,15 @@ void Player::SetHP(int value) {
 
 void Player::Draw() const {
     Sprite::Draw();
-    al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
+    Engine::Point tl = GetHitboxTopLeft();
+    Engine::Point br = GetHitboxBottomRight();
+    al_draw_rectangle(tl.x, tl.y, br.x, br.y, al_map_rgb(255, 0, 0), 2);
+}
+
+Engine::Point Player::GetHitboxTopLeft() const {
+    return Engine::Point(Position.x - HitboxSize / 2.0f, Position.y - HitboxSize / 2.0f);
+}
+
+Engine::Point Player::GetHitboxBottomRight() const {
+    return Engine::Point(Position.x + HitboxSize / 2.0f, Position.y + HitboxSize / 2.0f);
 }
