@@ -83,6 +83,9 @@ void PauseMenu::ResumeOnClick() {
         al_set_sample_instance_position(gameplay->bgmInstance.get(), gameplay->bgmPausedPos); // 恢復位置
         al_set_sample_instance_playing(gameplay->bgmInstance.get(), true); // 恢復 BGM
     }
+    if (gameplay) {
+        gameplay->suppressNextJump = true;
+    }
     Engine::GameEngine::GetInstance().ChangeScene("play"); // 返回 Gameplay
 }
 

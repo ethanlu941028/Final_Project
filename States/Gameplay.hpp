@@ -50,6 +50,8 @@ public:
     std::vector<std::vector<int>> mapDistance;
     Engine::Group* TileMapGroup;
     bool initialized = false;
+    // Used to ignore the first mouse click when resuming from pause
+    bool suppressNextJump = false;
     explicit Gameplay() = default;
     void Initialize() override;
     void ReadMap();
@@ -59,7 +61,7 @@ public:
     long long GetScore();
     //static Gameplay &GetInstance();
     //void Draw() const override;
-    //void OnMouseDown(int button, int mx, int my) override;
+    void OnMouseDown(int button, int mx, int my) override;
     //void OnEvent(ALLEGRO_EVENT& event) override;
 };
 

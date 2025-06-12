@@ -19,7 +19,7 @@ Player::Player(float x, float y)
     : Engine::Sprite("play/square.png", x, y), // 角色圖片請根據你資源路徑修改
       hp(3),
       velocityY(0.0f),
-      gravity(1400.0f),    // 重力加速度（單位：像素/秒²）
+      gravity(1600.0f),    // 重力加速度（單位：像素/秒²）
       jumpSpeed(-700.0f), // 跳躍速度（負值代表向上）
       isOnGround(false) {
     upsideDown = false;

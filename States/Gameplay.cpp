@@ -196,11 +196,8 @@ void Gameplay::PauseOnClick() {
 
 void Gameplay::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
-
-    if (keyCode == ALLEGRO_KEY_SPACE) {
-        player->Jump();
-    }
-    else if (keyCode == ALLEGRO_KEY_ESCAPE) {
+    
+    if (keyCode == ALLEGRO_KEY_ESCAPE) {
         Engine::GameEngine::GetInstance().PushScene("pause");
     }
     else if (keyCode == ALLEGRO_KEY_0) {
@@ -211,6 +208,17 @@ void Gameplay::OnKeyDown(int keyCode) {
     }
     else if (keyCode == ALLEGRO_KEY_B) {
         showHitbox = !showHitbox;
+    }
+}
+
+void Gameplay::OnMouseDown(int button, int mx, int my) {
+    IScene::OnMouseDown(button, mx, my);  // Propagate to UI controls
+    if (button == 1 && player) {
+        if (suppressNextJump) {
+            suppressNextJump = false;
+        } else {
+            player->Jump();
+        }
     }
 }
 
