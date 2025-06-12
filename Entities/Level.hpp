@@ -1,8 +1,32 @@
-//
-// Created by 盧昱辰 on 2025/6/8.
-//
+#ifndef LEVEL_HPP
+#define LEVEL_HPP
+#include <string>
+#include <vector>
+#include "Utils/Config.hpp"
 
-#ifndef GROUND_HPP
-#define GROUND_HPP
+namespace Engine {
+    class Group;
+    class Point;
+}
+class Tile;
 
-#endif //GROUND_HPP
+class Level {
+public:
+    Level(int width, int height, Engine::Group* group);
+    bool LoadMap(const std::string& path);
+    bool LoadFromFile(const std::string& path);
+    void InitializeView();
+    void Scroll(float deltaTime, float speed);
+    bool IsFinished() const;
+
+private:
+    int width;
+    int height;
+    float offsetX;
+    bool finished;
+    int spawnedColumns;
+    Engine::Group* container;
+    std::vector<std::vector<Tile*>> tiles;
+};
+
+#endif // LEVEL_HPP

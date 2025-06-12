@@ -11,26 +11,31 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "Entities/Player.hpp"
+#include "Entities/Level.hpp"
 #include "Engine/Group.hpp"
+#include "Utils/Config.hpp"
 #include <iostream>
 
-const int Gameplay::MapWidth = 20, Gameplay::MapHeight = 13;
-const int Gameplay::BlockSize = 64;
+const int Gameplay::MapWidth = 100, Gameplay::MapHeight = 15;
 
 
 void Gameplay::Initialize() {
-    AddNewObject(TileMapGroup = new Group());
-    //ReadMap();
-
-    if (initialized) return;
-    initialized = true;
-
-    score = 0;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
 
     background = new Engine::Image("play/Background.png", 0, 0, w, h);
     AddNewObject(background);
+    AddNewObject(TileMapGroup = new Group());
+    // Load level map
+    std::string filename = std::string("Resource/level") + std::to_string(MapId) + ".txt";
+    level = new Level(MapWidth, MapHeight, TileMapGroup);
+    level->LoadFromFile(filename);
+    level->InitializeView();
+
+    if (initialized) return;
+    initialized = true;
+
+    score = 0;
 
     scoreLabel = new Engine::Label("Score: 0", "pirulen.ttf", 24, 10, 10, 0, 0, 255, 255);
     AddNewObject(scoreLabel);
@@ -39,8 +44,9 @@ void Gameplay::Initialize() {
     pauseButton->SetOnClickCallback(std::bind(&Gameplay::PauseOnClick, this));
     AddNewControlObject(pauseButton);
 
-    // 初始化玩家
-    player = new Player(400,670);
+    // Initialize player starting position based on visible tile rows
+    int visibleRows = Engine::GameEngine::GetInstance().GetScreenHeight() / TILE_SIZE;
+    player = new Player(400, (visibleRows - 7) * TILE_SIZE);
     AddNewObject(player);
 }
 
@@ -49,6 +55,8 @@ void Gameplay::Terminate() {
     background = nullptr;
     scoreLabel = nullptr;
     pauseButton = nullptr;
+    delete level;
+    level = nullptr;
     initialized = false;
     //delete player;
     //player = nullptr;
@@ -60,51 +68,54 @@ void Gameplay::Terminate() {
 
 void Gameplay::ReadMap() {
     std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
-    // Read map file.
-    char c;
-    std::vector<bool> mapData;
+    // Read map file line by line and pad missing data with empty tiles.
     std::ifstream fin(filename);
-    while (fin >> c) {
-        switch (c) {
-            case '0': mapData.push_back(false); break;
-            case '1': mapData.push_back(true); break;
-            case '\n':
-            case '\r':
-                if (static_cast<int>(mapData.size()) / MapWidth != 0)
-                    throw std::ios_base::failure("Map data is corrupted.");
-                break;
-            default: throw std::ios_base::failure("Map data is corrupted.");
-        }
-    }
-    fin.close();
-    // Validate map data.
-    if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
-        throw std::ios_base::failure("Map data is corrupted.");
-    // Store map in 2d array.
-    mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth));
-    for (int i = 0; i < MapHeight; i++) {
-        for (int j = 0; j < MapWidth; j++) {
-            const int num = mapData[i * MapWidth + j];
-            mapState[i][j] = num ? TILE_WALL : TILE_EMPTY;
+    if (!fin.is_open()) return;
+    mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth, TILE_EMPTY));
+    std::string line;
+    int row = 0;
+    while (row < MapHeight && std::getline(fin, line)) {
+        if (line.empty() || line[0] == '#') continue;
+        for (int col = 0; col < MapWidth; ++col) {
+            char c = (col < static_cast<int>(line.size())) ? line[col] : '0';
+            bool num = (c == '1');
+            mapState[row][col] = num ? TILE_WALL : TILE_EMPTY;
             if (num)
-                TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", col * BlockSize, row * BlockSize, BlockSize, BlockSize));
             else
-                TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", col * BlockSize, row * BlockSize, BlockSize, BlockSize));
+        }
+        ++row;
+    }
+    // Fill any remaining rows with empty tiles.
+    for (; row < MapHeight; ++row) {
+        for (int col = 0; col < MapWidth; ++col) {
+            TileMapGroup->AddNewObject(new Engine::Image("play/dirt.png", col * BlockSize, row * BlockSize, BlockSize, BlockSize));
         }
     }
 }
 
 void Gameplay::Update(float deltaTime) {
-    score += deltaTime * 60;
+    const float scrollSpeed = 200.0f;
+    bool levelFinished = level && level->IsFinished();
+    if (level && !levelFinished) {
+        level->Scroll(deltaTime, scrollSpeed);
+        score += deltaTime * 60;
+    } else if (!level) {
+        score += deltaTime * 60;
+    }
 
     std::ostringstream stream;
     stream << std::fixed << std::setprecision(2) << "Score: " << ((score*4) / 100.0f);
     scoreLabel->Text = stream.str();
 
-    player->Update(deltaTime);
+    if (!levelFinished)
+        player->Update(deltaTime);
     CheckPlayerHealth();
 
-    if ((score * 4) / 100.0f > 10) {
+    if (levelFinished) {
+        Engine::GameEngine::GetInstance().ChangeScene("win");
+    } else if ((score * 4) / 100.0f > 10) {
         Engine::GameEngine::GetInstance().ChangeScene("win");
     }
 }
