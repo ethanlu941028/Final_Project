@@ -190,13 +190,13 @@ void Gameplay::Update(float deltaTime) {
     }
 
     if (!levelFinished) {
+        overlappingFlipOrb = nullptr;
         auto objects = TileMapGroup->GetObjects();
         for (auto* obj : objects) {
             auto* orb = dynamic_cast<FlipOrb*>(obj);
             if (!orb) continue;
             if (Engine::Collider::IsCircleOverlap(player->Position, player->GetGroundRadius(), orb->Position, orb->GetRadius())) {
-                player->Flip();
-                TileMapGroup->RemoveObject(orb->GetObjectIterator());
+                overlappingFlipOrb = orb;
                 break;
             }
         }
@@ -252,6 +252,10 @@ void Gameplay::OnKeyDown(int keyCode) {
                 player->OrbJump();
                 TileMapGroup->RemoveObject(overlappingJumpOrb->GetObjectIterator());
                 overlappingJumpOrb = nullptr;
+            } else if (overlappingFlipOrb){
+                player->Flip();
+                TileMapGroup->RemoveObject(overlappingFlipOrb->GetObjectIterator());
+                overlappingFlipOrb = nullptr;
             } else {
                 player->Jump();
             }
@@ -266,6 +270,10 @@ void Gameplay::OnMouseDown(int button, int mx, int my) {
             player->OrbJump();
             TileMapGroup->RemoveObject(overlappingJumpOrb->GetObjectIterator());
             overlappingJumpOrb = nullptr;
+        } else if (overlappingFlipOrb) {
+            player->Flip();
+            TileMapGroup->RemoveObject(overlappingFlipOrb->GetObjectIterator());
+            overlappingFlipOrb = nullptr;
         } else {
             player->Jump();
         }
