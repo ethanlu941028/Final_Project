@@ -11,6 +11,8 @@ static std::string GetTileImage(TileType type) {
             return "";
         case TileType::Spike:
             return "play/spike.png";
+        case TileType::UpsideDown:
+            return "play/upsidedownTile.png";
         default:
             return "";
     }

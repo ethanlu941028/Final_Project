@@ -8,7 +8,8 @@
 enum class TileType {
     Air = 0,
     Ground = 1,
-    Spike = 2
+    Spike = 2,
+    UpsideDown = 3
 };
 
 class Tile : public Engine::Sprite {
