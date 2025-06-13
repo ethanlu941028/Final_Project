@@ -96,50 +96,10 @@ add_executable(2025_I2P2_TowerDefense
     Utils/Resources.hpp
     
     main.cpp
-        States/TitleScreen.hpp
-        States/TitleScreen.cpp
-        States/Gameplay.cpp
-        States/Gameplay.hpp
-        States/DeathScreen.hpp
-        States/DeathScreen.cpp
-        Entities/Player.cpp
-        Entities/Player.hpp
-        Entities/Level.cpp
-        Entities/Level.hpp
-        Entities/Tile.cpp
-        Entities/Tile.hpp
-        Entities/AirTile.cpp
-        Entities/AirTile.hpp
-        Entities/GroundTile.cpp
-        Entities/GroundTile.hpp
-        Entities/SpikeTile.cpp
-        Entities/SpikeTile.hpp
-        Entities/FlipOrb.cpp
-        Entities/FlipOrb.hpp
-        Entities/JumpOrb.cpp
-        Entities/JumpOrb.hpp
-        Entities/SpeedUpTile.cpp
-        Entities/SpeedUpTile.hpp
-        Entities/SpeedDownTile.cpp
-        Entities/SpeedDownTile.hpp
-        Utils/Timer.cpp
-        Utils/Timer.hpp
-        Utils/Config.cpp
-        Utils/Config.hpp
-        States/PauseMenu.cpp
-        States/PauseMenu.hpp
-        Utils/Resources.cpp
-        Utils/Resources.hpp
-        Game.cpp
-        Game.hpp
-        States/StageSelect.cpp
-        States/StageSelect.hpp
-        States/SettingScreen.cpp
-        States/SettingScreen.hpp
-        States/WinScreen.cpp
-        States/WinScreen.hpp
-        States/ScoreboardScene.cpp
-        States/ScoreboardScene.hpp
+    Game.cpp
+    Game.hpp
+    States/ScoreboardScene.cpp
+    States/ScoreboardScene.hpp
 )
 
 IF (WIN32)

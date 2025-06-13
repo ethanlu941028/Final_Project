@@ -59,7 +59,7 @@ Engine::Point SpikeTile::GetTopHitboxBottomRight() const {
     float right = Position.x + 2;
     float bottom;
     if (upsideDown) {
-        bottom = Position.y + Size.y / 2.0f - 4;
+        bottom = Position.y + Size.y / 2.0f;
     } else {
         bottom = Position.y - Size.y / 2.0f + 4 + 30;
     }
