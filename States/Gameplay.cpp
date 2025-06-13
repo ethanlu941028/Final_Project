@@ -59,6 +59,7 @@ void Gameplay::Initialize() {
     flightSpeed = 0.0f;
     scrollSpeed = 520.0f;
     jumpRequested = false;
+    cheatMode = false;
     jumpBufferTimer = 0.0f;
 
     bgmInstance = AudioHelper::PlaySample("BGM1.ogg", true, AudioHelper::BGMVolume);
