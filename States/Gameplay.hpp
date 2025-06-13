@@ -43,6 +43,10 @@ private:
     float deadTimer = 0.0f;
     bool deathSoundPlayed = false;
 
+    bool victoryCutscene = false;
+    float victoryTimer = 0.0f;
+    float flightSpeed = 0.0f;
+
     void CheckPlayerHealth();
 
 public:
