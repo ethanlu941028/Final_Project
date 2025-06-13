@@ -175,8 +175,10 @@ void Gameplay::Update(float deltaTime) {
                 auto bBR = spike->GetBaseHitboxBottomRight();
                 auto tTL = spike->GetTopHitboxTopLeft();
                 auto tBR = spike->GetTopHitboxBottomRight();
+                bool baseCircleOverlap = Engine::Collider::IsCircleOverlapRect(player->Position, player->GetGroundRadius(), bTL, bBR);
+                bool topCircleOverlap = Engine::Collider::IsCircleOverlapRect(player->Position, player->GetGroundRadius(), tTL, tBR);
                 if (Engine::Collider::IsPolygonOverlapRect(pPoly, bTL, bBR) ||
-                    Engine::Collider::IsPolygonOverlapRect(pPoly, tTL, tBR)) {
+                Engine::Collider::IsPolygonOverlapRect(pPoly, tTL, tBR) || baseCircleOverlap || topCircleOverlap) {
                     player->SetHP(0);
                     break;
                 }
@@ -194,14 +196,14 @@ void Gameplay::Update(float deltaTime) {
                 continue;
             bool circleOverlap = Engine::Collider::IsCircleOverlapRect(player->Position, player->GetGroundRadius(), gTL, gBR);
 
+            bool landed = false;
             if (!player->upsideDown) {
                 float prevBottom = prevPos.y + Player::HitboxSize / 2.0f;
                 float groundTop = gTL.y;
                 float curBottom = player->Position.y + Player::HitboxSize / 2.0f;
                 if (prevBottom <= groundTop && curBottom >= groundTop && prevVel >= 0) {
                     player->Land(groundTop);
-                } else if (circleOverlap) {
-                    player->SetHP(0);
+                    landed = true;
                 }
             } else {
                 float prevTop = prevPos.y - Player::HitboxSize / 2.0f;
@@ -209,9 +211,11 @@ void Gameplay::Update(float deltaTime) {
                 float curTop = player->Position.y - Player::HitboxSize / 2.0f;
                 if (prevTop >= groundBottom && curTop <= groundBottom && prevVel <= 0) {
                     player->LandOnCeiling(groundBottom);
-                } else if (circleOverlap) {
-                    player->SetHP(0);
+                    landed = true;
                 }
+            }
+            if (!landed && circleOverlap) {
+                player->SetHP(0);
             }
             break;
         }
