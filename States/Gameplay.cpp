@@ -28,7 +28,7 @@
 
 #include "Engine/AudioHelper.hpp"
 
-const int Gameplay::MapWidth = 500, Gameplay::MapHeight = 15;
+const int Gameplay::MapWidth = 503, Gameplay::MapHeight = 15;
 
 bool Gameplay::isPaused = false;
 
@@ -175,10 +175,9 @@ void Gameplay::Update(float deltaTime) {
                 auto bBR = spike->GetBaseHitboxBottomRight();
                 auto tTL = spike->GetTopHitboxTopLeft();
                 auto tBR = spike->GetTopHitboxBottomRight();
-                bool baseCircleOverlap = Engine::Collider::IsCircleOverlapRect(player->Position, player->GetGroundRadius(), bTL, bBR);
-                bool topCircleOverlap = Engine::Collider::IsCircleOverlapRect(player->Position, player->GetGroundRadius(), tTL, tBR);
-                if (Engine::Collider::IsPolygonOverlapRect(pPoly, bTL, bBR) ||
-                Engine::Collider::IsPolygonOverlapRect(pPoly, tTL, tBR) || baseCircleOverlap || topCircleOverlap) {
+                bool spikeCollision = Engine::Collider::IsPolygonOverlapRect(pPoly, bTL, bBR) || Engine::Collider::IsPolygonOverlapRect(pPoly, tTL, tBR);
+                if (spikeCollision) {
+                    std::cout << "Player hit a spike tile!" << std::endl;
                     player->SetHP(0);
                     break;
                 }
