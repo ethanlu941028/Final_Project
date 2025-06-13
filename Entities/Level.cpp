@@ -2,6 +2,8 @@
 #include "AirTile.hpp"
 #include "GroundTile.hpp"
 #include "SpikeTile.hpp"
+#include "FlipOrb.hpp"
+#include "JumpOrb.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
 #include <fstream>
@@ -25,6 +27,8 @@ bool Level::LoadFromFile(const std::string& path) {
             char c = (x < static_cast<int>(line.size())) ? line[x] : '0';
             if (c == '1') tiles[y][x] = new GroundTile(x, y);
             else if (c == '2') tiles[y][x] = new SpikeTile(x, y);
+            else if (c == '3') tiles[y][x] = new FlipOrb(x, y);
+            else if (c == '4') tiles[y][x] = new JumpOrb(x, y);
             else tiles[y][x] = new AirTile(x, y);
         }
         ++y;

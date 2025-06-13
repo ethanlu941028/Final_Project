@@ -1,13 +1,13 @@
-#ifndef FLIPORB_HPP
-#define FLIPORB_HPP
+#ifndef JUMPORB_HPP
+#define JUMPORB_HPP
 
 #include "Tile.hpp"
 #include "Utils/Config.hpp"
 
-class FlipOrb : public Tile {
+class JumpOrb : public Tile {
 public:
     static constexpr float HitboxRadius = 30.0f;
-    FlipOrb(int tileX, int tileY);
+    JumpOrb(int tileX, int tileY);
     float GetRadius() const { return HitboxRadius; }
     void Draw() const override;
 };

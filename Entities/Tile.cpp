@@ -13,6 +13,8 @@ static std::string GetTileImage(TileType type) {
             return "play/spike.png";
         case TileType::Flip:
             return "play/FlipOrb.png";
+        case TileType::Jump:
+            return "play/JumpOrb.png";
         default:
             return "";
     }

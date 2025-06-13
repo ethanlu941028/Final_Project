@@ -16,6 +16,8 @@
 #include "Entities/Level.hpp"
 #include "Entities/GroundTile.hpp"
 #include "Entities/SpikeTile.hpp"
+#include "Entities/FlipOrb.hpp"
+#include "Entities/JumpOrb.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/Group.hpp"
 #include "Utils/Config.hpp"
@@ -187,6 +189,19 @@ void Gameplay::Update(float deltaTime) {
         }
     }
 
+    if (!levelFinished) {
+        auto objects = TileMapGroup->GetObjects();
+        for (auto* obj : objects) {
+            auto* orb = dynamic_cast<FlipOrb*>(obj);
+            if (!orb) continue;
+            if (Engine::Collider::IsCircleOverlap(player->Position, player->GetGroundRadius(), orb->Position, orb->GetRadius())) {
+                player->Flip();
+                TileMapGroup->RemoveObject(orb->GetObjectIterator());
+                break;
+            }
+        }
+    }
+
     CheckPlayerHealth();
 
     if (levelFinished) {
@@ -214,9 +229,6 @@ void Gameplay::OnKeyDown(int keyCode) {
     }
     else if (keyCode == ALLEGRO_KEY_0) {
         Engine::GameEngine::GetInstance().ChangeScene("death");
-    }
-    else if (keyCode == ALLEGRO_KEY_U) {
-        player->Flip();
     }
     else if (keyCode == ALLEGRO_KEY_B) {
         showHitbox = !showHitbox;
