@@ -193,6 +193,7 @@ namespace Engine {
         /// Get all objects.
         /// </summary>
         /// <returns>A linked-list of all objects contained.</returns>
+        void CleanUpOffScreen();
         std::list<IObject *> GetObjects();
         /// <summary>
         /// Get all controls.

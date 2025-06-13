@@ -86,6 +86,9 @@ void Level::Scroll(float deltaTime, float speed) {
             if (tile) tile->Position.x = x * TILE_SIZE - offsetX;
         }
     }
+    if (container) {
+        container->CleanUpOffScreen();
+    }
 }
 
 bool Level::IsFinished() const {
