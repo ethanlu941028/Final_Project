@@ -202,6 +202,19 @@ void Gameplay::Update(float deltaTime) {
         }
     }
 
+    if (!levelFinished) {
+        auto objects = TileMapGroup->GetObjects();
+        for (auto* obj : objects) {
+            auto* orb = dynamic_cast<JumpOrb*>(obj);
+            if (!orb) continue;
+            if (Engine::Collider::IsCircleOverlap(player->Position, player->GetGroundRadius(), orb->Position, orb->GetRadius())) {
+                player->Jump();
+                TileMapGroup->RemoveObject(orb->GetObjectIterator());
+                break;
+            }
+        }
+    }
+
     CheckPlayerHealth();
 
     if (levelFinished) {

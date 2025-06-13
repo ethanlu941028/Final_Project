@@ -55,6 +55,8 @@ add_executable(2025_I2P2_TowerDefense
     Entities/SpikeTile.hpp
     Entities/FlipOrb.cpp
     Entities/FlipOrb.hpp
+    Entities/JumpOrb.cpp
+    Entities/JumpOrb.hpp
     # TODO HACKATHON-2 (3/3): Add the new scene source files here
 
     States/DeathScreen.cpp
@@ -110,6 +112,8 @@ add_executable(2025_I2P2_TowerDefense
         Entities/SpikeTile.hpp
         Entities/FlipOrb.cpp
         Entities/FlipOrb.hpp
+        Entities/JumpOrb.cpp
+        Entities/JumpOrb.hpp
         Utils/Timer.cpp
         Utils/Timer.hpp
         Utils/Config.cpp
