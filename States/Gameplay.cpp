@@ -23,7 +23,7 @@
 
 #include "Engine/AudioHelper.hpp"
 
-const int Gameplay::MapWidth = 300, Gameplay::MapHeight = 15;
+const int Gameplay::MapWidth = 500, Gameplay::MapHeight = 15;
 
 
 void Gameplay::Initialize() {
