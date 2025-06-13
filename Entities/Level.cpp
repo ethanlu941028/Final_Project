@@ -4,6 +4,8 @@
 #include "SpikeTile.hpp"
 #include "FlipOrb.hpp"
 #include "JumpOrb.hpp"
+#include "SpeedUpTile.hpp"
+#include "SpeedDownTile.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
 #include <fstream>
@@ -30,6 +32,10 @@ bool Level::LoadFromFile(const std::string& path) {
             else if (c == '3') tiles[y][x] = new FlipOrb(x, y);
             else if (c == '4') tiles[y][x] = new JumpOrb(x, y);
             else if (c == '5') tiles[y][x] = new SpikeTile(x, y, true);
+            else if (c == '6') tiles[y][x] = new SpeedUpTile(x, y);
+            else if (c == '7') tiles[y][x] = new AirTile(x, y);
+            else if (c == '8') tiles[y][x] = new SpeedDownTile(x, y);
+            else if (c == '9') tiles[y][x] = new AirTile(x, y);
             else tiles[y][x] = new AirTile(x, y);
         }
         ++y;
