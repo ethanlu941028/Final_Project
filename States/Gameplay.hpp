@@ -25,6 +25,7 @@ class Gameplay : public Engine::IScene {
 private:
     Engine::Image* background;
     Engine::Label* scoreLabel;
+    Engine::Label* progressLabel; // shows map completion percentage
 
 
     enum TileType {
@@ -46,6 +47,10 @@ private:
     bool victoryCutscene = false;
     float victoryTimer = 0.0f;
     float flightSpeed = 0.0f;
+
+    bool jumpRequested = false;
+    float jumpBufferTimer = 0.0f;
+    static constexpr float JumpBufferDuration = 0.1f;
 
     void CheckPlayerHealth();
 

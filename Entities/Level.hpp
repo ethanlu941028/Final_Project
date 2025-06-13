@@ -18,6 +18,8 @@ public:
     void InitializeView();
     void Scroll(float deltaTime, float speed);
     bool IsFinished() const;
+    float GetOffsetX() const;
+    int GetWidth() const;
 
 private:
     int width;
