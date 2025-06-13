@@ -19,6 +19,7 @@ public:
     explicit Player(float x = 100, float y = 400); // 預設位置
     void Update(float deltaTime) override;
     void Jump();
+    void OrbJump();
     int GetHP() const;
     void ReduceHP(int value);
     void SetHP(int value);

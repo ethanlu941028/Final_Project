@@ -16,6 +16,8 @@
 #include "Entities/Level.hpp"
 #include "Entities/GroundTile.hpp"
 #include "Entities/SpikeTile.hpp"
+#include "Entities/FlipOrb.hpp"
+#include "Entities/JumpOrb.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/Group.hpp"
 #include "Utils/Config.hpp"
@@ -187,6 +189,32 @@ void Gameplay::Update(float deltaTime) {
         }
     }
 
+    if (!levelFinished) {
+        overlappingFlipOrb = nullptr;
+        auto objects = TileMapGroup->GetObjects();
+        for (auto* obj : objects) {
+            auto* orb = dynamic_cast<FlipOrb*>(obj);
+            if (!orb) continue;
+            if (Engine::Collider::IsCircleOverlap(player->Position, player->GetGroundRadius(), orb->Position, orb->GetRadius())) {
+                overlappingFlipOrb = orb;
+                break;
+            }
+        }
+    }
+
+    if (!levelFinished) {
+        overlappingJumpOrb = nullptr;
+        auto objects = TileMapGroup->GetObjects();
+        for (auto* obj : objects) {
+            auto* orb = dynamic_cast<JumpOrb*>(obj);
+            if (!orb) continue;
+            if (Engine::Collider::IsCircleOverlap(player->Position, player->GetGroundRadius(), orb->Position, orb->GetRadius())) {
+                overlappingJumpOrb = orb;
+                break;
+            }
+        }
+    }
+
     CheckPlayerHealth();
 
     if (levelFinished) {
@@ -215,15 +243,22 @@ void Gameplay::OnKeyDown(int keyCode) {
     else if (keyCode == ALLEGRO_KEY_0) {
         Engine::GameEngine::GetInstance().ChangeScene("death");
     }
-    else if (keyCode == ALLEGRO_KEY_U) {
-        player->Flip();
-    }
     else if (keyCode == ALLEGRO_KEY_B) {
         showHitbox = !showHitbox;
     }
     else if (keyCode == ALLEGRO_KEY_SPACE) {
         if (player && !isPaused) {
-            player->Jump();
+            if (overlappingJumpOrb) {
+                player->OrbJump();
+                TileMapGroup->RemoveObject(overlappingJumpOrb->GetObjectIterator());
+                overlappingJumpOrb = nullptr;
+            } else if (overlappingFlipOrb){
+                player->Flip();
+                TileMapGroup->RemoveObject(overlappingFlipOrb->GetObjectIterator());
+                overlappingFlipOrb = nullptr;
+            } else {
+                player->Jump();
+            }
         }
     }
 }
@@ -231,7 +266,17 @@ void Gameplay::OnKeyDown(int keyCode) {
 void Gameplay::OnMouseDown(int button, int mx, int my) {
     IScene::OnMouseDown(button, mx, my);  // Propagate to UI controls
     if (button == 1 && player && !isPaused) {
-        player->Jump();
+        if (overlappingJumpOrb) {
+            player->OrbJump();
+            TileMapGroup->RemoveObject(overlappingJumpOrb->GetObjectIterator());
+            overlappingJumpOrb = nullptr;
+        } else if (overlappingFlipOrb) {
+            player->Flip();
+            TileMapGroup->RemoveObject(overlappingFlipOrb->GetObjectIterator());
+            overlappingFlipOrb = nullptr;
+        } else {
+            player->Jump();
+        }
     }
 }
 

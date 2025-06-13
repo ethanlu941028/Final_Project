@@ -66,6 +66,11 @@ void Player::Jump() {
     }
 }
 
+void Player::OrbJump() {
+    velocityY = jumpSpeed;
+    isOnGround = false;
+}
+
 void Player::Flip() {
     upsideDown = !upsideDown;
     jumpSpeed = -jumpSpeed;
