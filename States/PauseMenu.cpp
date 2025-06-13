@@ -36,23 +36,21 @@ void PauseMenu::Initialize() {
     AddNewControlObject(escButton);
     AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 48, halfW, h / 2 - 150, 0, 0, 0, 255, 0.5, 0.5));
 
-    quitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 + 100, 400, 100);
+    restartButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 -60, 400, 100);
+    restartButton->SetOnClickCallback(std::bind(&PauseMenu::RestartOnClick, this));
+    AddNewControlObject(restartButton);
+    AddNewObject(new Engine::Label("Restart", "pirulen.ttf", 48, halfW, h / 2 + -10, 0, 0, 0, 255, 0.5, 0.5));
+
+    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 + +80, 400, 100);
+    settingButton->SetOnClickCallback(std::bind(&PauseMenu::SettingsOnClick, this));
+    AddNewControlObject(settingButton);
+    AddNewObject(new Engine::Label("Setting", "pirulen.ttf", 48, halfW, h / 2 + 130, 0, 0, 0, 255, 0.5, 0.5));
+
+    quitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 + 220, 400, 100);
     quitButton->SetOnClickCallback(std::bind(&PauseMenu::ExitOnClick, this));
     AddNewControlObject(quitButton);
-    AddNewObject(new Engine::Label("Quit", "pirulen.ttf", 48, halfW, h / 2 + 150, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Quit", "pirulen.ttf", 48, halfW, h / 2 + 270, 0, 0, 0, 255, 0.5, 0.5));
 
-    Slider *sliderBGM, *sliderSFX;
-    sliderBGM = new Slider(40 + halfW - 95, halfH - 50 - 2, 190, 4);
-    sliderBGM->SetOnValueChangedCallback(std::bind(&PauseMenu::BGMSlideOnValueChanged, this, std::placeholders::_1));
-    AddNewControlObject(sliderBGM);
-    AddNewObject(new Engine::Label("BGM: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH - 50, 255, 255, 255, 255, 0.5, 0.5));
-    sliderSFX = new Slider(40 + halfW - 95, halfH + 50 - 2, 190, 4);
-    sliderSFX->SetOnValueChangedCallback(std::bind(&PauseMenu::SFXSlideOnValueChanged, this, std::placeholders::_1));
-    AddNewControlObject(sliderSFX);
-    AddNewObject(new Engine::Label("SFX: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH + 50, 255, 255, 255, 255, 0.5, 0.5));
-    // Not safe if release resource while playing, however we only free while change scene, so it's fine.
-    sliderBGM->SetValue(AudioHelper::BGMVolume);
-    sliderSFX->SetValue(AudioHelper::SFXVolume);
 }
 
 void PauseMenu::Terminate() {
@@ -64,14 +62,6 @@ void PauseMenu::Terminate() {
 }
 
 void PauseMenu::Draw() const{
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;
-    // 清空畫面背景，這邊用黑色，你可以改成你喜歡的顏色
-    al_draw_filled_rectangle(halfW - 200, h / 2 - 50 - 30, halfW - 200 + 400, h / 2 - 50 + 100 + 30, al_map_rgba(0, 0, 0, 128));
-
-    // 再呼叫基底的Draw，繼續畫控制元件等
     IScene::Draw();
 }
 
@@ -84,6 +74,19 @@ void PauseMenu::ResumeOnClick() {
         al_set_sample_instance_playing(gameplay->bgmInstance.get(), true); // 恢復 BGM
     }
     Engine::GameEngine::GetInstance().ChangeScene("play"); // 返回 Gameplay
+}
+
+void PauseMenu::RestartOnClick() {
+    Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
+    Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
+    if (gameplay) {
+        gameplay->initialized = false; // 或 gameplay->Terminate();
+    }
+    Engine::GameEngine::GetInstance().ChangeScene("play");
+}
+
+void PauseMenu::SettingsOnClick() {
+    Engine::GameEngine::GetInstance().PushScene("setting");
 }
 
 void PauseMenu::ExitOnClick() {

@@ -12,6 +12,7 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/Slider.hpp"
+#include "States/Gameplay.hpp"
 
 void SettingScreen::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -42,6 +43,7 @@ void SettingScreen::Initialize() {
 void SettingScreen::Terminate() {
     AudioHelper::StopSample(bgmInstance);
     bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
+    ClearObjects();
     IScene::Terminate();
 }
 
@@ -55,6 +57,17 @@ void SettingScreen::Draw() const {
 
 void SettingScreen::BackOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("title");
+    /*
+    Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
+    Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
+    if (gameplay->isPaused) {
+        Engine::GameEngine::GetInstance().ChangeScene("pause");
+    }
+    else {
+        Engine::GameEngine::GetInstance().ChangeScene("title");
+    }
+    */
+
 }
 
 
@@ -69,6 +82,6 @@ void SettingScreen::SFXSlideOnValueChanged(float value) {
 void SettingScreen::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
     if (keyCode == ALLEGRO_KEY_ESCAPE) {
-        Engine::GameEngine::GetInstance().ChangeScene("title");
+        SettingScreen::BackOnClick(0);
     }
 }

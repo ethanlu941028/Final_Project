@@ -56,7 +56,7 @@ public:
     std::vector<std::vector<int>> mapDistance;
     Engine::Group* TileMapGroup;
     bool initialized = false;
-    bool isPaused = false;
+    static bool isPaused;
     explicit Gameplay() = default;
     void Initialize() override;
     void ReadMap();

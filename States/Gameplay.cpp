@@ -27,12 +27,13 @@
 
 const int Gameplay::MapWidth = 500, Gameplay::MapHeight = 15;
 
+bool Gameplay::isPaused = false;
 
 void Gameplay::Initialize() {
     if (initialized) return;
     initialized = true;
-    showHitbox = false;
     isPaused = false;
+    showHitbox = false;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
 
