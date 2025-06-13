@@ -233,7 +233,7 @@ void Gameplay::Update(float deltaTime) {
     CheckPlayerHealth();
 
     if (victoryCutscene) {
-        const float acceleration = 600.0f;
+        const float acceleration = 400.0f;
         victoryTimer += deltaTime;
         flightSpeed += acceleration * deltaTime;
         player->Position.x += flightSpeed * deltaTime;
