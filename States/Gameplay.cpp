@@ -202,6 +202,11 @@ void Gameplay::OnKeyDown(int keyCode) {
     else if (keyCode == ALLEGRO_KEY_B) {
         showHitbox = !showHitbox;
     }
+    else if (keyCode == ALLEGRO_KEY_SPACE) {
+        if (player && !isPaused) {
+            player->Jump();
+        }
+    }
 }
 
 void Gameplay::OnMouseDown(int button, int mx, int my) {
