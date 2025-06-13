@@ -130,7 +130,7 @@ void Gameplay::Update(float deltaTime) {
         return;
     }
 
-    const float scrollSpeed = 600.0f;
+    const float scrollSpeed = 520.0f;
     bool levelFinished = level && level->IsFinished();
     if (levelFinished && !victoryCutscene) {
         victoryCutscene = true;
