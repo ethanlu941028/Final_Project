@@ -23,6 +23,7 @@ public:
     int GetHP() const;
     void ReduceHP(int value);
     void SetHP(int value);
+    bool IsOnGround() const { return isOnGround; }
     float GetVelocityY() const { return velocityY; }
     void SetVelocityY(float v) { velocityY = v; }
     void Land(float groundY);

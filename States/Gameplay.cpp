@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iomanip>
 #include <sstream>
+#include <algorithm>
 
 #include "Engine/GameEngine.hpp"
 #include <vector>
@@ -54,11 +55,16 @@ void Gameplay::Initialize() {
     victoryCutscene = false;
     victoryTimer = 0.0f;
     flightSpeed = 0.0f;
+    jumpRequested = false;
+    jumpBufferTimer = 0.0f;
 
     bgmInstance = AudioHelper::PlaySample("BGM1.ogg", true, AudioHelper::BGMVolume);
 
     scoreLabel = new Engine::Label("Score: 0", "pirulen.ttf", 24, 10, 5, 255, 255, 255, 255);
     AddNewObject(scoreLabel);
+
+    progressLabel = new Engine::Label("0%", "pirulen.ttf", 24, w - 10, 5, 255, 255, 255, 255, 1.0f, 0);
+    AddNewObject(progressLabel);
 
     // Initialize player starting position based on visible tile rows
     int visibleRows = Engine::GameEngine::GetInstance().GetScreenHeight() / TILE_SIZE;
@@ -71,6 +77,7 @@ void Gameplay::Terminate() {
     std::cout << "Gameplay::Terminate called." << std::endl;
     background = nullptr;
     scoreLabel = nullptr;
+    progressLabel = nullptr;
     delete level;
     level = nullptr;
     initialized = false;
@@ -142,6 +149,22 @@ void Gameplay::Update(float deltaTime) {
     std::ostringstream stream;
     stream << std::fixed << std::setprecision(2) << "Score: " << ((score*4) / 100.0f);
     scoreLabel->Text = stream.str();
+
+    // Calculate progress percentage based on map scroll and cutscene timer
+    float offset = level ? level->GetOffsetX() : 0.0f;
+    int screenW = Engine::GameEngine::GetInstance().GetScreenWidth();
+    float totalDistance = (level ? level->GetWidth() * TILE_SIZE - screenW : 0);
+    totalDistance += scrollSpeed * 3; // include victory cutscene duration
+    float progressDist = offset;
+    if (victoryCutscene) {
+        progressDist += scrollSpeed * victoryTimer;
+    }
+    float progressPercent = 0.0f;
+    if (totalDistance > 0)
+        progressPercent = std::min(100.0f, progressDist / totalDistance * 100.0f);
+    std::ostringstream progStream;
+    progStream << std::fixed << std::setprecision(1) << progressPercent << "%";
+    if (progressLabel) progressLabel->Text = progStream.str();
 
     Engine::Point prevPos = player->Position;
     float prevVel = player->GetVelocityY();
@@ -232,6 +255,19 @@ void Gameplay::Update(float deltaTime) {
 
     CheckPlayerHealth();
 
+    if (jumpRequested) {
+        if (player->IsOnGround()) {
+            player->Jump();
+            jumpRequested = false;
+            jumpBufferTimer = 0.0f;
+        } else {
+            jumpBufferTimer -= deltaTime;
+            if (jumpBufferTimer <= 0.0f) {
+                jumpRequested = false;
+            }
+        }
+    }
+
     if (victoryCutscene) {
         const float acceleration = 400.0f;
         victoryTimer += deltaTime;
@@ -285,7 +321,8 @@ void Gameplay::OnKeyDown(int keyCode) {
                 TileMapGroup->RemoveObject(overlappingFlipOrb->GetObjectIterator());
                 overlappingFlipOrb = nullptr;
             } else {
-                player->Jump();
+                jumpRequested = true;
+                jumpBufferTimer = JumpBufferDuration;
             }
         }
     }
@@ -304,7 +341,8 @@ void Gameplay::OnMouseDown(int button, int mx, int my) {
             TileMapGroup->RemoveObject(overlappingFlipOrb->GetObjectIterator());
             overlappingFlipOrb = nullptr;
         } else {
-            player->Jump();
+            jumpRequested = true;
+            jumpBufferTimer = JumpBufferDuration;
         }
     }
 }

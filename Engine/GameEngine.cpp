@@ -5,7 +5,6 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_ttf.h>
-#include <chrono>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -84,7 +83,8 @@ namespace Engine {
         bool done = false;
         ALLEGRO_EVENT event;
         int redraws = 0;
-        auto timestamp = std::chrono::steady_clock::now();
+        const float fixedDelta = 1.0f / fps;
+        float lag = 0.0f;
         while (!done) {
             al_wait_for_event(event_queue, &event);
             if (nextScene == "close") break;
@@ -97,9 +97,11 @@ namespace Engine {
                     break;
                 case ALLEGRO_EVENT_TIMER:
                     // Event for redrawing the display.
-                    if (event.timer.source == update_timer)
+                    if (event.timer.source == update_timer) {
                         // The redraw timer has ticked.
                         redraws++;
+                        lag += fixedDelta;
+                    }
                     break;
                 case ALLEGRO_EVENT_KEY_DOWN:
                     // Event for keyboard key down.
@@ -158,12 +160,10 @@ namespace Engine {
             if (redraws > 0 && al_is_event_queue_empty(event_queue)) {
                 if (redraws > 1)
                     LOG(VERBOSE) << redraws - 1 << " frame(s) dropped";
-                // Calculate the timeElapsed and update the timestamp.
-                auto nextTimestamp = std::chrono::steady_clock::now();
-                std::chrono::duration<float> timeElapsed = nextTimestamp - timestamp;
-                timestamp = nextTimestamp;
-                // Update and draw the next frame.
-                update(timeElapsed.count());
+                    while (lag >= fixedDelta) {
+                        update(fixedDelta);
+                        lag -= fixedDelta;
+                    }
                 draw();
                 redraws = 0;
             }

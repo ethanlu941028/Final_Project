@@ -85,3 +85,11 @@ void Level::Scroll(float deltaTime, float speed) {
 bool Level::IsFinished() const {
     return finished;
 }
+
+float Level::GetOffsetX() const {
+    return offsetX;
+}
+
+int Level::GetWidth() const {
+    return width;
+}
