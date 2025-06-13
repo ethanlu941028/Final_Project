@@ -43,9 +43,7 @@ add_executable(2025_I2P2_TowerDefense
 
     Entities/Player.cpp
     Entities/Player.hpp
-    Entities/Title.cpp
-    Entities/Title.hpp
-    Entities/Level.cpp
+        Entities/Level.cpp
     Entities/Level.hpp
     Entities/Tile.cpp
     Entities/Tile.hpp
@@ -98,8 +96,6 @@ add_executable(2025_I2P2_TowerDefense
         States/DeathScreen.cpp
         Entities/Player.cpp
         Entities/Player.hpp
-        Entities/Title.cpp
-        Entities/Title.hpp
         Entities/Level.cpp
         Entities/Level.hpp
         Entities/Tile.cpp
