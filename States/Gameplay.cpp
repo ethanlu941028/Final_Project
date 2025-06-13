@@ -176,7 +176,7 @@ void Gameplay::Update(float deltaTime) {
                 auto tTL = spike->GetTopHitboxTopLeft();
                 auto tBR = spike->GetTopHitboxBottomRight();
                 bool spikeCollision = Engine::Collider::IsPolygonOverlapRect(pPoly, bTL, bBR) || Engine::Collider::IsPolygonOverlapRect(pPoly, tTL, tBR);
-                if (spikeCollision) {
+                if (spikeCollision && !cheatMode) {
                     std::cout << "Player hit a spike tile!" << std::endl;
                     player->SetHP(0);
                     break;
@@ -213,7 +213,7 @@ void Gameplay::Update(float deltaTime) {
                     landed = true;
                 }
             }
-            if (!landed && circleOverlap) {
+            if (!landed && circleOverlap && !cheatMode) {
                 player->SetHP(0);
             }
             if (player->GetHP() == 0) {
@@ -332,6 +332,15 @@ void Gameplay::OnKeyDown(int keyCode) {
     }
     else if (keyCode == ALLEGRO_KEY_U) {
         player->Flip();
+    }
+    else if (keyCode == ALLEGRO_KEY_C) {
+        cheatMode = !cheatMode;
+    }
+    else if (keyCode == ALLEGRO_KEY_F) {
+        if (player) {
+            player->upsideDown = !player->upsideDown;
+            player->rotationAngle = player->upsideDown ? 3.14159f : 0.0f; // 180 degrees in radians
+        }
     }
     else if (keyCode == ALLEGRO_KEY_SPACE) {
         if (player && !isPaused) {
