@@ -76,6 +76,11 @@ void SettingScreen::BGMSlideOnValueChanged(float value) {
     if (bgmInstance) {
         AudioHelper::ChangeSampleVolume(bgmInstance, value);
     }
+    Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
+    Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
+    if (gameplay && gameplay->bgmInstance) {
+        al_set_sample_instance_gain(gameplay->bgmInstance.get(), value);
+    }
     AudioHelper::BGMVolume = value;
 }
 void SettingScreen::SFXSlideOnValueChanged(float value) {
