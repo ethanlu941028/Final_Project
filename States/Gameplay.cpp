@@ -271,6 +271,9 @@ void Gameplay::OnKeyDown(int keyCode) {
     else if (keyCode == ALLEGRO_KEY_B) {
         showHitbox = !showHitbox;
     }
+    else if (keyCode == ALLEGRO_KEY_U) {
+        player->Flip();
+    }
     else if (keyCode == ALLEGRO_KEY_SPACE) {
         if (player && !isPaused) {
             if (overlappingJumpOrb) {
