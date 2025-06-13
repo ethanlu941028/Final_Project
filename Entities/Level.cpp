@@ -29,6 +29,7 @@ bool Level::LoadFromFile(const std::string& path) {
             else if (c == '2') tiles[y][x] = new SpikeTile(x, y);
             else if (c == '3') tiles[y][x] = new FlipOrb(x, y);
             else if (c == '4') tiles[y][x] = new JumpOrb(x, y);
+            else if (c == '5') tiles[y][x] = new SpikeTile(x, y, true);
             else tiles[y][x] = new AirTile(x, y);
         }
         ++y;

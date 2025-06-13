@@ -1,4 +1,5 @@
 #include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_primitives.h>
 #include <functional>
 #include <memory>
 #include <string>
@@ -35,44 +36,46 @@ void SettingScreen::Initialize() {
     sliderSFX->SetOnValueChangedCallback(std::bind(&SettingScreen::SFXSlideOnValueChanged, this, std::placeholders::_1));
     AddNewControlObject(sliderSFX);
     AddNewObject(new Engine::Label("SFX: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH + 50, 255, 255, 255, 255, 0.5, 0.5));
-    // Not safe if release resource while playing, however we only free while change scene, so it's fine.
-    bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
+    // No BGM is played in settings.
+    bgmInstance = nullptr;
     sliderBGM->SetValue(AudioHelper::BGMVolume);
     sliderSFX->SetValue(AudioHelper::SFXVolume);
 }
 void SettingScreen::Terminate() {
-    AudioHelper::StopSample(bgmInstance);
+    if (bgmInstance) {
+        AudioHelper::StopSample(bgmInstance);
+    }
     bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     ClearObjects();
     IScene::Terminate();
 }
 
 void SettingScreen::Draw() const {
-    // 清空畫面背景，這邊用黑色，你可以改成你喜歡的顏色
-    al_clear_to_color(al_map_rgb(0, 0, 0));
+    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 128));
 
     // 再呼叫基底的Draw，繼續畫控制元件等
     IScene::Draw();
 }
 
 void SettingScreen::BackOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("title");
-    /*
     Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
     Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
-    if (gameplay->isPaused) {
+    if (gameplay && gameplay->isPaused) {
         Engine::GameEngine::GetInstance().ChangeScene("pause");
     }
     else {
         Engine::GameEngine::GetInstance().ChangeScene("title");
     }
-    */
 
 }
 
 
 void SettingScreen::BGMSlideOnValueChanged(float value) {
-    AudioHelper::ChangeSampleVolume(bgmInstance, value);
+    if (bgmInstance) {
+        AudioHelper::ChangeSampleVolume(bgmInstance, value);
+    }
     AudioHelper::BGMVolume = value;
 }
 void SettingScreen::SFXSlideOnValueChanged(float value) {

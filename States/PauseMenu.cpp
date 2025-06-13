@@ -21,7 +21,9 @@
 void PauseMenu::Initialize() {
     Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
     Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
-    if (gameplay && gameplay->bgmInstance) {
+    if (gameplay && gameplay->bgmInstance &&
+        al_get_sample_instance_playing(gameplay->bgmInstance.get())) {
+        // Record the current position only if the music is playing.
         gameplay->bgmPausedPos = al_get_sample_instance_position(gameplay->bgmInstance.get());
         al_set_sample_instance_playing(gameplay->bgmInstance.get(), false); // 停止播放
     }
@@ -62,6 +64,10 @@ void PauseMenu::Terminate() {
 }
 
 void PauseMenu::Draw() const{
+    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    // Draw a translucent overlay so the gameplay background stays visible.
+    al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 128));
     IScene::Draw();
 }
 
@@ -86,7 +92,7 @@ void PauseMenu::RestartOnClick() {
 }
 
 void PauseMenu::SettingsOnClick() {
-    Engine::GameEngine::GetInstance().PushScene("setting");
+    Engine::GameEngine::GetInstance().ChangeScene("setting");
 }
 
 void PauseMenu::ExitOnClick() {

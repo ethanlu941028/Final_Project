@@ -120,7 +120,7 @@ void Gameplay::Update(float deltaTime) {
         return;
     }
 
-    const float scrollSpeed = 500.0f;
+    const float scrollSpeed = 600.0f;
     bool levelFinished = level && level->IsFinished();
     if (level && !levelFinished) {
         level->Scroll(deltaTime, scrollSpeed);
