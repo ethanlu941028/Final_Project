@@ -49,9 +49,9 @@ void Gameplay::Initialize() {
     deadTimer = 0.0f;
     deathSoundPlayed = false;
 
-    bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
+    bgmInstance = AudioHelper::PlaySample("BGM1.ogg", true, AudioHelper::BGMVolume);
 
-    scoreLabel = new Engine::Label("Score: 0", "pirulen.ttf", 24, 10, 10, 0, 0, 255, 255);
+    scoreLabel = new Engine::Label("Score: 0", "pirulen.ttf", 24, 10, 5, 255, 255, 255, 255);
     AddNewObject(scoreLabel);
 
     // Initialize player starting position based on visible tile rows
