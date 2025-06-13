@@ -18,6 +18,7 @@ namespace Engine {
 
 class Player;  // 前向宣告
 class Level;  // forward declaration for map handling
+class JumpOrb;
 
 class Gameplay : public Engine::IScene {
 private:
@@ -33,6 +34,8 @@ private:
     int score;
     Player* player;
     Level* level = nullptr;
+
+    class JumpOrb* overlappingJumpOrb = nullptr;
 
     bool playerDead = false;
     float deadTimer = 0.0f;
