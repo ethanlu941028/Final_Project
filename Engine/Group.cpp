@@ -5,6 +5,7 @@
 #include "IControl.hpp"
 #include "IObject.hpp"
 #include <iostream>
+#include <vector>
 
 namespace Engine {
     void Group::addObject(bool shouldDelete, IObject *obj) {
@@ -53,39 +54,51 @@ namespace Engine {
         }
     }
     void Group::OnKeyDown(int keyCode) {
-        for (auto it = controls.begin(); it != controls.end();) {
-            auto preIt = it++;
-            preIt->second->OnKeyDown(keyCode);
+        std::vector<IControl*> copy;
+        copy.reserve(controls.size());
+        for (auto &c : controls) copy.push_back(c.second);
+        for (auto *ctrl : copy) {
+            ctrl->OnKeyDown(keyCode);
         }
     }
     void Group::OnKeyUp(int keyCode) {
-        for (auto it = controls.begin(); it != controls.end();) {
-            auto preIt = it++;
-            preIt->second->OnKeyUp(keyCode);
+        std::vector<IControl*> copy;
+        copy.reserve(controls.size());
+        for (auto &c : controls) copy.push_back(c.second);
+        for (auto *ctrl : copy) {
+            ctrl->OnKeyUp(keyCode);
         }
     }
     void Group::OnMouseDown(int button, int mx, int my) {
-        for (auto it = controls.begin(); it != controls.end();) {
-            auto preIt = it++;
-            preIt->second->OnMouseDown(button, mx, my);
+        std::vector<IControl*> copy;
+        copy.reserve(controls.size());
+        for (auto &c : controls) copy.push_back(c.second);
+        for (auto *ctrl : copy) {
+            ctrl->OnMouseDown(button, mx, my);
         }
     }
     void Group::OnMouseUp(int button, int mx, int my) {
-        for (auto it = controls.begin(); it != controls.end();) {
-            auto preIt = it++;
-            preIt->second->OnMouseUp(button, mx, my);
+        std::vector<IControl*> copy;
+        copy.reserve(controls.size());
+        for (auto &c : controls) copy.push_back(c.second);
+        for (auto *ctrl : copy) {
+            ctrl->OnMouseUp(button, mx, my);
         }
     }
     void Group::OnMouseMove(int mx, int my) {
-        for (auto it = controls.begin(); it != controls.end();) {
-            auto preIt = it++;
-            preIt->second->OnMouseMove(mx, my);
+        std::vector<IControl*> copy;
+        copy.reserve(controls.size());
+        for (auto &c : controls) copy.push_back(c.second);
+        for (auto *ctrl : copy) {
+            ctrl->OnMouseMove(mx, my);
         }
     }
     void Group::OnMouseScroll(int mx, int my, int delta) {
-        for (auto it = controls.begin(); it != controls.end();) {
-            auto preIt = it++;
-            preIt->second->OnMouseScroll(mx, my, delta);
+        std::vector<IControl*> copy;
+        copy.reserve(controls.size());
+        for (auto &c : controls) copy.push_back(c.second);
+        for (auto *ctrl : copy) {
+            ctrl->OnMouseScroll(mx, my, delta);
         }
     }
     void Group::RemoveObject(std::list<std::pair<bool, IObject *>>::iterator it) {

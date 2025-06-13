@@ -51,6 +51,9 @@ void Gameplay::Initialize() {
     playerDead = false;
     deadTimer = 0.0f;
     deathSoundPlayed = false;
+    victoryCutscene = false;
+    victoryTimer = 0.0f;
+    flightSpeed = 0.0f;
 
     bgmInstance = AudioHelper::PlaySample("BGM1.ogg", true, AudioHelper::BGMVolume);
 
@@ -120,13 +123,20 @@ void Gameplay::Update(float deltaTime) {
         return;
     }
 
-    const float scrollSpeed = 500.0f;
+    const float scrollSpeed = 600.0f;
     bool levelFinished = level && level->IsFinished();
-    if (level && !levelFinished) {
-        level->Scroll(deltaTime, scrollSpeed);
-        score += deltaTime * 60;
-    } else if (!level) {
-        score += deltaTime * 60;
+    if (levelFinished && !victoryCutscene) {
+        victoryCutscene = true;
+        victoryTimer = 0.0f;
+        flightSpeed = 0.0f;
+    }
+    if (!victoryCutscene) {
+        if (level && !levelFinished) {
+            level->Scroll(deltaTime, scrollSpeed);
+            score += deltaTime * 60;
+        } else if (!level) {
+            score += deltaTime * 60;
+        }
     }
 
     std::ostringstream stream;
@@ -136,9 +146,9 @@ void Gameplay::Update(float deltaTime) {
     Engine::Point prevPos = player->Position;
     float prevVel = player->GetVelocityY();
     float prevRot = player->rotationAngle;
-    if (!levelFinished) player->Update(deltaTime);
+    if (!levelFinished && !victoryCutscene) player->Update(deltaTime);
 
-    if (!levelFinished) {
+    if (!levelFinished && !victoryCutscene) {
         auto objects = TileMapGroup->GetObjects();
         for (auto* obj : objects) {
             if (auto* spike = dynamic_cast<SpikeTile*>(obj)) {
@@ -190,7 +200,7 @@ void Gameplay::Update(float deltaTime) {
         }
     }
 
-    if (!levelFinished) {
+    if (!levelFinished && !victoryCutscene) {
         overlappingFlipOrb = nullptr;
         auto objects = TileMapGroup->GetObjects();
         for (auto* obj : objects) {
@@ -205,7 +215,7 @@ void Gameplay::Update(float deltaTime) {
         }
     }
 
-    if (!levelFinished) {
+    if (!levelFinished && !victoryCutscene) {
         overlappingJumpOrb = nullptr;
         auto objects = TileMapGroup->GetObjects();
         for (auto* obj : objects) {
@@ -222,8 +232,16 @@ void Gameplay::Update(float deltaTime) {
 
     CheckPlayerHealth();
 
-    if (levelFinished) {
-        Engine::GameEngine::GetInstance().ChangeScene("win");
+    if (victoryCutscene) {
+        const float acceleration = 600.0f;
+        victoryTimer += deltaTime;
+        flightSpeed += acceleration * deltaTime;
+        player->Position.x += flightSpeed * deltaTime;
+        if (victoryTimer >= 3.0f) {
+            RemoveObject(player->GetObjectIterator());
+            Engine::GameEngine::GetInstance().ChangeScene("win");
+        }
+        return;
     }
 }
 
@@ -240,6 +258,8 @@ void Gameplay::CheckPlayerHealth() {
 
 void Gameplay::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
+
+    if (victoryCutscene) return;
     
     if (keyCode == ALLEGRO_KEY_ESCAPE) {
         isPaused = true;
@@ -270,6 +290,7 @@ void Gameplay::OnKeyDown(int keyCode) {
 
 void Gameplay::OnMouseDown(int button, int mx, int my) {
     IScene::OnMouseDown(button, mx, my);  // Propagate to UI controls
+    if (victoryCutscene) return;
     if (button == 1 && player && !isPaused) {
         if (overlappingJumpOrb) {
             player->OrbJump();

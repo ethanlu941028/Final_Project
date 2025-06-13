@@ -5,7 +5,6 @@
 #include "Engine/IScene.hpp"
 #include <allegro5/allegro_audio.h>
 
-
 namespace Engine {
     class Label;
     class ImageButton;
@@ -17,6 +16,7 @@ private:
     Engine::ImageButton* quitButton;
     Engine::ImageButton* restartButton;
     Engine::ImageButton* settingButton;
+    bool inSetting = false;
 public:
     void Initialize() override;
     void Terminate() override;
@@ -24,10 +24,14 @@ public:
     void ExitOnClick();
     void RestartOnClick();
     void SettingsOnClick();
+    void BackOnClick();
     void OnKeyDown(int keyCode) override;
     void BGMSlideOnValueChanged(float value);
     void SFXSlideOnValueChanged(float value);
     void Draw() const;
+
+    void ShowPauseOptions();
+    void ShowSettingOptions();
 
 };
 

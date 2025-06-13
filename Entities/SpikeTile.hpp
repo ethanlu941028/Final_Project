@@ -4,8 +4,11 @@
 #include "Tile.hpp"
 
 class SpikeTile : public Tile {
+private:
+    bool upsideDown;
 public:
-    SpikeTile(int tileX, int tileY);
+    explicit SpikeTile(int tileX, int tileY, bool upsideDown = false);
+    bool IsUpsideDown() const { return upsideDown; }
     Engine::Point GetBaseHitboxTopLeft() const;
     Engine::Point GetBaseHitboxBottomRight() const;
     Engine::Point GetTopHitboxTopLeft() const;
