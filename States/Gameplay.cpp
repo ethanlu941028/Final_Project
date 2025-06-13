@@ -195,7 +195,9 @@ void Gameplay::Update(float deltaTime) {
         for (auto* obj : objects) {
             auto* orb = dynamic_cast<FlipOrb*>(obj);
             if (!orb) continue;
-            if (Engine::Collider::IsCircleOverlap(player->Position, player->GetGroundRadius(), orb->Position, orb->GetRadius())) {
+            auto pPolyArr = player->GetHitboxPoints();
+            std::vector<Engine::Point> pPoly(pPolyArr.begin(), pPolyArr.end());
+            if (Engine::Collider::IsCircleOverlapPolygon(orb->Position, orb->GetRadius(), pPoly)) {
                 overlappingFlipOrb = orb;
                 break;
             }
@@ -208,7 +210,9 @@ void Gameplay::Update(float deltaTime) {
         for (auto* obj : objects) {
             auto* orb = dynamic_cast<JumpOrb*>(obj);
             if (!orb) continue;
-            if (Engine::Collider::IsCircleOverlap(player->Position, player->GetGroundRadius(), orb->Position, orb->GetRadius())) {
+            auto pPolyArr = player->GetHitboxPoints();
+            std::vector<Engine::Point> pPoly(pPolyArr.begin(), pPolyArr.end());
+            if (Engine::Collider::IsCircleOverlapPolygon(orb->Position, orb->GetRadius(), pPoly)) {
                 overlappingJumpOrb = orb;
                 break;
             }

@@ -47,6 +47,7 @@ namespace Engine {
         static bool IsCircleOverlap(Point c1, float r1, Point c2, float r2);
         static bool IsCircleOverlapRect(Point center, float radius, Point rectMin, Point rectMax);
         static bool IsPolygonOverlapRect(const std::vector<Point>& poly, Point rectMin, Point rectMax);
+        static bool IsCircleOverlapPolygon(Point center, float radius, const std::vector<Point>& poly);
     };
 }
 #endif   // COLLIDER_HPP

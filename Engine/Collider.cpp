@@ -76,4 +76,36 @@ namespace Engine {
         };
         return PolygonOverlapPolygon(poly, rect);
     }
+
+    static bool PointInPolygon(const std::vector<Point>& poly, Point p) {
+        bool inside = false;
+        size_t j = poly.size() - 1;
+        for (size_t i = 0; i < poly.size(); j = i++) {
+            bool intersect = ((poly[i].y > p.y) != (poly[j].y > p.y)) &&
+                (p.x < (poly[j].x - poly[i].x) * (p.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x);
+            if (intersect)
+                inside = !inside;
+        }
+        return inside;
+    }
+
+    bool Collider::IsCircleOverlapPolygon(Point center, float radius, const std::vector<Point>& poly) {
+        if (PointInPolygon(poly, center))
+            return true;
+        float r2 = radius * radius;
+        for (size_t i = 0; i < poly.size(); ++i) {
+            Point p1 = poly[i];
+            Point p2 = poly[(i + 1) % poly.size()];
+            Point edge = p2 - p1;
+            float lenSq = edge.MagnitudeSquared();
+            float t = 0.0f;
+            if (lenSq != 0)
+                t = std::clamp((center - p1).Dot(edge) / lenSq, 0.0f, 1.0f);
+            Point proj = p1 + edge * t;
+            Point diff = center - proj;
+            if (diff.MagnitudeSquared() <= r2)
+                return true;
+        }
+        return false;
+    }
 }
