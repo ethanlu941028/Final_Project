@@ -10,7 +10,9 @@ enum class TileType {
     Ground = 1,
     Spike = 2,
     Flip = 3,
-    Jump = 4
+    Jump = 4,
+    SpeedUp = 5,
+    SpeedDown = 6
 };
 
 class Tile : public Engine::Sprite {

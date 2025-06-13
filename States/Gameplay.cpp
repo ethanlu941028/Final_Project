@@ -19,6 +19,8 @@
 #include "Entities/SpikeTile.hpp"
 #include "Entities/FlipOrb.hpp"
 #include "Entities/JumpOrb.hpp"
+#include "Entities/SpeedUpTile.hpp"
+#include "Entities/SpeedDownTile.hpp"
 #include "Engine/Collider.hpp"
 #include "Engine/Group.hpp"
 #include "Utils/Config.hpp"
@@ -55,15 +57,13 @@ void Gameplay::Initialize() {
     victoryCutscene = false;
     victoryTimer = 0.0f;
     flightSpeed = 0.0f;
+    scrollSpeed = 520.0f;
     jumpRequested = false;
     jumpBufferTimer = 0.0f;
 
     bgmInstance = AudioHelper::PlaySample("BGM1.ogg", true, AudioHelper::BGMVolume);
 
-    scoreLabel = new Engine::Label("Score: 0", "pirulen.ttf", 24, 10, 5, 255, 255, 255, 255);
-    AddNewObject(scoreLabel);
-
-    progressLabel = new Engine::Label("0%", "pirulen.ttf", 24, w - 10, 5, 255, 255, 255, 255, 1.0f, 0);
+    progressLabel = new Engine::Label("0%", "pirulen.ttf", 35, w / 2, 15, 255, 255, 255, 255, 0.5f, 0.5f);
     AddNewObject(progressLabel);
 
     // Initialize player starting position based on visible tile rows
@@ -76,7 +76,6 @@ void Gameplay::Terminate() {
     AudioHelper::StopSample(bgmInstance);
     std::cout << "Gameplay::Terminate called." << std::endl;
     background = nullptr;
-    scoreLabel = nullptr;
     progressLabel = nullptr;
     delete level;
     level = nullptr;
@@ -130,7 +129,6 @@ void Gameplay::Update(float deltaTime) {
         return;
     }
 
-    const float scrollSpeed = 520.0f;
     bool levelFinished = level && level->IsFinished();
     if (levelFinished && !victoryCutscene) {
         victoryCutscene = true;
@@ -145,10 +143,6 @@ void Gameplay::Update(float deltaTime) {
             score += deltaTime * 60;
         }
     }
-
-    std::ostringstream stream;
-    stream << std::fixed << std::setprecision(2) << "Score: " << ((score*4) / 100.0f);
-    scoreLabel->Text = stream.str();
 
     // Calculate progress percentage based on map scroll and cutscene timer
     float offset = level ? level->GetOffsetX() : 0.0f;
@@ -222,6 +216,30 @@ void Gameplay::Update(float deltaTime) {
             break;
         }
     }
+
+    if (!levelFinished && !victoryCutscene) {
+        auto objects = TileMapGroup->GetObjects();
+        for (auto* obj : objects) {
+            if (auto* su = dynamic_cast<SpeedUpTile*>(obj)) {
+                auto pPolyArr = player->GetHitboxPoints();
+                std::vector<Engine::Point> pPoly(pPolyArr.begin(), pPolyArr.end());
+                if (Engine::Collider::IsPolygonOverlapRect(pPoly, su->GetHitboxTopLeft(), su->GetHitboxBottomRight())) {
+                    scrollSpeed *= 2.0f;
+                    TileMapGroup->RemoveObject(su->GetObjectIterator());
+                    break;
+                }
+            } else if (auto* sd = dynamic_cast<SpeedDownTile*>(obj)) {
+                auto pPolyArr = player->GetHitboxPoints();
+                std::vector<Engine::Point> pPoly(pPolyArr.begin(), pPolyArr.end());
+                if (Engine::Collider::IsPolygonOverlapRect(pPoly, sd->GetHitboxTopLeft(), sd->GetHitboxBottomRight())) {
+                    scrollSpeed *= 0.5f;
+                    TileMapGroup->RemoveObject(sd->GetObjectIterator());
+                    break;
+                }
+            }
+        }
+    }
+
 
     if (!levelFinished && !victoryCutscene) {
         overlappingFlipOrb = nullptr;

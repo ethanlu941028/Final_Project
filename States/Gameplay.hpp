@@ -24,7 +24,6 @@ class FlipOrb;
 class Gameplay : public Engine::IScene {
 private:
     Engine::Image* background;
-    Engine::Label* scoreLabel;
     Engine::Label* progressLabel; // shows map completion percentage
 
 
@@ -47,6 +46,7 @@ private:
     bool victoryCutscene = false;
     float victoryTimer = 0.0f;
     float flightSpeed = 0.0f;
+    float scrollSpeed = 520.0f;
 
     bool jumpRequested = false;
     float jumpBufferTimer = 0.0f;
