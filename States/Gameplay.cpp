@@ -45,6 +45,9 @@ void Gameplay::Initialize() {
 
 
     score = 0;
+    playerDead = false;
+    deadTimer = 0.0f;
+    deathSoundPlayed = false;
 
     bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
 
@@ -103,6 +106,17 @@ void Gameplay::ReadMap() {
 }
 
 void Gameplay::Update(float deltaTime) {
+    if (playerDead) {
+        if (!deathSoundPlayed) {
+            deathSoundPlayed = true;
+        }
+        deadTimer -= deltaTime;
+        if (deadTimer <= 0.0f) {
+            Engine::GameEngine::GetInstance().ChangeScene("play");
+        }
+        return;
+    }
+
     const float scrollSpeed = 500.0f;
     bool levelFinished = level && level->IsFinished();
     if (level && !levelFinished) {
@@ -181,8 +195,13 @@ void Gameplay::Update(float deltaTime) {
 }
 
 void Gameplay::CheckPlayerHealth() {
-    if (player && player->GetHP() <= 0) {
-        Engine::GameEngine::GetInstance().ChangeScene("death");
+    if (player && player->GetHP() <= 0 && !playerDead) {
+        playerDead = true;
+        deadTimer = 2.0f; // 顯示時間為 2 秒
+        deathSoundPlayed = false;
+        showHitbox = true; // 顯示 hitbox
+        AudioHelper::StopSample(bgmInstance);
+        bgmInstance = AudioHelper::PlaySample("lose.ogg", true, AudioHelper::BGMVolume);
     }
 }
 

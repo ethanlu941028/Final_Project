@@ -34,6 +34,10 @@ private:
     Player* player;
     Level* level = nullptr;
 
+    bool playerDead = false;
+    float deadTimer = 0.0f;
+    bool deathSoundPlayed = false;
+
     void CheckPlayerHealth();
 
 public:
