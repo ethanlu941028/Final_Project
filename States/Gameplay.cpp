@@ -216,7 +216,9 @@ void Gameplay::Update(float deltaTime) {
             if (!landed && circleOverlap) {
                 player->SetHP(0);
             }
-            break;
+            if (player->GetHP() == 0) {
+                break;
+            }
         }
     }
 
