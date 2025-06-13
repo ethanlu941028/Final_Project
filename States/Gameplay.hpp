@@ -33,6 +33,7 @@ private:
     };
 
     int score;
+    bool cheatMode = false;
     Player* player;
     Level* level = nullptr;
 
