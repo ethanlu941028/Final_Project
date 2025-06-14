@@ -30,26 +30,30 @@ void PauseMenu::ShowPauseOptions() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
+    int halfH = h / 2;
 
-    escButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 - 200, 400, 100);
+    // Title label
+    AddNewObject(new Engine::Label("Game Paused", "pirulen.ttf", 72, halfW, halfH - 300, 255, 255, 255, 255, 0.5, 0.5));
+
+    escButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH - 200, 400, 100);
     escButton->SetOnClickCallback(std::bind(&PauseMenu::ResumeOnClick, this));
     AddNewControlObject(escButton);
-    AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 48, halfW, h / 2 - 150, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH - 150, 0, 0, 0, 255, 0.5, 0.5));
 
-    restartButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 -60, 400, 100);
+    restartButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH - 50, 400, 100);
     restartButton->SetOnClickCallback(std::bind(&PauseMenu::RestartOnClick, this));
     AddNewControlObject(restartButton);
-    AddNewObject(new Engine::Label("Restart", "pirulen.ttf", 48, halfW, h / 2 -10, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Restart", "pirulen.ttf", 48, halfW, halfH, 0, 0, 0, 255, 0.5, 0.5));
 
-    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 +80, 400, 100);
+    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH + 100, 400, 100);
     settingButton->SetOnClickCallback(std::bind(&PauseMenu::SettingsOnClick, this));
     AddNewControlObject(settingButton);
-    AddNewObject(new Engine::Label("Setting", "pirulen.ttf", 48, halfW, h / 2 +130, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH + 150, 0, 0, 0, 255, 0.5, 0.5));
 
-    quitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 + 220, 400, 100);
+    quitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH + 250, 400, 100);
     quitButton->SetOnClickCallback(std::bind(&PauseMenu::ExitOnClick, this));
     AddNewControlObject(quitButton);
-    AddNewObject(new Engine::Label("Quit", "pirulen.ttf", 48, halfW, h / 2 + 270, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Quit", "pirulen.ttf", 48, halfW, halfH + 300, 0, 0, 0, 255, 0.5, 0.5));
 }
 
 void PauseMenu::Terminate() {

@@ -16,24 +16,26 @@ void TitleScreen::Initialize() {
     int halfW = w / 2;
     int halfH = h / 2;
 
+    // Title label
+    AddNewObject(new Engine::Label("Geometry Crash", "pirulen.ttf", 96, halfW, halfH - 270, 255, 255, 255, 255, 0.5, 0.5));
 
     // Start 按鈕
-    startButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2, 400, 100);
+    startButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH - 150, 400, 100);
     startButton->SetOnClickCallback(std::bind(&TitleScreen::PlayOnClick, this, 1));
     AddNewControlObject(startButton);
-    AddNewObject(new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH / 2 + 50, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH - 100, 0, 0, 0, 255, 0.5, 0.5));
 
     //Setting按鈕
-    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 280, 400, 100);
+    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH, 400, 100);
     settingButton->SetOnClickCallback(std::bind(&TitleScreen::SettingOnClick, this, 2));
     AddNewControlObject(settingButton);
-    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH / 2 + 330, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH + 50, 0, 0, 0, 255, 0.5, 0.5));
 
     // Exit 按鈕
-    exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 420, 400, 100);
+    exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH + 150, 400, 100);
     exitButton->SetOnClickCallback([]() {Engine::GameEngine::GetInstance().Close();});
     AddNewControlObject(exitButton);
-    AddNewObject(new Engine::Label("Exit", "pirulen.ttf", 48, halfW, halfH / 2 + 470, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Exit", "pirulen.ttf", 48, halfW, halfH + 200, 0, 0, 0, 255, 0.5, 0.5));
 
 
 }

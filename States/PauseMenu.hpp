@@ -24,7 +24,7 @@ public:
     void RestartOnClick();
     void SettingsOnClick();
     void OnKeyDown(int keyCode) override;
-    void Draw() const;
+    void Draw() const override;
 
     void ShowPauseOptions();
 
