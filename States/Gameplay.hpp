@@ -33,7 +33,6 @@ private:
     };
 
     int score;
-    bool cheatMode = false;
     Player* player;
     Level* level = nullptr;
 
@@ -67,6 +66,7 @@ public:
     Engine::Group* TileMapGroup;
     bool initialized = false;
     static bool isPaused;
+    bool cheatMode;
     explicit Gameplay() = default;
     void Initialize() override;
     void ReadMap();
