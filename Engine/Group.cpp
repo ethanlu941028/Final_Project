@@ -4,6 +4,7 @@
 #include "Group.hpp"
 #include "IControl.hpp"
 #include "IObject.hpp"
+#include "Utils/Config.hpp" // for TILE_SIZE
 #include <iostream>
 #include <vector>
 
@@ -142,6 +143,28 @@ namespace Engine {
             throw std::invalid_argument("The control must inherit both IObject and IControl.");
         addObject(false, dynamic_cast<IObject *>(&ctrl));
         addControl(false, &ctrl);
+    }
+    void Group::CleanUpOffScreen() {
+        // Define the left boundary. An object is considered off-screen
+        // if its right edge has passed this point. We use a small buffer.
+        const float leftBound = -TILE_SIZE; 
+
+        // Use a safe loop to iterate and erase.
+        // We manually control the iterator's advancement.
+        for (auto it = objects.begin(); it != objects.end(); /* no increment here */) {
+            // Check if the object's right edge is to the left of our boundary.
+            if (it->second->Position.x + it->second->Size.x < leftBound) {
+                // This object is off-screen. Remove it.
+                // The 'erase' method returns an iterator to the next valid element.
+                if (it->first) {
+                    delete it->second; // Free the memory if the Group owns this object.
+                }
+                it = objects.erase(it); // Erase the object from the list and update the iterator.
+            } else {
+                // If we didn't erase the object, manually advance the iterator to the next one.
+                ++it;
+            }
+        }
     }
     std::list<IObject *> Group::GetObjects() {
         std::list<IObject *> list;

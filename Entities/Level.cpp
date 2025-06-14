@@ -86,6 +86,22 @@ void Level::Scroll(float deltaTime, float speed) {
             if (tile) tile->Position.x = x * TILE_SIZE - offsetX;
         }
     }
+    if (container) {
+        container->CleanUpOffScreen();
+        // Null out tile pointers that were removed by the container
+        const float cleanupBoundary = -TILE_SIZE;
+        int visibleCols = std::min(spawnedColumns, width);
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < visibleCols; ++x) {
+                Tile* tile = tiles[y][x];
+                if (!tile) continue;
+                float tileRight = x * TILE_SIZE - offsetX + TILE_SIZE;
+                if (tileRight < cleanupBoundary) {
+                    tiles[y][x] = nullptr;
+                }
+            }
+        }
+    }
 }
 
 bool Level::IsFinished() const {

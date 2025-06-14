@@ -28,7 +28,7 @@
 
 #include "Engine/AudioHelper.hpp"
 
-const int Gameplay::MapWidth = 503, Gameplay::MapHeight = 15;
+const int Gameplay::MapWidth = 509, Gameplay::MapHeight = 15;
 
 bool Gameplay::isPaused = false;
 
