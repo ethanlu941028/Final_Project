@@ -18,11 +18,6 @@ public:
     void BackOnClick(int stage);
     void OnKeyDown(int keyCode) override;
     void Draw() const;
-    /*
-    void ScoreboardOnClick();
-    void BGMSlideOnValueChanged(float value);
-    void SFXSlideOnValueChanged(float value);
-    */
 };
 
 #endif   // STAGESELECTSCENE_HPP

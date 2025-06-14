@@ -16,30 +16,29 @@ void TitleScreen::Initialize() {
     int halfW = w / 2;
     int halfH = h / 2;
 
+    // Background image
+    AddNewObject(new Engine::Image("stage-select/mainBG.png", 0, 0, w, h));
+
+    // Title label
+    AddNewObject(new Engine::Label("Geometry Crash", "pirulen.ttf", 96, halfW, halfH - 270, 255, 255, 255, 255, 0.5, 0.5));
 
     // Start 按鈕
-    startButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2, 400, 100);
+    startButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH - 150, 400, 100);
     startButton->SetOnClickCallback(std::bind(&TitleScreen::PlayOnClick, this, 1));
     AddNewControlObject(startButton);
-    AddNewObject(new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH / 2 + 50, 0, 0, 0, 255, 0.5, 0.5));
-
-    scoreboardButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 250, halfH / 2 + 140, 500, 100);
-    scoreboardButton->SetOnClickCallback(std::bind(&TitleScreen::ScoreboardOnClick, this, 1));
-    AddNewControlObject(scoreboardButton);
-    AddNewObject(new Engine::Label("ScoreBoard", "pirulen.ttf", 48, halfW, halfH / 2 + 190, 0, 0, 0, 255, 0.5, 0.5));
-
+    AddNewObject(new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH - 100, 0, 0, 0, 255, 0.5, 0.5));
 
     //Setting按鈕
-    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 280, 400, 100);
+    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH, 400, 100);
     settingButton->SetOnClickCallback(std::bind(&TitleScreen::SettingOnClick, this, 2));
     AddNewControlObject(settingButton);
-    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH / 2 + 330, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH + 50, 0, 0, 0, 255, 0.5, 0.5));
 
     // Exit 按鈕
-    exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 420, 400, 100);
+    exitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH + 150, 400, 100);
     exitButton->SetOnClickCallback([]() {Engine::GameEngine::GetInstance().Close();});
     AddNewControlObject(exitButton);
-    AddNewObject(new Engine::Label("Exit", "pirulen.ttf", 48, halfW, halfH / 2 + 470, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Exit", "pirulen.ttf", 48, halfW, halfH + 200, 0, 0, 0, 255, 0.5, 0.5));
 
 
 }
@@ -85,10 +84,6 @@ void TitleScreen::SettingOnClick(int stage) {
     // 這裡你可以根據選擇的關卡（stage）傳值
     // 若沒用到可以忽略參數
     Engine::GameEngine::GetInstance().ChangeScene("setting");
-}
-
-void TitleScreen::ScoreboardOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("scoreboard");
 }
 
 void TitleScreen::OnKeyDown(int keyCode) {

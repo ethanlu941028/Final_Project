@@ -23,10 +23,6 @@ private:
 
     std::string nameInput;
     Engine::Label* nameLabel;
-
-    void SaveRecord(const std::string& name, int score);
-    void OnSaveClick(int dummy);
-
 public:
     explicit WinScreen() = default;
     void Initialize() override;

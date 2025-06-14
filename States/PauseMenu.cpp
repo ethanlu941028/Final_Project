@@ -22,7 +22,6 @@ void PauseMenu::Initialize() {
         gameplay->bgmPausedPos = al_get_sample_instance_position(gameplay->bgmInstance.get());
         al_set_sample_instance_playing(gameplay->bgmInstance.get(), false);
     }
-    inSetting = false;
     ShowPauseOptions();
 }
 
@@ -31,53 +30,30 @@ void PauseMenu::ShowPauseOptions() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
-
-    escButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 - 200, 400, 100);
-    escButton->SetOnClickCallback(std::bind(&PauseMenu::ResumeOnClick, this));
-    AddNewControlObject(escButton);
-    AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 48, halfW, h / 2 - 150, 0, 0, 0, 255, 0.5, 0.5));
-
-    restartButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 -60, 400, 100);
-    restartButton->SetOnClickCallback(std::bind(&PauseMenu::RestartOnClick, this));
-    AddNewControlObject(restartButton);
-    AddNewObject(new Engine::Label("Restart", "pirulen.ttf", 48, halfW, h / 2 -10, 0, 0, 0, 255, 0.5, 0.5));
-
-    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 +80, 400, 100);
-    settingButton->SetOnClickCallback(std::bind(&PauseMenu::SettingsOnClick, this));
-    AddNewControlObject(settingButton);
-    AddNewObject(new Engine::Label("Setting", "pirulen.ttf", 48, halfW, h / 2 +130, 0, 0, 0, 255, 0.5, 0.5));
-
-    quitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, h / 2 + 220, 400, 100);
-    quitButton->SetOnClickCallback(std::bind(&PauseMenu::ExitOnClick, this));
-    AddNewControlObject(quitButton);
-    AddNewObject(new Engine::Label("Quit", "pirulen.ttf", 48, halfW, h / 2 + 270, 0, 0, 0, 255, 0.5, 0.5));
-}
-
-void PauseMenu::ShowSettingOptions() {
-    Clear();
-    std::cout << "Showing settings" << std::endl;
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
     int halfH = h / 2;
 
-    Engine::ImageButton* btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH * 3 / 2 - 50, 400, 100);
-    btn->SetOnClickCallback(std::bind(&PauseMenu::BackOnClick, this));
-    AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
+    // Title label
+    AddNewObject(new Engine::Label("Game Paused", "pirulen.ttf", 72, halfW, halfH - 300, 255, 255, 255, 255, 0.5, 0.5));
 
-    Slider* sliderBGM = new Slider(40 + halfW - 95, halfH - 50 - 2, 190, 4);
-    sliderBGM->SetOnValueChangedCallback(std::bind(&PauseMenu::BGMSlideOnValueChanged, this, std::placeholders::_1));
-    AddNewControlObject(sliderBGM);
-    AddNewObject(new Engine::Label("BGM: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH - 50, 255, 255, 255, 255, 0.5, 0.5));
+    escButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH - 200, 400, 100);
+    escButton->SetOnClickCallback(std::bind(&PauseMenu::ResumeOnClick, this));
+    AddNewControlObject(escButton);
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH - 150, 0, 0, 0, 255, 0.5, 0.5));
 
-    Slider* sliderSFX = new Slider(40 + halfW - 95, halfH + 50 - 2, 190, 4);
-    sliderSFX->SetOnValueChangedCallback(std::bind(&PauseMenu::SFXSlideOnValueChanged, this, std::placeholders::_1));
-    AddNewControlObject(sliderSFX);
-    AddNewObject(new Engine::Label("SFX: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH + 50, 255, 255, 255, 255, 0.5, 0.5));
+    restartButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH - 50, 400, 100);
+    restartButton->SetOnClickCallback(std::bind(&PauseMenu::RestartOnClick, this));
+    AddNewControlObject(restartButton);
+    AddNewObject(new Engine::Label("Restart", "pirulen.ttf", 48, halfW, halfH, 0, 0, 0, 255, 0.5, 0.5));
 
-    sliderBGM->SetValue(AudioHelper::BGMVolume);
-    sliderSFX->SetValue(AudioHelper::SFXVolume);
+    settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH + 100, 400, 100);
+    settingButton->SetOnClickCallback(std::bind(&PauseMenu::SettingsOnClick, this));
+    AddNewControlObject(settingButton);
+    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH + 150, 0, 0, 0, 255, 0.5, 0.5));
+
+    quitButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH + 250, 400, 100);
+    quitButton->SetOnClickCallback(std::bind(&PauseMenu::ExitOnClick, this));
+    AddNewControlObject(quitButton);
+    AddNewObject(new Engine::Label("Quit", "pirulen.ttf", 48, halfW, halfH + 300, 0, 0, 0, 255, 0.5, 0.5));
 }
 
 void PauseMenu::Terminate() {
@@ -88,9 +64,11 @@ void PauseMenu::Terminate() {
 }
 
 void PauseMenu::Draw() const {
+    Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
+    if (scene) scene->Draw();
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 128));
+    al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 160));
     IScene::Draw();
 }
 
@@ -115,13 +93,7 @@ void PauseMenu::RestartOnClick() {
 }
 
 void PauseMenu::SettingsOnClick() {
-    inSetting = true;
-    ShowSettingOptions();
-}
-
-void PauseMenu::BackOnClick() {
-    inSetting = false;
-    ShowPauseOptions();
+    Engine::GameEngine::GetInstance().ChangeScene("pause-setting");
 }
 
 void PauseMenu::ExitOnClick() {
@@ -137,22 +109,8 @@ void PauseMenu::ExitOnClick() {
 void PauseMenu::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
     if (keyCode == ALLEGRO_KEY_ESCAPE) {
-        if (inSetting) BackOnClick();
-        else ResumeOnClick();
-    } else if (keyCode == ALLEGRO_KEY_Q && !inSetting) {
+        ResumeOnClick();
+    } else if (keyCode == ALLEGRO_KEY_Q) {
         ExitOnClick();
     }
-}
-
-void PauseMenu::BGMSlideOnValueChanged(float value) {
-    AudioHelper::BGMVolume = value;
-    Engine::IScene* scene = Engine::GameEngine::GetInstance().GetScene("play");
-    Gameplay* gameplay = dynamic_cast<Gameplay*>(scene);
-    if (gameplay && gameplay->bgmInstance) {
-        al_set_sample_instance_gain(gameplay->bgmInstance.get(), value);
-    }
-}
-
-void PauseMenu::SFXSlideOnValueChanged(float value) {
-    AudioHelper::SFXVolume = value;
 }

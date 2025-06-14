@@ -53,32 +53,11 @@ void WinScreen::Update(float deltaTime) {
         }
 }
 
-void WinScreen::OnSaveClick(int) {
-    std::string name = nameInput.empty() ? "Anonymous" : nameInput;
-    int score = dynamic_cast<Gameplay*>(Engine::GameEngine::GetInstance().GetScene("play"))->GetScore();
-    SaveRecord(name, score);
-    Engine::GameEngine::GetInstance().ChangeScene("scoreboard");
-}
-
 void WinScreen::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理
     if (keyCode == ALLEGRO_KEY_ESCAPE) {
         Engine::GameEngine::GetInstance().ChangeScene("title");
     }
-}
-
-void WinScreen::SaveRecord(const std::string& name, int score) {
-    auto now = std::chrono::system_clock::now();
-    std::time_t t = std::chrono::system_clock::to_time_t(now);
-    std::tm tm;
-#if defined(_WIN32) || defined(_WIN64)
-    localtime_s(&tm, &t);
-#else
-    localtime_r(&t, &tm);
-#endif
-    std::ofstream file("Resource/scoreboard.txt", std::ios::app);
-    file << name << " " << score << " ";
-    file << std::put_time(&tm, "%Y-%m-%d_%H:%M:%S") << "\n";
 }
 
 // Handle keyboard input directly
@@ -89,10 +68,7 @@ void WinScreen::HandleEvent(const ALLEGRO_EVENT& event) {
         } else if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && !nameInput.empty()) {
             nameInput.pop_back();
         } else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
-            std::string name = nameInput.empty() ? "Anonymous" : nameInput;
-            int score = dynamic_cast<Gameplay*>(Engine::GameEngine::GetInstance().GetScene("play"))->GetScore();
-            SaveRecord(name, score);
-            Engine::GameEngine::GetInstance().ChangeScene("scoreboard");
+            Engine::GameEngine::GetInstance().ChangeScene("title");
         }
         // update display
         nameLabel->Text = nameInput + "_";
