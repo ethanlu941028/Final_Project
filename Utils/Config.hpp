@@ -10,7 +10,11 @@
 // Global tile size used throughout the game.
 constexpr std::int32_t TILE_SIZE = 64;
 
-// Global flag controlling whether hitboxes are drawn.
+// Runtime flag controlling whether hitboxes are drawn.
 extern bool showHitbox;
+
+// Persistent settings toggled from the settings menus.
+extern bool showHitboxSetting;
+extern bool cheatModeSetting;
 
 #endif //CONFIG_HPP

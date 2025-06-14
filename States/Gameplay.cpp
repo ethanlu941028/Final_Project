@@ -36,7 +36,7 @@ void Gameplay::Initialize() {
     if (initialized) return;
     initialized = true;
     isPaused = false;
-    showHitbox = false;
+    showHitbox = showHitboxSetting;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
 
@@ -59,7 +59,7 @@ void Gameplay::Initialize() {
     flightSpeed = 0.0f;
     scrollSpeed = 520.0f;
     jumpRequested = false;
-    cheatMode = false;
+    cheatMode = cheatModeSetting;
     jumpBufferTimer = 0.0f;
 
     bgmInstance = AudioHelper::PlaySample("BGM1.ogg", true, AudioHelper::BGMVolume);
