@@ -23,12 +23,6 @@ void TitleScreen::Initialize() {
     AddNewControlObject(startButton);
     AddNewObject(new Engine::Label("Play", "pirulen.ttf", 48, halfW, halfH / 2 + 50, 0, 0, 0, 255, 0.5, 0.5));
 
-    scoreboardButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 250, halfH / 2 + 140, 500, 100);
-    scoreboardButton->SetOnClickCallback(std::bind(&TitleScreen::ScoreboardOnClick, this, 1));
-    AddNewControlObject(scoreboardButton);
-    AddNewObject(new Engine::Label("ScoreBoard", "pirulen.ttf", 48, halfW, halfH / 2 + 190, 0, 0, 0, 255, 0.5, 0.5));
-
-
     //Setting按鈕
     settingButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 280, 400, 100);
     settingButton->SetOnClickCallback(std::bind(&TitleScreen::SettingOnClick, this, 2));
@@ -85,10 +79,6 @@ void TitleScreen::SettingOnClick(int stage) {
     // 這裡你可以根據選擇的關卡（stage）傳值
     // 若沒用到可以忽略參數
     Engine::GameEngine::GetInstance().ChangeScene("setting");
-}
-
-void TitleScreen::ScoreboardOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("scoreboard");
 }
 
 void TitleScreen::OnKeyDown(int keyCode) {

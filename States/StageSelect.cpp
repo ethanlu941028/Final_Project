@@ -42,15 +42,7 @@ void StageSelect::Initialize() {
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH / 2 + 400, 0, 0, 0, 255, 0.5, 0.5));
 
-    /*
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 300, halfH / 2 +400, 600, 100);
-    btn->SetOnClickCallback(std::bind(&StageSelect::ScoreboardOnClick, this));
-    AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 48, halfW, halfH / 2 + 450, 0, 0, 0, 255, 0.5, 0.5));
-    */
-
     bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
-
 }
 void StageSelect::Terminate() {
     AudioHelper::StopSample(bgmInstance);
@@ -73,19 +65,6 @@ void StageSelect::PlayOnClick(int stage) {
 void StageSelect::BackOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("title");
 }
-
-/*
-void StageSelect::ScoreboardOnClick() {
-    Engine::GameEngine::GetInstance().ChangeScene("scoreboard-scene");
-}
-void StageSelect::BGMSlideOnValueChanged(float value) {
-    AudioHelper::ChangeSampleVolume(bgmInstance, value);
-    AudioHelper::BGMVolume = value;
-}
-void StageSelect::SFXSlideOnValueChanged(float value) {
-    AudioHelper::SFXVolume = value;
-}
-*/
 
 void StageSelect::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode); // 如果基底類別有其他處理

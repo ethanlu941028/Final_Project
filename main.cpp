@@ -10,8 +10,6 @@
 #include "States/WinScreen.hpp"
 #include <iostream>
 
-#include "States/ScoreboardScene.hpp"
-
 
 int main(int argc, char **argv) {
 	// 加入你自己想要的場景
@@ -26,7 +24,6 @@ int main(int argc, char **argv) {
 	engine.AddNewScene("setting", new Settings());
     engine.AddNewScene("pause-setting", new PauseSettings());
 	engine.AddNewScene("win", new WinScreen());
-	engine.AddNewScene("scoreboard", new ScoreboardScene());
 	// 啟動遊戲，從 title scene 開始
 	engine.Start("title", 60, 1600, 832);
 

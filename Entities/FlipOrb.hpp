@@ -6,7 +6,7 @@
 
 class FlipOrb : public Tile {
 public:
-    static constexpr float HitboxRadius = 35.0f;
+    static constexpr float HitboxRadius = 40.0f;
     FlipOrb(int tileX, int tileY);
     float GetRadius() const { return HitboxRadius; }
     void Draw() const override;

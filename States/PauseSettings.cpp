@@ -28,14 +28,9 @@ void PauseSettings::Initialize() {
     sliderBGM->SetOnValueChangedCallback(std::bind(&PauseSettings::BGMSlideOnValueChanged, this, std::placeholders::_1));
     AddNewControlObject(sliderBGM);
     AddNewObject(new Engine::Label("BGM: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH - 50, 255, 255, 255, 255, 0.5, 0.5));
-    Slider* sliderSFX = new Slider(40 + halfW - 95, halfH + 50 - 2, 190, 4);
-    sliderSFX->SetOnValueChangedCallback(std::bind(&PauseSettings::SFXSlideOnValueChanged, this, std::placeholders::_1));
-    AddNewControlObject(sliderSFX);
-    AddNewObject(new Engine::Label("SFX: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH + 50, 255, 255, 255, 255, 0.5, 0.5));
 
     bgmInstance = nullptr;
     sliderBGM->SetValue(AudioHelper::BGMVolume);
-    sliderSFX->SetValue(AudioHelper::SFXVolume);
 }
 
 void PauseSettings::Terminate() {
@@ -68,10 +63,6 @@ void PauseSettings::BGMSlideOnValueChanged(float value) {
         al_set_sample_instance_gain(gameplay->bgmInstance.get(), value);
     }
     AudioHelper::BGMVolume = value;
-}
-
-void PauseSettings::SFXSlideOnValueChanged(float value) {
-    AudioHelper::SFXVolume = value;
 }
 
 void PauseSettings::OnKeyDown(int keyCode) {

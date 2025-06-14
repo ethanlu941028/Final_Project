@@ -29,14 +29,8 @@ void Settings::Initialize() {
     AddNewControlObject(sliderBGM);
     AddNewObject(new Engine::Label("BGM: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH - 50, 255, 255, 255, 255, 0.5, 0.5));
 
-    Slider* sliderSFX = new Slider(40 + halfW - 95, halfH + 50 - 2, 190, 4);
-    sliderSFX->SetOnValueChangedCallback(std::bind(&Settings::SFXSlideOnValueChanged, this, std::placeholders::_1));
-    AddNewControlObject(sliderSFX);
-    AddNewObject(new Engine::Label("SFX: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH + 50, 255, 255, 255, 255, 0.5, 0.5));
-
     bgmInstance = nullptr;
     sliderBGM->SetValue(AudioHelper::BGMVolume);
-    sliderSFX->SetValue(AudioHelper::SFXVolume);
 }
 
 void Settings::Terminate() {
@@ -69,10 +63,6 @@ void Settings::BGMSlideOnValueChanged(float value) {
         al_set_sample_instance_gain(gameplay->bgmInstance.get(), value);
     }
     AudioHelper::BGMVolume = value;
-}
-
-void Settings::SFXSlideOnValueChanged(float value) {
-    AudioHelper::SFXVolume = value;
 }
 
 void Settings::OnKeyDown(int keyCode) {

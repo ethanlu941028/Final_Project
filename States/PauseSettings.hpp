@@ -13,7 +13,6 @@ public:
     void Terminate() override;
     void BackOnClick();
     void BGMSlideOnValueChanged(float value);
-    void SFXSlideOnValueChanged(float value);
     void Draw() const override;
     void OnKeyDown(int keyCode) override;
 };

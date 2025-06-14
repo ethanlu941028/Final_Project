@@ -11,7 +11,6 @@ private:
     Engine::ImageButton* startButton;
     Engine::ImageButton* exitButton;
     Engine::ImageButton* settingButton;
-    Engine::ImageButton* scoreboardButton;
 
 public:
     explicit TitleScreen() = default;
@@ -22,7 +21,6 @@ public:
     void OnEvent(ALLEGRO_EVENT& event) override;
     void PlayOnClick(int stage);
     void SettingOnClick(int stage);
-    void ScoreboardOnClick(int stage);
     void Draw() const;
 };
 

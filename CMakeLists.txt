@@ -100,8 +100,6 @@ add_executable(2025_I2P2_TowerDefense
     main.cpp
     Game.cpp
     Game.hpp
-    States/ScoreboardScene.cpp
-    States/ScoreboardScene.hpp
 )
 
 IF (WIN32)
