@@ -33,9 +33,9 @@ void PauseSettings::Initialize() {
     Slider* sliderBGM = new Slider(40 + halfW - 95, halfH -120 - 2, 190, 4);
     sliderBGM->SetOnValueChangedCallback(std::bind(&PauseSettings::BGMSlideOnValueChanged, this, std::placeholders::_1));
     AddNewControlObject(sliderBGM);
-    AddNewObject(new Engine::Label("BGM: ", "pirulen.ttf", 28, 40 + halfW - 60 - 95, halfH - 50, 255, 255, 255, 255, 0.5, 0.5));
-
+    
     hitboxToggle = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW, halfH - 40, 80, 40);
+    hitboxToggle->SetOnClickCallback(std::bind(&PauseSettings::HitboxToggleOnClick, this));
     AddNewControlObject(hitboxToggle);
     AddNewObject(new Engine::Label("Hitbox", "pirulen.ttf", 28, halfW - 75, halfH - 40 + 20, 255, 255, 255, 255, 1, 0.5));
     hitboxLabel = new Engine::Label("", "pirulen.ttf", 24, halfW + 8, halfH - 40 + 20, 255, 255, 255, 255, 0.0, 0.5);
