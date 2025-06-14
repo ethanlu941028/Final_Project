@@ -43,6 +43,7 @@ void PauseSettings::Terminate() {
 }
 
 void PauseSettings::Draw() const {
+    al_clear_to_color(al_map_rgb(0, 0, 0));
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 5));
