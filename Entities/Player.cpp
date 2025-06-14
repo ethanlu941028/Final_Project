@@ -20,7 +20,7 @@ Player::Player(float x, float y)
       hp(3),
       velocityY(0.0f),
       gravity(2300.0f),    // 重力加速度（單位：像素/秒²）
-      jumpSpeed(-800.0f), // 跳躍速度（負值代表向上）
+      jumpSpeed(-806.0f), // 跳躍速度（負值代表向上）
       isOnGround(false) {
     upsideDown = false;
 }
