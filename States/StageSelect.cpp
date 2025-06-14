@@ -21,6 +21,9 @@ void StageSelect::Initialize() {
     int halfW = w / 2;
     int halfH = h / 2;
 
+    // Background image
+    AddNewObject(new Engine::Image("stage-select/mainBG.png", 0, 0, w, h));
+
     // Title label
     AddNewObject(new Engine::Label("Stage Select", "pirulen.ttf", 72, halfW, halfH - 300, 255, 255, 255, 255, 0.5, 0.5));
 
@@ -54,10 +57,7 @@ void StageSelect::Terminate() {
 }
 
 void StageSelect::Draw() const {
-    // 清空畫面背景，這邊用黑色，你可以改成你喜歡的顏色
     al_clear_to_color(al_map_rgb(0, 0, 0));
-
-    // 再呼叫基底的Draw，繼續畫控制元件等
     IScene::Draw();
 }
 void StageSelect::PlayOnClick(int stage) {

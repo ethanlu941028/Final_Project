@@ -66,7 +66,7 @@ void PauseMenu::Terminate() {
 void PauseMenu::Draw() const {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 128));
+    al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 5));
     IScene::Draw();
 }
 

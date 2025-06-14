@@ -9,6 +9,7 @@
 #include "Engine/Point.hpp"
 #include "Gameplay.hpp"
 #include "States/Settings.hpp"
+#include "UI/Component/Image.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/Slider.hpp"
@@ -18,6 +19,9 @@ void Settings::Initialize() {
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
+
+    // Background image
+    AddNewObject(new Engine::Image("stage-select/mainBG.png", 0, 0, w, h));
 
     Engine::ImageButton* btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH * 3 / 2 - 50, 400, 100);
     btn->SetOnClickCallback(std::bind(&Settings::BackOnClick, this));
@@ -43,9 +47,7 @@ void Settings::Terminate() {
 }
 
 void Settings::Draw() const {
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    al_draw_filled_rectangle(0, 0, w, h, al_map_rgba(0, 0, 0, 128));
+    al_clear_to_color(al_map_rgb(0, 0, 0));
     IScene::Draw();
 }
 

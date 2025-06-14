@@ -16,6 +16,9 @@ void TitleScreen::Initialize() {
     int halfW = w / 2;
     int halfH = h / 2;
 
+    // Background image
+    AddNewObject(new Engine::Image("stage-select/mainBG.png", 0, 0, w, h));
+
     // Title label
     AddNewObject(new Engine::Label("Geometry Crash", "pirulen.ttf", 96, halfW, halfH - 270, 255, 255, 255, 255, 0.5, 0.5));
 
